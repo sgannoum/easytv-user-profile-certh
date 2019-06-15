@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+  <test name="Test user profile">
+    <classes>
+ 
+      <class name="com.certh.iti.easytv.user.AuditoryTest"/>
+      <class name="com.certh.iti.easytv.user.GeneralTest"/>
+      <class name="com.certh.iti.easytv.user.UserPreferencesTest"/>
+      <class name="com.certh.iti.easytv.user.UserProfileTest"/>
+      <class name="com.certh.iti.easytv.user.VisualTest"/>
+            
+      <class name="com.certh.iti.easytv.user.preference.ConditionPreferenceTest"/>
+      <class name="com.certh.iti.easytv.user.preference.ConditionTest"/>
+      <class name="com.certh.iti.easytv.user.preference.PreferenceTests"/>
+      
+      <class name="com.certh.iti.easytv.user.preference.operand.BooleanLiteralTest"/>
+      <class name="com.certh.iti.easytv.user.preference.operand.ColorLiteralTest"/>
+      <class name="com.certh.iti.easytv.user.preference.operand.ConditionListeralTest"/>
+      <class name="com.certh.iti.easytv.user.preference.operand.LanguageLiteralTest"/>
+      <class name="com.certh.iti.easytv.user.preference.operand.NumericLiteralTest"/>
+      <class name="com.certh.iti.easytv.user.preference.operand.StringLiteralTest"/>
+      <class name="com.certh.iti.easytv.user.preference.operand.TimeLiteralTest"/>
+     
+    </classes>
+  </test>
+</suite>

@@ -1,0 +1,74 @@
+{
+  "general": {
+    "age": 40,
+    "gender": "male"
+  },
+  "visual": {
+    "visual_acuity": 8,
+    "contrast_sensitivity": 24,
+    "color_blindness": "normal"
+  },
+  "auditory": {
+    "quarterK": 81,
+    "halfK": 35,
+    "oneK": 98,
+    "twoK": 18,
+    "fourK": 57,
+    "eightK": 27
+  },
+  "user_preferences": {
+    "default": {
+      "preferences": {
+        "contrast": 100,
+        "font_size": 20,
+        "color_temperature": 0.008,
+        "language_subtitles": "spanish",
+        "language_sign": "spanish",
+        "language_audio": "spanish",
+        "backgroundColor": "#000000",
+        "fontColor": "#670045"
+      }
+    },
+    "signLanguageAlternatives": {
+      "preferences": {
+        "language_subtitles": "spanish",
+        "language_sign": "spanish"
+      },
+      "conditions": [
+        {
+          "type": "ne",
+          "operands": [
+            "language_sign",
+            "spanish"
+          ]
+        }
+      ]
+    },
+    "night_light_mode": {
+      "preferences": {
+        "font_size": 15
+      },
+      "conditions": [
+        {
+          "type": "and",
+          "operands": [
+            {
+              "type": "ge",
+              "operands": [
+                "time",
+                "19:00"
+              ]
+            },
+            {
+              "type": "le",
+              "operands": [
+                "time",
+                "22:30"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
