@@ -5,7 +5,6 @@
     <classes>
  
       <class name="com.certh.iti.easytv.user.AuditoryTest"/>
-      <class name="com.certh.iti.easytv.user.GeneralTest"/>
       <class name="com.certh.iti.easytv.user.UserPreferencesTest"/>
       <class name="com.certh.iti.easytv.user.UserProfileTest"/>
       <class name="com.certh.iti.easytv.user.VisualTest"/>

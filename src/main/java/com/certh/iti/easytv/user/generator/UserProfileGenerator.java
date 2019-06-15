@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Random;
 
 import com.certh.iti.easytv.user.Auditory;
-import com.certh.iti.easytv.user.General;
 import com.certh.iti.easytv.user.UserPreferences;
 import com.certh.iti.easytv.user.UserProfile;
 import com.certh.iti.easytv.user.Visual;
@@ -164,10 +163,7 @@ public class UserProfileGenerator {
 		
 		List<UserProfile> profiles =  new ArrayList<UserProfile>(num);	
 		for(int i = 0; i < num; i++) {
-		
-			General general = new General(rand.nextInt(age_range[1] - age_range[0]) + age_range[0] , 
-										  General.getGender(rand.nextInt(gender_range[1] - gender_range[0]) +  gender_range[0] ));
-			
+				
 			Visual visualCapabilities = new Visual(rand.nextInt(visualAcuity_range[1] - visualAcuity_range[0]) + visualAcuity_range[0], 
 												   rand.nextInt(contrastSensitivity_range[1] - contrastSensitivity_range[0]) + contrastSensitivity_range[0], 
 												   Visual.getColorBlindness(rand.nextInt(colorBlindness_range[1] - colorBlindness_range[0]) + colorBlindness_range[0]));
@@ -190,7 +186,7 @@ public class UserProfileGenerator {
 			UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
 			
 			try {
-				profiles.add(new UserProfile(general, visualCapabilities, auditoryCapabilities, userPreferences, false));
+				profiles.add(new UserProfile(visualCapabilities, auditoryCapabilities, userPreferences, false));
 			} catch(Exception e) {}
 		}
 		return profiles;

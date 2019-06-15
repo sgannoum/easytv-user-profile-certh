@@ -1,10 +1,9 @@
 package com.certh.iti.easytv.user;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -19,7 +18,7 @@ public class UserProfileTest {
 	@BeforeClass
 	public void beforClass() throws IOException {
 		String line;
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(Config.path)));
+		BufferedReader reader = new BufferedReader(new FileReader(new File(getClass().getClassLoader().getResource(Config.path).getFile())));
 		StringBuffer buff = new StringBuffer();
 		
 		while((line = reader.readLine()) != null) {
@@ -33,19 +32,15 @@ public class UserProfileTest {
 	@Test
 	public void test_constructor() throws IOException {
 		UserProfile userProfile1 = new UserProfile(json);
-		UserProfile userProfile2 = new UserProfile(userProfile1.getGeneral(), userProfile1.getVisualCapabilities(), userProfile1.getAuditoryCapabilities(), userProfile1.getUserPreferences(), false);
+		UserProfile userProfile2 = new UserProfile(userProfile1.getVisualCapabilities(), userProfile1.getAuditoryCapabilities(), userProfile1.getUserPreferences(), false);
 	
-		Assert.assertTrue(userProfile2.getJSONObject().similar(json));
+		Assert.assertTrue(userProfile2.getJSONObject().similar(json), "Expected: " + json.toString(4)+" \n but found: \n"+userProfile2.getJSONObject().toString(4));
 	}
 	
 	@Test
 	public void test_identifcal_profiles() throws IOException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"general\": {\r\n" + 
-				"    \"age\": 40,\r\n" + 
-				"    \"gender\": \"male\"\r\n" + 
-				"  },\r\n" + 
 				"  \"visual\": {\r\n" + 
 				"    \"visual_acuity\": 8,\r\n" + 
 				"    \"contrast_sensitivity\": 24,\r\n" + 
@@ -72,10 +67,6 @@ public class UserProfileTest {
 				"}");
 		
 		JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-				"  \"general\": {\r\n" + 
-				"    \"age\": 40,\r\n" + 
-				"    \"gender\": \"male\"\r\n" + 
-				"  },\r\n" + 
 				"  \"visual\": {\r\n" + 
 				"    \"visual_acuity\": 8,\r\n" + 
 				"    \"contrast_sensitivity\": 24,\r\n" + 
@@ -111,10 +102,6 @@ public class UserProfileTest {
 	public void test_profiles_similarety_color_difference() throws IOException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"general\": {\r\n" + 
-				"    \"age\": 40,\r\n" + 
-				"    \"gender\": \"male\"\r\n" + 
-				"  },\r\n" + 
 				"  \"visual\": {\r\n" + 
 				"    \"visual_acuity\": 8,\r\n" + 
 				"    \"contrast_sensitivity\": 24,\r\n" + 
@@ -141,10 +128,6 @@ public class UserProfileTest {
 				"}");
 		
 		JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-				"  \"general\": {\r\n" + 
-				"    \"age\": 40,\r\n" + 
-				"    \"gender\": \"male\"\r\n" + 
-				"  },\r\n" + 
 				"  \"visual\": {\r\n" + 
 				"    \"visual_acuity\": 8,\r\n" + 
 				"    \"contrast_sensitivity\": 24,\r\n" + 
@@ -180,10 +163,6 @@ public class UserProfileTest {
 	public void test_profiles_similarety_language_difference() throws IOException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"general\": {\r\n" + 
-				"    \"age\": 40,\r\n" + 
-				"    \"gender\": \"male\"\r\n" + 
-				"  },\r\n" + 
 				"  \"visual\": {\r\n" + 
 				"    \"visual_acuity\": 8,\r\n" + 
 				"    \"contrast_sensitivity\": 24,\r\n" + 
@@ -210,10 +189,6 @@ public class UserProfileTest {
 				"}");
 		
 		JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-				"  \"general\": {\r\n" + 
-				"    \"age\": 40,\r\n" + 
-				"    \"gender\": \"male\"\r\n" + 
-				"  },\r\n" + 
 				"  \"visual\": {\r\n" + 
 				"    \"visual_acuity\": 8,\r\n" + 
 				"    \"contrast_sensitivity\": 24,\r\n" + 
@@ -250,10 +225,6 @@ public class UserProfileTest {
 	public void test_getPoints() throws IOException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"general\": {\r\n" + 
-				"    \"age\": 40,\r\n" + 
-				"    \"gender\": \"male\"\r\n" + 
-				"  },\r\n" + 
 				"  \"visual\": {\r\n" + 
 				"    \"visual_acuity\": 8,\r\n" + 
 				"    \"contrast_sensitivity\": 24,\r\n" + 
@@ -281,8 +252,7 @@ public class UserProfileTest {
 				"}");
 		
 		UserProfile userProfile1 = new UserProfile(jsonProfile1);
-		double[] expectedPoints = {40,  0,    //general
-								    8, 24,  0, //visual
+		double[] expectedPoints = { 8, 24,  0, //visual
 								    81, 35,  98, 18, 57, 27, //auditory  
 								    100,  1, 0, 
 								    20, 0,  0,  
