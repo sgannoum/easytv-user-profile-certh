@@ -13,16 +13,12 @@ public class UserProfile implements Clusterable {
 	private final double NoiseReduction = 0.2;
 	private Boolean _IsAbstract = true;
 	private File _File;
-	private Visual visualCapabilities = null;
-	private Auditory auditoryCapabilities = null;
 	private UserPreferences userPreferences = null;
 	private JSONObject jsonObj = null;
 	
 	public UserProfile() {
 		_IsAbstract = true;
 		_File = null;
-		visualCapabilities = null;
-		auditoryCapabilities = null;
 		userPreferences = null;
 	}
 	
@@ -47,21 +43,17 @@ public class UserProfile implements Clusterable {
 		setJSONObject(json);
 	}
 	
-	public UserProfile( Visual visualCapabilities, Auditory auditoryCapabilities, UserPreferences userPreferences) throws IOException {
+	public UserProfile( UserPreferences userPreferences) throws IOException {
 		_File = null;
 		_IsAbstract = true;
 		jsonObj = null;
-		this.setVisualCapabilities(visualCapabilities);
-		this.setAuditoryCapabilities(auditoryCapabilities);
 		this.setUserPreferences(userPreferences);
 	}
 	
-	public UserProfile(Visual visualCapabilities, Auditory auditoryCapabilities, UserPreferences userPreferences, boolean isAbstract) throws IOException {
+	public UserProfile(UserPreferences userPreferences, boolean isAbstract) throws IOException {
 		_File = null;
 		_IsAbstract = isAbstract;
 		jsonObj = null;
-		this.setVisualCapabilities(visualCapabilities);
-		this.setAuditoryCapabilities(auditoryCapabilities);
 		this.setUserPreferences(userPreferences);
 	}
 	
@@ -84,16 +76,6 @@ public class UserProfile implements Clusterable {
 	
 	public void setJSONObject(JSONObject json) {		
 		
-		if(visualCapabilities == null)
-			visualCapabilities = new Visual(json.getJSONObject("visual"));
-		else
-			visualCapabilities.setJSONObject(json.getJSONObject("visual"));
-		
-		if(auditoryCapabilities == null)
-			auditoryCapabilities = new Auditory(json.getJSONObject("auditory"));
-		else 
-			auditoryCapabilities.setJSONObject(json.getJSONObject("auditory"));
-		
 		if(userPreferences == null)
 			userPreferences = new UserPreferences(json.getJSONObject("user_preferences"));
 		else
@@ -114,27 +96,9 @@ public class UserProfile implements Clusterable {
 	public JSONObject getJSONObject() {
 		if(jsonObj == null) {
 			jsonObj = new JSONObject();
-			jsonObj.put("visual", visualCapabilities.getJSONObject());
-			jsonObj.put("auditory", auditoryCapabilities.getJSONObject());
 			jsonObj.put("user_preferences", userPreferences.getJSONObject());
 		}
 		return jsonObj;
-	}
-
-	public Visual getVisualCapabilities() {
-		return visualCapabilities;
-	}
-
-	public void setVisualCapabilities(Visual visualCapabilities) {
-		this.visualCapabilities = visualCapabilities;
-	}
-
-	public Auditory getAuditoryCapabilities() {
-		return auditoryCapabilities;
-	}
-
-	public void setAuditoryCapabilities(Auditory auditoryCapabilities) {
-		this.auditoryCapabilities = auditoryCapabilities;
 	}
 	
 	public UserPreferences getUserPreferences() {
@@ -146,19 +110,11 @@ public class UserProfile implements Clusterable {
 	}
 	
 	public double[] getPoint() {
-		double[] visualPoints = visualCapabilities.getPoint();
-		double[] auditoryPoints = auditoryCapabilities.getPoint();
 		double[] defaultPreferencePoints = userPreferences.getPoint();
 		
-		int size = visualPoints.length + auditoryPoints.length + defaultPreferencePoints.length;
+		int size = defaultPreferencePoints.length;
 		double [] userProfilePoints = new double[size];
 		int index = 0;
-		
-		for(int i = 0; i < visualPoints.length; i++, index++)
-			userProfilePoints[index] = visualPoints[i];
-		
-		for(int i = 0; i < auditoryPoints.length; i++, index++)
-			userProfilePoints[index] = auditoryPoints[i];
 		
 		for(int i = 0; i < defaultPreferencePoints.length; i++, index++)
 			userProfilePoints[index] = defaultPreferencePoints[i];

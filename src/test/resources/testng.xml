@@ -4,10 +4,8 @@
   <test name="Test user profile">
     <classes>
  
-      <class name="com.certh.iti.easytv.user.AuditoryTest"/>
       <class name="com.certh.iti.easytv.user.UserPreferencesTest"/>
       <class name="com.certh.iti.easytv.user.UserProfileTest"/>
-      <class name="com.certh.iti.easytv.user.VisualTest"/>
             
       <class name="com.certh.iti.easytv.user.preference.ConditionPreferenceTest"/>
       <class name="com.certh.iti.easytv.user.preference.ConditionTest"/>

@@ -1,17 +1,4 @@
 {
-    "auditory": {
-        "oneK": 18,
-        "fourK": 2,
-        "twoK": 88,
-        "eightK": 84,
-        "quarterK": 62,
-        "halfK": 81
-    },
-    "visual": {
-        "visual_acuity": 17,
-        "color_blindness": "protanomaly",
-        "contrast_sensitivity": 10
-    },
     "user_preferences": {"default": {"preferences": {
         "http://registry.easytv.eu/application/cs/cc/audioSubtitles": false,
         "http://registry.easytv.eu/application/cs/audio/track": "ENGLISH",

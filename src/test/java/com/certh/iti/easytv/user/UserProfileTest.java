@@ -32,7 +32,7 @@ public class UserProfileTest {
 	@Test
 	public void test_constructor() throws IOException {
 		UserProfile userProfile1 = new UserProfile(json);
-		UserProfile userProfile2 = new UserProfile(userProfile1.getVisualCapabilities(), userProfile1.getAuditoryCapabilities(), userProfile1.getUserPreferences(), false);
+		UserProfile userProfile2 = new UserProfile( userProfile1.getUserPreferences(), false);
 	
 		Assert.assertTrue(userProfile2.getJSONObject().similar(json), "Expected: " + json.toString(4)+" \n but found: \n"+userProfile2.getJSONObject().toString(4));
 	}
@@ -41,19 +41,6 @@ public class UserProfileTest {
 	public void test_identifcal_profiles() throws IOException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"visual\": {\r\n" + 
-				"    \"visual_acuity\": 8,\r\n" + 
-				"    \"contrast_sensitivity\": 24,\r\n" + 
-				"    \"color_blindness\": \"normal\"\r\n" + 
-				"  },\r\n" + 
-				"  \"auditory\": {\r\n" + 
-				"    \"quarterK\": 81,\r\n" + 
-				"    \"halfK\": 35,\r\n" + 
-				"    \"oneK\": 98,\r\n" + 
-				"    \"twoK\": 18,\r\n" + 
-				"    \"fourK\": 57,\r\n" + 
-				"    \"eightK\": 27\r\n" + 
-				"  },\r\n" + 
 				"  \"user_preferences\": {\r\n" + 
 				"    \"default\": {\r\n" + 
 				"      \"preferences\": {\r\n" + 
@@ -67,19 +54,6 @@ public class UserProfileTest {
 				"}");
 		
 		JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-				"  \"visual\": {\r\n" + 
-				"    \"visual_acuity\": 8,\r\n" + 
-				"    \"contrast_sensitivity\": 24,\r\n" + 
-				"    \"color_blindness\": \"normal\"\r\n" + 
-				"  },\r\n" + 
-				"  \"auditory\": {\r\n" + 
-				"    \"quarterK\": 81,\r\n" + 
-				"    \"halfK\": 35,\r\n" + 
-				"    \"oneK\": 98,\r\n" + 
-				"    \"twoK\": 18,\r\n" + 
-				"    \"fourK\": 57,\r\n" + 
-				"    \"eightK\": 27\r\n" + 
-				"  },\r\n" + 
 				"  \"user_preferences\": {\r\n" + 
 				"    \"default\": {\r\n" + 
 				"      \"preferences\": {\r\n" + 
@@ -102,19 +76,6 @@ public class UserProfileTest {
 	public void test_profiles_similarety_color_difference() throws IOException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"visual\": {\r\n" + 
-				"    \"visual_acuity\": 8,\r\n" + 
-				"    \"contrast_sensitivity\": 24,\r\n" + 
-				"    \"color_blindness\": \"normal\"\r\n" + 
-				"  },\r\n" + 
-				"  \"auditory\": {\r\n" + 
-				"    \"quarterK\": 81,\r\n" + 
-				"    \"halfK\": 35,\r\n" + 
-				"    \"oneK\": 98,\r\n" + 
-				"    \"twoK\": 18,\r\n" + 
-				"    \"fourK\": 57,\r\n" + 
-				"    \"eightK\": 27\r\n" + 
-				"  },\r\n" + 
 				"  \"user_preferences\": {\r\n" + 
 				"    \"default\": {\r\n" + 
 				"      \"preferences\": {\r\n" + 
@@ -128,19 +89,6 @@ public class UserProfileTest {
 				"}");
 		
 		JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-				"  \"visual\": {\r\n" + 
-				"    \"visual_acuity\": 8,\r\n" + 
-				"    \"contrast_sensitivity\": 24,\r\n" + 
-				"    \"color_blindness\": \"normal\"\r\n" + 
-				"  },\r\n" + 
-				"  \"auditory\": {\r\n" + 
-				"    \"quarterK\": 81,\r\n" + 
-				"    \"halfK\": 35,\r\n" + 
-				"    \"oneK\": 98,\r\n" + 
-				"    \"twoK\": 18,\r\n" + 
-				"    \"fourK\": 57,\r\n" + 
-				"    \"eightK\": 27\r\n" + 
-				"  },\r\n" + 
 				"  \"user_preferences\": {\r\n" + 
 				"    \"default\": {\r\n" + 
 				"      \"preferences\": {\r\n" + 
@@ -163,19 +111,6 @@ public class UserProfileTest {
 	public void test_profiles_similarety_language_difference() throws IOException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"visual\": {\r\n" + 
-				"    \"visual_acuity\": 8,\r\n" + 
-				"    \"contrast_sensitivity\": 24,\r\n" + 
-				"    \"color_blindness\": \"normal\"\r\n" + 
-				"  },\r\n" + 
-				"  \"auditory\": {\r\n" + 
-				"    \"quarterK\": 81,\r\n" + 
-				"    \"halfK\": 35,\r\n" + 
-				"    \"oneK\": 98,\r\n" + 
-				"    \"twoK\": 18,\r\n" + 
-				"    \"fourK\": 57,\r\n" + 
-				"    \"eightK\": 27\r\n" + 
-				"  },\r\n" + 
 				"  \"user_preferences\": {\r\n" + 
 				"    \"default\": {\r\n" + 
 				"      \"preferences\": {\r\n" + 
@@ -189,19 +124,6 @@ public class UserProfileTest {
 				"}");
 		
 		JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-				"  \"visual\": {\r\n" + 
-				"    \"visual_acuity\": 8,\r\n" + 
-				"    \"contrast_sensitivity\": 24,\r\n" + 
-				"    \"color_blindness\": \"normal\"\r\n" + 
-				"  },\r\n" + 
-				"  \"auditory\": {\r\n" + 
-				"    \"quarterK\": 81,\r\n" + 
-				"    \"halfK\": 35,\r\n" + 
-				"    \"oneK\": 98,\r\n" + 
-				"    \"twoK\": 18,\r\n" + 
-				"    \"fourK\": 57,\r\n" + 
-				"    \"eightK\": 27\r\n" + 
-				"  },\r\n" + 
 				"  \"user_preferences\": {\r\n" + 
 				"    \"default\": {\r\n" + 
 				"      \"preferences\": {\r\n" + 
@@ -224,20 +146,7 @@ public class UserProfileTest {
 	@Test
 	public void test_getPoints() throws IOException {
 		
-		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"visual\": {\r\n" + 
-				"    \"visual_acuity\": 8,\r\n" + 
-				"    \"contrast_sensitivity\": 24,\r\n" + 
-				"    \"color_blindness\": \"normal\"\r\n" + 
-				"  },\r\n" + 
-				"  \"auditory\": {\r\n" + 
-				"    \"quarterK\": 81,\r\n" + 
-				"    \"halfK\": 35,\r\n" + 
-				"    \"oneK\": 98,\r\n" + 
-				"    \"twoK\": 18,\r\n" + 
-				"    \"fourK\": 57,\r\n" + 
-				"    \"eightK\": 27\r\n" + 
-				"  },\r\n" + 
+		JSONObject jsonProfile1 = new JSONObject("{\r\n" +  
 				"  \"user_preferences\": {\r\n" + 
 				"    \"default\": {\r\n" + 
 				"      \"preferences\": {\r\n" + 
@@ -252,9 +161,7 @@ public class UserProfileTest {
 				"}");
 		
 		UserProfile userProfile1 = new UserProfile(jsonProfile1);
-		double[] expectedPoints = { 8, 24,  0, //visual
-								    81, 35,  98, 18, 57, 27, //auditory  
-								    100,  1, 0, 
+		double[] expectedPoints = { 100,  1, 0, 
 								    20, 0,  0,  
 								    0,  0,   0,  
 								    0,  0,  0,  

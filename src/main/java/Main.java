@@ -13,19 +13,6 @@ public class Main {
 	// Arguments
 	private static final String _ArgTotalProfiles = "-n";
 	private static final String _ArgOutputDirectory = "-d";
-	
-	private static final String _ArgAge = "--age";
-	private static final String _ArgGender = "--gender";
-
-	private static final String _ArgVisualAcutiy = "--acuity";
-	private static final String _ArgContrast = "--contrast";
-	private static final String _ArgColor = "--color";
-	private static final String _ArgQuarterk = "--quarterk";
-	private static final String _ArgHalfk = "--halfk";
-	private static final String _ArgOnek = "--onek";
-	private static final String _ArgTwok = "--twok";
-	private static final String _ArgFourk = "--fourk";
-	private static final String _ArgEifhtk = "--eightk";
 
 	
 	// Profiles
@@ -49,34 +36,6 @@ public class Main {
 			}
 			else if (arg.equals(_ArgTotalProfiles)) 
 				profiles = Integer.valueOf(args[i++]);
-			
-			//General
-			else if (arg.equals(_ArgAge)) 
-				userProfileGenerator.setAgeRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			else if (arg.equals(_ArgGender)) 
-				userProfileGenerator.setGenderRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			
-			//Visual
-			else if (arg.equals(_ArgVisualAcutiy)) 
-				userProfileGenerator.setVisualAcuityRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			else if (arg.equals(_ArgContrast)) 
-				userProfileGenerator.setContrastSensitivityRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			else if (arg.equals(_ArgColor)) 
-				userProfileGenerator.setColorBlindnessRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			
-			//Auditory
-			else if (arg.equals(_ArgQuarterk)) 
-				userProfileGenerator.setQuarterKRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			else if (arg.equals(_ArgHalfk)) 
-				userProfileGenerator.setHalfKRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			else if (arg.equals(_ArgOnek)) 
-				userProfileGenerator.setOneKRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			else if (arg.equals(_ArgTwok)) 
-				userProfileGenerator.setTwoKRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			else if (arg.equals(_ArgFourk)) 
-				userProfileGenerator.setFourKRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
-			else if (arg.equals(_ArgEifhtk)) 
-				userProfileGenerator.setEightKRange(new int[] {Integer.valueOf(args[i++]), Integer.valueOf(args[i++])});
 			
 		}
 		
