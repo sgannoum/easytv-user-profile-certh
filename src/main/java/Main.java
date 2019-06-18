@@ -32,7 +32,7 @@ public class Main {
 				_OutputDirectory = new File(args[i++].trim());
 				
 				if(!_OutputDirectory.isDirectory())
-					throw new IllegalArgumentException("The path is not a directory: " + _OutputDirectory.getPath());
+					throw new IllegalArgumentException("The path: " + _OutputDirectory.getPath()+" is not a directory");
 			}
 			else if (arg.equals(_ArgTotalProfiles)) 
 				profiles = Integer.valueOf(args[i++]);
@@ -48,7 +48,8 @@ public class Main {
 
 		} else {
 			for(i = 0; i < actualProfiles.size(); i++) {
-				File file = new File(_OutputDirectory.getPath() + File.separatorChar + "userProfile_" + i);
+				String fileName = _OutputDirectory.getPath() + File.separatorChar + "userProfile_" + i + ".json";
+				File file = new File(fileName);
 				
 				if(!file.exists())
 					file.createNewFile();
@@ -56,6 +57,8 @@ public class Main {
 				PrintWriter writer = new PrintWriter(file);
 				writer.write(actualProfiles.get(i).getJSONObject().toString(4));
 				writer.close();
+				
+				System.out.println("User profile: "+ fileName +" has been created");
 			}
 		}
 		

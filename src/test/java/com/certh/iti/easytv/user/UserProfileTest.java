@@ -161,20 +161,10 @@ public class UserProfileTest {
 				"}");
 		
 		UserProfile userProfile1 = new UserProfile(jsonProfile1);
-		double[] expectedPoints = { 100,  1, 0, 
-								    20, 0,  0,  
-								    0,  0,   0,  
-								    0,  0,  0,  
-								    0,  0,  0, 
-								    0,  0,  0, 
-								    0,  0,  0, 
-								    0,  0,  0, 
-								    0,  0,  
-								    3,  2,  1 ,  
-								    6, 5,  4 };
+		
+		double[] expectedPoints = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 3.0, 2.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 6.0, 5.0, 4.0, 0.0, 0.0, 0.0, 100.0, 0.0, 0.0, 20.0, 0.0, 0.0, 0.0}; 
 		
 		double[] actualPoints = userProfile1.getPoint();
-		
 		Assert.assertEquals(actualPoints.length, expectedPoints.length);
 		
 		for(int i = 0 ; i < actualPoints.length; i++)
