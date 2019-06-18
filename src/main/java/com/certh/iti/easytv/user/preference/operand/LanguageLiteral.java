@@ -6,11 +6,7 @@ import org.json.JSONObject;
 public class LanguageLiteral extends OperandLiteral{
 	
 	private int language; 
-	private static final String[][] languagesStr = {{"ENGLISH", "EN"}, 
-													{"SPANISH", "ES"}, 
-													{"CATALAN", "CA"}, 
-													{"GREEK", "GR"}, 
-													{"ITALIAN", "IT"}};
+	private static final String[] languagesStr = {"EN", "ES", "CA", "GR", "IT"};
 
 	public LanguageLiteral(Object literal) {
 		super(literal);
@@ -27,7 +23,7 @@ public class LanguageLiteral extends OperandLiteral{
 	
 	@Override
 	public String toString() {
-		return languagesStr[language][0];
+		return languagesStr[language];
 	}
 	
 	@Override
@@ -50,8 +46,7 @@ public class LanguageLiteral extends OperandLiteral{
 	protected static int indexOf(String language) {
 		language = language.toUpperCase();
 		for(int i = 0; i < languagesStr.length; i++) 
-			for(int j = 0; j < languagesStr[i].length; j++)
-			if(language.equalsIgnoreCase(languagesStr[i][j])) 
+			if(language.equalsIgnoreCase(languagesStr[i])) 
 				return i;
 			
 		return -1;
@@ -61,7 +56,7 @@ public class LanguageLiteral extends OperandLiteral{
 		if(index < 0 || index >= languagesStr.length)
 			throw new IllegalStateException("Unknow integer representation of a language "+index);
 		
-		return languagesStr[index][0];
+		return languagesStr[index];
 	}
 	
 	public double[] getPoint() {
