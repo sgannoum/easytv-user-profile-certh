@@ -44,7 +44,6 @@ public class LanguageLiteral extends OperandLiteral{
 	
 	
 	protected static int indexOf(String language) {
-		language = language.toUpperCase();
 		for(int i = 0; i < languagesStr.length; i++) 
 			if(language.equalsIgnoreCase(languagesStr[i])) 
 				return i;

@@ -72,4 +72,9 @@ public class ConditionalPreference extends Preference {
 		return jsonObj;
 	}
 	
+	@Override
+	public String toString() {
+		return this.toJSON().toString(4);
+	}
+	
 }

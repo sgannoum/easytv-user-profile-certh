@@ -27,6 +27,7 @@ public class UserProfileTest {
 		
 		json = new JSONObject(buff.toString());		
 		reader.close();
+		
 	}
 	
 	@Test
@@ -129,7 +130,7 @@ public class UserProfileTest {
 				"      \"preferences\": {\r\n" + 
 				"        \"http://registry.easytv.eu/common/content/audio/volume\": 100,\r\n" + 
 				"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 20,\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/language\": \"greek\",\r\n" + 
+				"        \"http://registry.easytv.eu/common/content/audio/language\": \"gr\",\r\n" + 
 				"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#000000\"\r\n" + 
 				"      }\r\n" + 
 				"    }\r\n" + 
