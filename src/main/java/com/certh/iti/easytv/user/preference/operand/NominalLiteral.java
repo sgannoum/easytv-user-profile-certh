@@ -6,6 +6,7 @@ import org.json.JSONObject;
 public class NominalLiteral extends OperandLiteral{
 	
 	protected int state;
+	protected long n = 0;
 	protected String[] states;
 	protected long[] counts;
 
@@ -21,31 +22,12 @@ public class NominalLiteral extends OperandLiteral{
 		
 	}
 	
-	private void increaseStateCounts(int state) {
-		counts[state]++;
-	}
-	
-	public final long[] getStatCounts() {
+	public final long[] getStateCounts() {
 		return counts;
 	}
 	
 	public final String[] getStates() {
 		return states;
-	}
-	
-	protected int orderOf(String state) {
-		for(int i = 0; i < states.length; i++) 
-			if(state.equalsIgnoreCase(states[i])) 
-				return i;
-			
-		return -1;
-	}
-	
-	protected String stateOf(int index) {
-		if(index < 0 || index >= states.length)
-			return null;
-		
-		return states[index];
 	}
 	
 	@Override
@@ -70,12 +52,28 @@ public class NominalLiteral extends OperandLiteral{
 			NominalLiteral res = new NominalLiteral(str, states);
 			
 			//increase counts
-			increaseStateCounts(res.state);
+			counts[res.state]++;
+			n++;
 			
 			return res;
 		} catch (JSONException e) {}
 		
 		return null;
+	}
+	
+	protected int orderOf(String state) {
+		for(int i = 0; i < states.length; i++) 
+			if(state.equalsIgnoreCase(states[i])) 
+				return i;
+			
+		return -1;
+	}
+	
+	protected String stateOf(int index) {
+		if(index < 0 || index >= states.length)
+			return null;
+		
+		return states[index];
 	}
 
 }

@@ -16,7 +16,7 @@ public class NominalLiteralTest {
 		nominalLiteral.clone("2");
 
 
-		Assert.assertEquals(nominalLiteral.getStatCounts(), new long[] {2, 2, 0});
+		Assert.assertEquals(nominalLiteral.getStateCounts(), new long[] {2, 2, 0});
 	}
 
 
@@ -32,6 +32,6 @@ public class NominalLiteralTest {
 		nominalLiteral.clone("2");
 
 
-		Assert.assertNotEquals(nominalLiteral.getStatCounts(), new long[] {2, 2, 0});
+		Assert.assertNotEquals(nominalLiteral.getStateCounts(), new long[] {2, 2, 0});
 	}
 }
