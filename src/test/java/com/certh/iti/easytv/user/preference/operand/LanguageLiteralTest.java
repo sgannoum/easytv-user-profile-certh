@@ -23,30 +23,6 @@ public class LanguageLiteralTest {
 	}
 	
 	@Test
-	public void test_distanceTo1() {
-		LanguageLiteral languageLiteral1 = new LanguageLiteral("en");
-		LanguageLiteral languageLiteral2 = new LanguageLiteral("en");
-
-		Assert.assertEquals(languageLiteral1.distanceTo(languageLiteral2), 0.0);
-	}
-	
-	@Test
-	public void test_distanceTo2() {
-		LanguageLiteral languageLiteral1 = new LanguageLiteral("en");
-		LanguageLiteral languageLiteral2 = new LanguageLiteral("es");
-
-		Assert.assertEquals(languageLiteral1.distanceTo(languageLiteral2), 1.0);
-	}
-	
-	@Test
-	public void test_distanceTo3() {
-		LanguageLiteral languageLiteral1 = new LanguageLiteral("es");
-		LanguageLiteral languageLiteral2 = new LanguageLiteral("gr");
-
-		Assert.assertEquals(languageLiteral1.distanceTo(languageLiteral2), 4.0);
-	}
-	
-	@Test
 	public void test_equals() {
 		LanguageLiteral languageLiteral1 = new LanguageLiteral("es");
 		LanguageLiteral languageLiteral2 = new LanguageLiteral("es");

@@ -10,48 +10,35 @@ import org.json.JSONObject;
 
 public class UserProfile implements Clusterable {
 	
-	private final double NoiseReduction = 0.2;
 	private Boolean _IsAbstract = true;
-	private File _File;
 	private UserPreferences userPreferences = null;
 	private JSONObject jsonObj = null;
 	
 	public UserProfile() {
 		_IsAbstract = true;
-		_File = null;
 		userPreferences = null;
 	}
 	
 	public UserProfile(UserProfile other) throws IOException {
 		_IsAbstract = true;
-		this._File = null;
 		jsonObj = null;
 		setJSONObject(other.getJSONObject());
 	}
 	
-	public UserProfile(File _File) throws IOException {
-		_IsAbstract = false;
-		this._File = _File;
-		jsonObj = null;
-		ReadProfileJSON(_File);
-	}
 	
 	public UserProfile(JSONObject json) throws IOException {
 		_IsAbstract = false;
-		_File = null;
 		jsonObj = null;
 		setJSONObject(json);
 	}
 	
 	public UserProfile( UserPreferences userPreferences) throws IOException {
-		_File = null;
 		_IsAbstract = true;
 		jsonObj = null;
 		this.setUserPreferences(userPreferences);
 	}
 	
 	public UserProfile(UserPreferences userPreferences, boolean isAbstract) throws IOException {
-		_File = null;
 		_IsAbstract = isAbstract;
 		jsonObj = null;
 		this.setUserPreferences(userPreferences);
@@ -61,16 +48,10 @@ public class UserProfile implements Clusterable {
 		return _IsAbstract;
 	}
 
-	public File get_File() {
-		return _File;
-	}
-
 	public double distanceTo(UserProfile other) {
 		return 0.0
 				
-/*				visualCapabilities.distanceTo(other.visualCapabilities)+
-					auditoryCapabilities.distanceTo(other.auditoryCapabilities) + 
-					 	userPreferences.distanceTo(other.userPreferences)*/
+/*			userPreferences.distanceTo(other.userPreferences)*/
 					;
 	}
 	

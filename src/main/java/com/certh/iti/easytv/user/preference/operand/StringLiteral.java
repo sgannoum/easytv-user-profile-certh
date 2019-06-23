@@ -8,12 +8,12 @@ public class StringLiteral extends OperandLiteral {
 	private String str;
 
 	public StringLiteral(Object literal) {
-		super(literal);
+		super(literal, Type.Non);
 		str = (String) literal;
 	}
 	
 	public StringLiteral(String literal) {
-		super(literal);
+		super(literal, Type.Non);
 		str = (String) literal;
 	}
 
@@ -35,22 +35,15 @@ public class StringLiteral extends OperandLiteral {
 	public String toString() {
 		return str;
 	}
-
-	@Override
-	public double distanceTo(OperandLiteral op2) {
-		StringLiteral other = (StringLiteral) op2;
-		return str.compareToIgnoreCase(other.str);
-	}
 	
 	public double[] getPoint() {
 		return new double[] {str.length()};
 	}
-	
+
 	@Override
-	public OperandLiteral createFromJson(JSONObject jsonPreference, String field) {
-		
+	public OperandLiteral clone(Object value) {
 		try {
-			String obj = jsonPreference.getString(field);
+			String obj = String.valueOf(value);
 			return new StringLiteral(obj);
 		} catch (JSONException e) {}
 		

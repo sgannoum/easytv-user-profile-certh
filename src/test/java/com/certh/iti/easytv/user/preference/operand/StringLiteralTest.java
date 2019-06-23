@@ -12,31 +12,7 @@ public class StringLiteralTest {
 	
 	@Test(expectedExceptions=ClassCastException.class)
 	public void test_wrong_constructor() {
-		StringLiteral stringLiteral1 = new StringLiteral(15);
-	}
-	
-	@Test
-	public void test_distanceTo1() {
-		StringLiteral stringLiteral1 = new StringLiteral("test1");
-		StringLiteral stringLiteral2 = new StringLiteral("test1");
-
-		Assert.assertEquals(stringLiteral1.distanceTo(stringLiteral2), 0.0);
-	}
-
-	@Test
-	public void test_distanceTo2() {
-		StringLiteral stringLiteral1 = new StringLiteral("test1");
-		StringLiteral stringLiteral2 = new StringLiteral("test2");
-
-		Assert.assertEquals(stringLiteral1.distanceTo(stringLiteral2), -1.0);
-	}
-	
-	@Test
-	public void test_distanceTo3() {
-		StringLiteral stringLiteral1 = new StringLiteral("test1");
-		StringLiteral stringLiteral2 = new StringLiteral("test5");
-
-		Assert.assertEquals(stringLiteral1.distanceTo(stringLiteral2), -4.0);
+		new StringLiteral(15);
 	}
 	
 	@Test

@@ -1,13 +1,12 @@
 package com.certh.iti.easytv.user.preference.operand;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-public class BooleanLiteral extends OperandLiteral {
+public abstract class BooleanLiteral extends OperandLiteral {
 	private boolean booleanLiteral;
 	
-	public BooleanLiteral(Object literal) {
-		super(literal);
+	public BooleanLiteral(Object literal, Type type) {
+		super(literal, type);
 		booleanLiteral = (Boolean) literal;
 	}
 
@@ -30,24 +29,8 @@ public class BooleanLiteral extends OperandLiteral {
 		return literal.equals(((BooleanLiteral)obj).getValue());
 	}
 
-	@Override
-	public double distanceTo(OperandLiteral op2) {
-		BooleanLiteral other = (BooleanLiteral) op2;
-		return booleanLiteral == other.booleanLiteral ? 0 : 1.0;
-	}
-
 	public double[] getPoint() {
 		return new double[] {booleanLiteral ? 1.0 : 0.0};
 	}
 	
-	@Override
-	public OperandLiteral createFromJson(JSONObject jsonPreference, String field) {
-		
-		try {
-			boolean obj = jsonPreference.getBoolean(field);
-			return new BooleanLiteral(obj);
-		} catch (JSONException e) {}
-		
-		return null;
-	}
 }

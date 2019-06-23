@@ -40,27 +40,7 @@ public class ConditionListeralTest {
 	
 	@Test(expectedExceptions=ClassCastException.class)
 	public void test_wrong_constructor() {
-		ConditionLiteral conditionLiteral1 = new ConditionLiteral(15);
-	}
-	
-	@Test
-	public void test_distanceTo1() {
-		ConditionLiteral conditionLiteral1 = new ConditionLiteral(jsonCondition1);
-		ConditionLiteral conditionLiteral2 = new ConditionLiteral(jsonCondition2);
-
-		Assert.assertEquals(conditionLiteral1.distanceTo(conditionLiteral2), 0.0);
-	}
-
-	//@Test
-	public void test_distanceTo2() {
-		
-		//TO=DO implement a test that compare two conditions after specifying how
-		//actually to compare two conditions
-		
-		ConditionLiteral conditionLiteral1 = new ConditionLiteral(jsonCondition1);
-		ConditionLiteral conditionLiteral2 = new ConditionLiteral(jsonCondition3);
-
-		Assert.assertEquals(conditionLiteral1.distanceTo(conditionLiteral2), -1.0);
+		new ConditionLiteral(15);
 	}
 	
 	@Test

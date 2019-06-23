@@ -21,6 +21,7 @@ import com.certh.iti.easytv.user.generator.operand.RandomLanguageLiteral;
 import com.certh.iti.easytv.user.generator.operand.RandomTTSQualityLiteral;
 import com.certh.iti.easytv.user.generator.operand.RandomTTSSpeed;
 import com.certh.iti.easytv.user.generator.operand.RandomTTSVolume;
+import com.certh.iti.easytv.user.preference.ConditionalPreference;
 import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
 
@@ -96,7 +97,7 @@ public class UserProfileGenerator {
 			}
 			
 			Preference defaultPreference = new Preference("default", map);
-			List<Preference> preferences = new ArrayList<Preference>();
+			List<ConditionalPreference> preferences = new ArrayList<ConditionalPreference>();
 			UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
 			
 			try {

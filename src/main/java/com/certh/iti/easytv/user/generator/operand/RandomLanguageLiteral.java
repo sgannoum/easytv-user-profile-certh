@@ -7,7 +7,7 @@ import com.certh.iti.easytv.user.preference.operand.LanguageLiteral;
 public class RandomLanguageLiteral extends LanguageLiteral {
 
 	public RandomLanguageLiteral(Random rand) {
-		super(LanguageLiteral.languageOf(rand.nextInt(5)));
+		super(LanguageLiteral.languagesStr[rand.nextInt(LanguageLiteral.languagesStr.length)]);
 	}
 
 }

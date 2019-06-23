@@ -7,7 +7,7 @@ import com.certh.iti.easytv.user.preference.operand.FontLiteral;
 public class RandomFontLiteral extends FontLiteral {
 
 	public RandomFontLiteral(Random rand) {
-		super(FontLiteral.fontOf(rand.nextInt(5)));
+		super(FontLiteral.fontsStr[rand.nextInt(FontLiteral.fontsStr.length)]);
 	}
 
 }

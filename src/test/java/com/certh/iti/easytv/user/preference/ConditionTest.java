@@ -14,6 +14,7 @@ import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
 import com.certh.iti.easytv.user.preference.operand.ConditionLiteral;
 import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
 import com.certh.iti.easytv.user.preference.operand.StringLiteral;
+import com.certh.iti.easytv.user.preference.operand.SymmetricBooleanLiteral;
 
 public class ConditionTest {
 	
@@ -195,7 +196,7 @@ public class ConditionTest {
 		expectedConditions.add(new Condition("AND", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("time"), new StringLiteral("19:00"), 
 																								  new StringLiteral("contrast"), new NumericLiteral(100),
 																								  new StringLiteral("color_temperature"), new NumericLiteral(0.008),
-																								  new StringLiteral("avatar"), new BooleanLiteral(true)
+																								  new StringLiteral("avatar"), new SymmetricBooleanLiteral(true)
 																								  ))));
 	
 		Assert.assertEquals(actualConditions, expectedConditions);
@@ -253,7 +254,7 @@ public class ConditionTest {
 		expectedOperands.add(new ConditionLiteral(new Condition("ge", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("time"), new StringLiteral("19:00"))))));
 		expectedOperands.add(new ConditionLiteral(new Condition("lt", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("contrast"), new NumericLiteral(100))))));
 		expectedOperands.add(new ConditionLiteral(new Condition("lt", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("color_temperature"), new NumericLiteral(0.008))))));
-		expectedOperands.add(new ConditionLiteral(new Condition("lt", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("avatar"), new BooleanLiteral(true))))));
+		expectedOperands.add(new ConditionLiteral(new Condition("lt", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("avatar"), new SymmetricBooleanLiteral(true))))));
 		expectedConditions.add(new Condition("and", expectedOperands));
 	
 		Assert.assertEquals(actualConditions, expectedConditions);

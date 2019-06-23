@@ -7,34 +7,18 @@ public class BooleanLiteralTest {
 	
 	@Test
 	public void test_constructor() {
-		 new BooleanLiteral(true);
+		 new SymmetricBooleanLiteral(true);
 	}
 	
 	@Test(expectedExceptions=ClassCastException.class)
 	public void test_wrong_constructor() {
-		BooleanLiteral booleanLiteral1 = new BooleanLiteral("Not boolean");
-	}
-	
-	@Test
-	public void test_distanceTo1() {
-		BooleanLiteral booleanLiteral1 = new BooleanLiteral(true);
-		BooleanLiteral booleanLiteral2 = new BooleanLiteral(true);
-
-		Assert.assertEquals(booleanLiteral1.distanceTo(booleanLiteral2), 0.0);
-	}
-	
-	@Test
-	public void test_distanceTo2() {
-		BooleanLiteral booleanLiteral1 = new BooleanLiteral(true);
-		BooleanLiteral booleanLiteral2 = new BooleanLiteral(false);
-
-		Assert.assertEquals(booleanLiteral1.distanceTo(booleanLiteral2), 1.0);
+		new SymmetricBooleanLiteral("Not boolean");
 	}
 	
 	@Test
 	public void test_equals() {
-		BooleanLiteral booleanLiteral1 = new BooleanLiteral(true);
-		BooleanLiteral booleanLiteral2 = new BooleanLiteral(true);
+		BooleanLiteral booleanLiteral1 = new SymmetricBooleanLiteral(true);
+		BooleanLiteral booleanLiteral2 = new SymmetricBooleanLiteral(true);
 
 		Assert.assertEquals(booleanLiteral1, booleanLiteral2);
 	}
@@ -42,8 +26,8 @@ public class BooleanLiteralTest {
 	
 	@Test
 	public void test_not_equals() {
-		BooleanLiteral booleanLiteral1 = new BooleanLiteral(true);
-		BooleanLiteral booleanLiteral2 = new BooleanLiteral(false);
+		BooleanLiteral booleanLiteral1 = new SymmetricBooleanLiteral(true);
+		BooleanLiteral booleanLiteral2 = new SymmetricBooleanLiteral(false);
 
 		Assert.assertNotEquals(booleanLiteral1, booleanLiteral2);
 	}

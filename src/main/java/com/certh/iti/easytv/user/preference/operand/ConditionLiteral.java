@@ -7,31 +7,27 @@ import com.certh.iti.easytv.user.preference.Condition;
 
 
 public class ConditionLiteral extends OperandLiteral {
-	private Condition conditionalLiteral;
 	
 	public ConditionLiteral(Object obj) {
-		super(new Condition((JSONObject) obj));
-		conditionalLiteral = (Condition) literal;
+		super(new Condition((JSONObject) obj), Type.Non);
 	}
 	
 	public ConditionLiteral(JSONObject obj) {
-		super(new Condition(obj));
-		conditionalLiteral = (Condition) literal;
+		super(new Condition(obj), Type.Non);
 	}
 	
 	public ConditionLiteral(Condition literal) {
-		super(literal);
-		conditionalLiteral = literal;
+		super(literal, Type.Non);
 	}
 
 	@Override
 	public JSONObject toJSON() {
-		return conditionalLiteral.toJSON();
+		return ((Condition) literal).toJSON();
 	}
 	
 	@Override
 	public String toString() {
-		return conditionalLiteral.toJSON().toString();
+		return ((Condition) literal).toJSON().toString();
 	}
 	
 	@Override
@@ -40,13 +36,9 @@ public class ConditionLiteral extends OperandLiteral {
 		if(obj == this) return true;
 		if(!ConditionLiteral.class.isInstance(obj)) return false;
 		
-		return conditionalLiteral.equals(((ConditionLiteral) obj).conditionalLiteral);
+		return ((Condition) literal).equals(((ConditionLiteral) obj).literal);
 	}
 
-	@Override
-	public double distanceTo(OperandLiteral op2) {
-		return conditionalLiteral.distanceTo(((ConditionLiteral) op2).conditionalLiteral);
-	}
 	
 	public double[] getPoint() {
 		//TO-DO implement a getPoint
@@ -54,10 +46,9 @@ public class ConditionLiteral extends OperandLiteral {
 	}
 	
 	@Override
-	public OperandLiteral createFromJson(JSONObject jsonPreference, String field) {
-		
+	public OperandLiteral clone(Object value) {
 		try {
-			String obj = jsonPreference.getString(field);
+			String obj = String.valueOf(value);
 			return new ConditionLiteral(obj);
 		} catch (JSONException e) {}
 		

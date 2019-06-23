@@ -13,20 +13,20 @@ import com.certh.iti.easytv.user.preference.Preference;
 public class UserPreferences implements Clusterable {
 	
 	private Preference defaultPreference;
-	private List<Preference> conditionalPreferences;
+	private List<ConditionalPreference> conditionalPreferences;
 	private JSONObject jsonObj;
 	
 	public UserPreferences(JSONObject json) {
 		this.setJSONObject(json);
 	}
 	
-	public UserPreferences( Preference defaultPreference, List<Preference> preferences) {
+	public UserPreferences( Preference defaultPreference, List<ConditionalPreference> preferences) {
 		this.setDefaultPreferences(defaultPreference);
 		this.setConditionalPreferences(preferences);
 		jsonObj = null;
 	}
 
-	public List<Preference> getConditionalPreferences() {
+	public List<ConditionalPreference> getConditionalPreferences() {
 		return conditionalPreferences;
 	}
 	
@@ -38,7 +38,7 @@ public class UserPreferences implements Clusterable {
 		defaultPreference = preferences;
 	}
 	
-	public void setConditionalPreferences(List<Preference> preferences) {
+	public void setConditionalPreferences(List<ConditionalPreference> preferences) {
 		this.conditionalPreferences = preferences;
 	}
 
@@ -52,7 +52,7 @@ public class UserPreferences implements Clusterable {
 	public void setJSONObject(JSONObject json) {
 			
 		defaultPreference = new Preference("default", json.getJSONObject("default"));
-		conditionalPreferences = new ArrayList<Preference>();
+		conditionalPreferences = new ArrayList<ConditionalPreference>();
 
 		if(json.has("conditional")) {
 			
@@ -90,17 +90,6 @@ public class UserPreferences implements Clusterable {
 			}
 		}
 		return jsonObj;
-	}
-	
-	public double distanceTo(UserPreferences other) {
-		//TO-DO include the conditional preferences
-		Preference  pref1 = this.getDefaultPreference();
-		Preference  pref2 = other.getDefaultPreference();
-		return pref1.distanceTo(pref2);
-	}
-	
-	public double distanceTo(UserProfile other) {
-		return distanceTo(other.getUserPreferences());
 	}
 
 	public double[] getPoint() {

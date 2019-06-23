@@ -12,31 +12,7 @@ public class NumericLiteralTest {
 	
 	@Test(expectedExceptions=ClassCastException.class)
 	public void test_wrong_constructor() {
-		NumericLiteral numericLiteral1 = new NumericLiteral("Not numberic");
-	}
-	
-	@Test
-	public void test_distanceTo1() {
-		NumericLiteral numericLiteral1 = new NumericLiteral(1);
-		NumericLiteral numericLiteral2 = new NumericLiteral(2);
-
-		Assert.assertEquals(numericLiteral1.distanceTo(numericLiteral2), 1.0);
-	}
-	
-	@Test
-	public void test_distanceTo2() {
-		NumericLiteral numericLiteral1 = new NumericLiteral(1.0);
-		NumericLiteral numericLiteral2 = new NumericLiteral(2.0);
-
-		Assert.assertEquals(numericLiteral1.distanceTo(numericLiteral2), 1.0);
-	}
-	
-	@Test
-	public void test_distanceTo3() {
-		NumericLiteral numericLiteral1 = new NumericLiteral(1.0);
-		NumericLiteral numericLiteral2 = new NumericLiteral(2);
-
-		Assert.assertEquals(numericLiteral1.distanceTo(numericLiteral2), 1.0);
+		new NumericLiteral("Not numberic");
 	}
 	
 	@Test

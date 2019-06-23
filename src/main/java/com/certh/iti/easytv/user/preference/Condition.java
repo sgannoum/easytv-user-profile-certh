@@ -12,6 +12,7 @@ import com.certh.iti.easytv.user.preference.operand.ConditionLiteral;
 import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
 import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
 import com.certh.iti.easytv.user.preference.operand.StringLiteral;
+import com.certh.iti.easytv.user.preference.operand.SymmetricBooleanLiteral;
 
 
 /**
@@ -209,7 +210,7 @@ public class Condition {
 			if(!found)
 			try {
 				boolean obj = jsonOperands.getBoolean(i);
-				operands.add( new BooleanLiteral(obj));
+				operands.add( new SymmetricBooleanLiteral(obj));
 				found = true;
 			} catch (JSONException e4) {}
 			

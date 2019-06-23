@@ -10,12 +10,12 @@ import java.util.Map.Entry;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.preference.operand.BooleanLiteral;
 import com.certh.iti.easytv.user.preference.operand.ColorLiteral;
 import com.certh.iti.easytv.user.preference.operand.FontLiteral;
 import com.certh.iti.easytv.user.preference.operand.LanguageLiteral;
 import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
 import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
+import com.certh.iti.easytv.user.preference.operand.SymmetricBooleanLiteral;
 
 public class Preference implements Clusterable, Comparable<Preference> {
 
@@ -27,25 +27,25 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		
 		put(COMMON_PREFIX + "content/audio/volume",  new NumericLiteral(0));
 		put(COMMON_PREFIX + "content/audio/language", new LanguageLiteral("en"));
-		put(COMMON_PREFIX + "displayContrast", new NumericLiteral(0));
 		put(COMMON_PREFIX + "display/screen/enhancement/font/size", new NumericLiteral(0));
 		put(COMMON_PREFIX + "display/screen/enhancement/font/type", new FontLiteral("fantasy"));
-		put(COMMON_PREFIX + "subtitles", new LanguageLiteral("en"));
-		put(COMMON_PREFIX + "signLanguage", new LanguageLiteral("en"));
 		put(COMMON_PREFIX + "display/screen/enhancement/font/color", new ColorLiteral("#000000"));
 		put(COMMON_PREFIX + "display/screen/enhancement/background", new ColorLiteral("#000000"));
+		put(COMMON_PREFIX + "subtitles", new LanguageLiteral("en"));
+		put(COMMON_PREFIX + "signLanguage", new LanguageLiteral("en"));
+		put(COMMON_PREFIX + "displayContrast", new NumericLiteral(0));
 
 		put(APPLICATION_PREFIX + "tts/speed", new NumericLiteral(0));
 		put(APPLICATION_PREFIX + "tts/volume", new NumericLiteral(0));
 		put(APPLICATION_PREFIX + "tts/language",  new LanguageLiteral("en"));
 		put(APPLICATION_PREFIX + "tts/audioQuality", new NumericLiteral(0));
 		put(APPLICATION_PREFIX + "cs/accessibility/imageMagnification/scale", new NumericLiteral(0));
-		put(APPLICATION_PREFIX + "cs/accessibility/textDetection", new BooleanLiteral(false));
-		put(APPLICATION_PREFIX + "cs/accessibility/faceDetection", new BooleanLiteral(false));
+		put(APPLICATION_PREFIX + "cs/accessibility/textDetection", new SymmetricBooleanLiteral(false));
+		put(APPLICATION_PREFIX + "cs/accessibility/faceDetection", new SymmetricBooleanLiteral(false));
 		put(APPLICATION_PREFIX + "cs/audio/volume",  new NumericLiteral(0));
 		put(APPLICATION_PREFIX + "cs/audio/track", new LanguageLiteral("en"));
-		put(APPLICATION_PREFIX + "cs/audio/audioDescription", new BooleanLiteral(false));
-		put(APPLICATION_PREFIX + "cs/cc/audioSubtitles", new BooleanLiteral(false));
+		put(APPLICATION_PREFIX + "cs/audio/audioDescription", new SymmetricBooleanLiteral(false));
+		put(APPLICATION_PREFIX + "cs/cc/audioSubtitles", new SymmetricBooleanLiteral(false));
 		put(APPLICATION_PREFIX + "cs/cc/subtitles/language", new LanguageLiteral("en"));
 		put(APPLICATION_PREFIX + "cs/cc/subtitles/fontSize", new NumericLiteral(0));
 		put(APPLICATION_PREFIX + "cs/cc/subtitles/fontColor", new ColorLiteral("#000000"));
@@ -95,12 +95,13 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		String[] fields = JSONObject.getNames(jsonPreference);
 		
 		for(int i = 0 ; i < fields.length; i++) {
-			OperandLiteral instance = preferencesToOperand.get(fields[i]);
+			String preferenceUri = fields[i];
+			OperandLiteral instance = preferencesToOperand.get(preferenceUri);
 			
 			if(instance == null)
 				throw new IllegalStateException("Unknown preference type");
 			
-			preferences.put(fields[i], (OperandLiteral) instance.createFromJson(jsonPreference, fields[i]));
+			preferences.put(preferenceUri, (OperandLiteral) instance.clone(jsonPreference.get(preferenceUri)));
 		}
 		
 		this.jsonObj = json;
@@ -119,20 +120,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			jsonObj.put("preferences", jsonPreferences);
 		}
 		return jsonObj;
-	}
-	
-	public double distanceTo(Preference other) {
-		double dist = 0;
-		Iterator<java.util.Map.Entry<String, OperandLiteral>> iter1 = preferences.entrySet().iterator();
-		while(iter1.hasNext()) {
-			OperandLiteral otherOperand = null;
-			java.util.Map.Entry<String, OperandLiteral> entry = iter1.next();
-			//TO-DO
-			if((otherOperand = other.getPreferences().get(entry.getKey())) != null) {
-				dist += entry.getValue().distanceTo(otherOperand);
-			}   
-		}
-		return  dist ;
 	}
 	
 	public double[] getPoint() {
@@ -193,6 +180,10 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	@Override
 	public String toString() {
 		return this.toJSON().toString(4);
+	}
+	
+	public static final OperandLiteral[] getPreferencesOperands(){
+		return 	(OperandLiteral[]) preferencesToOperand.values().toArray() ;
 	}
 	
 }

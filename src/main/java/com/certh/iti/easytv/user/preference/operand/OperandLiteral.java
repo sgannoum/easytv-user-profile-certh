@@ -11,18 +11,37 @@ import org.json.JSONObject;
  */
 public abstract class OperandLiteral implements Clusterable{
 	
-	protected Object literal;
+	public static enum Type {Nominal, Symmetric_Binary, Asymetric_Binary, Ordinal, Numeric, Non};
 	
-	public OperandLiteral(Object literal) {
+	protected Object literal;
+	protected Type type;
+	protected double operandMissingValue = -1.0;
+	
+	public OperandLiteral(Object literal, Type type) {
 		this.literal = literal;
+		this.type = type;
+	}
+	
+	public OperandLiteral(Object literal, Type type, double operandMissingValue) {
+		this.literal = literal;
+		this.type = type;
+		this.operandMissingValue = operandMissingValue;
 	}
 		
 	public Object getValue() {
-		return this.literal;
+		return literal;
+	}
+	
+	public Type getType() {
+		return type;
+	}
+	
+	public double getOperandMissingValue() {
+		return operandMissingValue;
 	}
 	
 	public abstract JSONObject toJSON();
-	public abstract double distanceTo(OperandLiteral op2);
 	
-	public abstract OperandLiteral createFromJson(JSONObject jsonPreference, String field);
+	public abstract OperandLiteral clone(Object value);
+
 }
