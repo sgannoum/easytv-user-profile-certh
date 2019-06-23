@@ -13,7 +13,8 @@ public class NumericLiteral  extends OperandLiteral {
 	private double value;
 	private long n = 0;
 	private double sum = 0.0;
-	private Map<Double, Long> counts = new HashMap<Double, Long>();
+	private double standard_deviation = -1.0;
+	private Map<Double, Long> frequencyHistogram = new HashMap<Double, Long>();
 	private double Maxvalue = Double.MIN_VALUE;
 	private double Minvalue = Double.MAX_VALUE;
 	
@@ -77,11 +78,11 @@ public class NumericLiteral  extends OperandLiteral {
 	}
 	
 	public double[][] getEntriesCounts() {
-		int size = counts.keySet().size();
+		int size = frequencyHistogram.keySet().size();
 		int index = 0;
 		double[][] entriesCounts = new double[size][2];
 		
-		Iterator<Entry<Double, Long>> iter = counts.entrySet().iterator();
+		Iterator<Entry<Double, Long>> iter = frequencyHistogram.entrySet().iterator();
 		while(iter.hasNext()) {
 			Entry<Double, Long> entry = iter.next();
 			entriesCounts[index][0] = entry.getKey().doubleValue();
@@ -90,6 +91,24 @@ public class NumericLiteral  extends OperandLiteral {
 		}
 		
 		return entriesCounts;
+	}
+	
+	public double getStandardDeviation() {
+		if(standard_deviation == -1.0) {
+			
+			double var = 0.0;
+			double mean = sum/n;
+			
+			Iterator<Entry<Double, Long>> iter = frequencyHistogram.entrySet().iterator();
+			while(iter.hasNext()) {
+				Entry<Double, Long> entry = iter.next();
+				var += entry.getValue() * Math.pow(entry.getKey() - mean, 2);
+			}
+			
+			standard_deviation = Math.sqrt(var/n);
+		}
+		
+		return standard_deviation; 
 	}
 	
 	@Override
@@ -121,11 +140,11 @@ public class NumericLiteral  extends OperandLiteral {
 			//Set the min max value from all cloned attributes
 			NumericLiteral res = new NumericLiteral(value);
 			
-			Long tmp = counts.get(res.value);
+			Long tmp = frequencyHistogram.get(res.value);
 			if( tmp == null) {
-				counts.put(res.value, 1L);
+				frequencyHistogram.put(res.value, 1L);
 			} else {
-				counts.put(res.value, tmp + 1);
+				frequencyHistogram.put(res.value, tmp + 1);
 			}
 			
 			setMinMaxValue(res.value);

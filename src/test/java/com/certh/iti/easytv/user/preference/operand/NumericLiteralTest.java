@@ -65,6 +65,30 @@ public class NumericLiteralTest {
 																			  {2, 2},
 																			  {3, 2}});
 	}
+	
+	@Test
+	public void test_Mean_and_standar_deviation() {
+		NumericLiteral numericLiteral = new NumericLiteral(0);
+		
+		numericLiteral.clone(30);
+		numericLiteral.clone(36);
+		numericLiteral.clone(47);
+		numericLiteral.clone(50);
+		numericLiteral.clone(52);
+		numericLiteral.clone(52);
+		numericLiteral.clone(56);
+		numericLiteral.clone(60);
+		numericLiteral.clone(63);
+		numericLiteral.clone(70);
+		numericLiteral.clone(70);
+		numericLiteral.clone(110);
+	
+		
+		Assert.assertEquals(numericLiteral.getMean(), 58.0);
+		
+		Assert.assertEquals(numericLiteral.getStandardDeviation(), 19.47220240924654);
+
+	}
 
 
 }
