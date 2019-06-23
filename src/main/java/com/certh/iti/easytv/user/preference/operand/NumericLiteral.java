@@ -1,11 +1,19 @@
 package com.certh.iti.easytv.user.preference.operand;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 
 public class NumericLiteral  extends OperandLiteral {
 	private double value;
+	private long n = 0;
+	private double sum = 0.0;
+	private Map<Double, Long> counts = new HashMap<Double, Long>();
 	private double Maxvalue = Double.MIN_VALUE;
 	private double Minvalue = Double.MAX_VALUE;
 	
@@ -56,6 +64,34 @@ public class NumericLiteral  extends OperandLiteral {
 		return Minvalue;
 	}
 	
+	public long getCounts() {
+		return n;
+	}
+	
+	public double getSum() {
+		return sum;
+	}
+	
+	public double getMean() {
+		return sum/n;
+	}
+	
+	public double[][] getEntriesCounts() {
+		int size = counts.keySet().size();
+		int index = 0;
+		double[][] entriesCounts = new double[size][2];
+		
+		Iterator<Entry<Double, Long>> iter = counts.entrySet().iterator();
+		while(iter.hasNext()) {
+			Entry<Double, Long> entry = iter.next();
+			entriesCounts[index][0] = entry.getKey().doubleValue();
+			entriesCounts[index][1] = entry.getValue().doubleValue();
+			index++;
+		}
+		
+		return entriesCounts;
+	}
+	
 	@Override
 	public JSONObject toJSON() {
 		return null;
@@ -64,8 +100,6 @@ public class NumericLiteral  extends OperandLiteral {
 	public String toString() {
 		return String.valueOf(literal);
 	}
-	
-
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -86,8 +120,17 @@ public class NumericLiteral  extends OperandLiteral {
 		try {			
 			//Set the min max value from all cloned attributes
 			NumericLiteral res = new NumericLiteral(value);
-			setMinMaxValue(res.value);
 			
+			Long tmp = counts.get(res.value);
+			if( tmp == null) {
+				counts.put(res.value, 1L);
+			} else {
+				counts.put(res.value, tmp + 1);
+			}
+			
+			setMinMaxValue(res.value);
+			sum += res.value;
+			n++;
 			return res;
 		} catch (JSONException e) {}
 		

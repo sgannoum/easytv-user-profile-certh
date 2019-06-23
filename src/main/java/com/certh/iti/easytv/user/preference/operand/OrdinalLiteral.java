@@ -7,12 +7,14 @@ public class OrdinalLiteral extends OperandLiteral{
 
 	protected int state;
 	protected String[] states;
+	protected long[] counts;
 	private double Maxvalue = Double.MIN_VALUE;
 	private double Minvalue = Double.MAX_VALUE;
 
 	public OrdinalLiteral(Object literal, String[] states) {
 		super(literal, Type.Ordinal);
 		this.states = states;
+		this.counts = new long[states.length];
 		
 		state = orderOf((String) literal);
 		
@@ -32,10 +34,13 @@ public class OrdinalLiteral extends OperandLiteral{
 		}
 	}
 	
+	private void increaseStateCounts(int state) {
+		counts[state]++;
+	}
+	
 	public double getMaxValue() {
 		return Maxvalue;
 	}
-	
 	
 	public double getMinValue() {
 		return Minvalue;
@@ -43,6 +48,10 @@ public class OrdinalLiteral extends OperandLiteral{
 	
 	public final String[] getStates() {
 		return states;
+	}
+	
+	public final long[] getStatCounts() {
+		return counts;
 	}
 	
 	protected int orderOf(String state) {
@@ -82,8 +91,9 @@ public class OrdinalLiteral extends OperandLiteral{
 			
 			
 			//Set the min max value from all cloned attributes
-			OrdinalLiteral res = new OrdinalLiteral(obj, states);;
+			OrdinalLiteral res = new OrdinalLiteral(obj, states);
 			setMinMaxValue(res.state);
+			increaseStateCounts(res.state);
 			
 			return res;
 		} catch (JSONException e) {}

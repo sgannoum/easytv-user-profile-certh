@@ -10,50 +10,46 @@ import org.json.JSONObject;
 
 public class UserProfile implements Clusterable {
 	
-	private Boolean _IsAbstract = true;
+	private static long num_profiles = 0;
+	
 	private UserPreferences userPreferences = null;
 	private JSONObject jsonObj = null;
 	
 	public UserProfile() {
-		_IsAbstract = true;
 		userPreferences = null;
+		
+		num_profiles++;
 	}
 	
 	public UserProfile(UserProfile other) throws IOException {
-		_IsAbstract = true;
 		jsonObj = null;
 		setJSONObject(other.getJSONObject());
+		
+		num_profiles++;
 	}
 	
 	
 	public UserProfile(JSONObject json) throws IOException {
-		_IsAbstract = false;
 		jsonObj = null;
 		setJSONObject(json);
+		
+		num_profiles++;
 	}
 	
 	public UserProfile( UserPreferences userPreferences) throws IOException {
-		_IsAbstract = true;
 		jsonObj = null;
-		this.setUserPreferences(userPreferences);
+		this.setUserPreferences(userPreferences);		
+		
+		num_profiles++;
 	}
 	
 	public UserProfile(UserPreferences userPreferences, boolean isAbstract) throws IOException {
-		_IsAbstract = isAbstract;
 		jsonObj = null;
 		this.setUserPreferences(userPreferences);
+		
+		num_profiles++;
 	}
 	
-	public Boolean IsAbstract() {
-		return _IsAbstract;
-	}
-
-	public double distanceTo(UserProfile other) {
-		return 0.0
-				
-/*			userPreferences.distanceTo(other.userPreferences)*/
-					;
-	}
 	
 	public void setJSONObject(JSONObject json) {		
 		
@@ -88,6 +84,10 @@ public class UserProfile implements Clusterable {
 
 	public void setUserPreferences(UserPreferences userPreferences) {
 		this.userPreferences = userPreferences;
+	}
+	
+	public static long getProfilesCounts() {
+		return num_profiles;
 	}
 	
 	public double[] getPoint() {

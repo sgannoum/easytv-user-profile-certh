@@ -7,16 +7,26 @@ public class NominalLiteral extends OperandLiteral{
 	
 	protected int state;
 	protected String[] states;
+	protected long[] counts;
 
 	public NominalLiteral(Object literal, String[] states) {
 		super(literal, Type.Nominal);
 		this.states = states;
+		this.counts = new long[states.length];
 		
 		state = orderOf((String) literal);
 		
 		if(state == -1)
 			throw new IllegalStateException("Unknown state " + literal);
 		
+	}
+	
+	private void increaseStateCounts(int state) {
+		counts[state]++;
+	}
+	
+	public final long[] getStatCounts() {
+		return counts;
 	}
 	
 	public final String[] getStates() {
@@ -57,7 +67,12 @@ public class NominalLiteral extends OperandLiteral{
 	public OperandLiteral clone(Object value) {
 		try {
 			String str = String.valueOf(value);
-			return new NominalLiteral(str, states);
+			NominalLiteral res = new NominalLiteral(str, states);
+			
+			//increase counts
+			increaseStateCounts(res.state);
+			
+			return res;
 		} catch (JSONException e) {}
 		
 		return null;

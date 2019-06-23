@@ -30,5 +30,41 @@ public class NumericLiteralTest {
 
 		Assert.assertNotEquals(numericLiteral1, numericLiteral2);
 	}
+	
+	@Test
+	public void test_cloned_states_counts() {
+		NumericLiteral numericLiteral = new NumericLiteral(0);
+		
+		numericLiteral.clone(1);
+		numericLiteral.clone(1);
+
+		numericLiteral.clone(2);
+		numericLiteral.clone(2);
+
+
+		Assert.assertEquals(numericLiteral.getMaxValue(), 2.0);
+		Assert.assertEquals(numericLiteral.getMinValue(), 1.0);
+		
+	}
+	
+	@Test
+	public void test_entries_counts() {
+		NumericLiteral numericLiteral = new NumericLiteral(0);
+		
+		numericLiteral.clone(1);
+		numericLiteral.clone(1);
+
+		numericLiteral.clone(2);
+		numericLiteral.clone(2);
+		
+		numericLiteral.clone(3);
+		numericLiteral.clone(3);
+	
+		
+		Assert.assertEquals(numericLiteral.getEntriesCounts(), new double[][]{{1, 2}, 
+																			  {2, 2},
+																			  {3, 2}});
+	}
+
 
 }
