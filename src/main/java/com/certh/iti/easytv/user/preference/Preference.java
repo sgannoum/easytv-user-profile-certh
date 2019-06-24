@@ -1,8 +1,10 @@
 package com.certh.iti.easytv.user.preference;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -23,7 +25,10 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	protected static final String COMMON_PREFIX = "http://registry.easytv.eu/common/";
 	protected static final String APPLICATION_PREFIX = "http://registry.easytv.eu/application/";
 	
-	public static final HashMap<String, OperandLiteral> preferencesToOperand  =  new HashMap<String, OperandLiteral>() {{
+	public static final LinkedHashMap<String, OperandLiteral> preferencesToOperand  =  new LinkedHashMap<String, OperandLiteral>() {
+		private static final long serialVersionUID = 1L;
+
+	{
 		
 		put(COMMON_PREFIX + "content/audio/volume",  new NumericLiteral(0));
 		put(COMMON_PREFIX + "content/audio/language", new LanguageLiteral("en"));
@@ -112,9 +117,9 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			jsonObj = new JSONObject();
 			JSONObject jsonPreferences = new JSONObject();
 			
-			Iterator<java.util.Map.Entry<String, OperandLiteral>> interator = preferences.entrySet().iterator();
+			Iterator<Entry<String, OperandLiteral>> interator = preferences.entrySet().iterator();
 			while(interator.hasNext()) {
-				Map.Entry<String, OperandLiteral> entry = interator.next();
+				Entry<String, OperandLiteral> entry = interator.next();
 				jsonPreferences.put(entry.getKey(), entry.getValue().getValue());
 			}
 			jsonObj.put("preferences", jsonPreferences);
@@ -132,13 +137,13 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			double[] d;
 			
 			if(operand == null) {
+				//user dimension default value
 				d = entry.getValue().getPoint();
 			} else {
-				d = operand.getPoint();
+				d = operand.getMissingPoint();
 			}
 			
-			for(int i = 0; i < d.length; i++)
-				pointsList.add(new Double(d[i]));
+			for(int i = 0; i < d.length && pointsList.add(new Double(d[i])); i++);
 		}
 		
 		//convert to double[]
@@ -149,7 +154,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		
 		return points;
 	}
-
 
 	/**
 	 * Compare two preferences set
@@ -182,8 +186,21 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		return this.toJSON().toString(4);
 	}
 	
-	public static final OperandLiteral[] getPreferencesOperands(){
-		return 	(OperandLiteral[]) preferencesToOperand.values().toArray() ;
+	/**
+	 * Get users profiles dimensional operands
+	 * 
+	 * @return 
+	 */
+	public static final OperandLiteral[] getOperands() {
+		Collection<OperandLiteral> values = preferencesToOperand.values();
+		OperandLiteral[] operandsLiteral = new OperandLiteral[values.size()];
+		int index = 0;		
+		
+		Iterator<java.util.Map.Entry<String, OperandLiteral>> interator = preferencesToOperand.entrySet().iterator();
+		while(interator.hasNext()) 
+			operandsLiteral[index++] = interator.next().getValue();
+		
+		return 	operandsLiteral;
 	}
 	
 }

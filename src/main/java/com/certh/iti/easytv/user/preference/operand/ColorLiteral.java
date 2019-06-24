@@ -42,5 +42,10 @@ public class ColorLiteral extends OperandLiteral{
 		
 		return null;
 	}
+	
+	@Override
+	public double[] getMissingPoint() {
+		return new double[] {operandMissingValue, operandMissingValue, operandMissingValue};
+	}
 
 }

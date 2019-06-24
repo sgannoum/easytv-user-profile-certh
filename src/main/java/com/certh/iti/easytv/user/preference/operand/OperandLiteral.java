@@ -40,8 +40,18 @@ public abstract class OperandLiteral implements Clusterable{
 		return operandMissingValue;
 	}
 	
+	public double[] getMissingPoint() {
+		return new double[] {operandMissingValue};
+	}
+	
 	public abstract JSONObject toJSON();
 	
+	/**
+	 * Create on operand instance from the given value
+	 * 
+	 * @param value
+	 * @return
+	 */
 	public abstract OperandLiteral clone(Object value);
 
 }
