@@ -10,11 +10,6 @@ public class StringLiteralTest {
 		new StringLiteral("19:00");
 	}
 	
-	@Test(expectedExceptions=ClassCastException.class)
-	public void test_wrong_constructor() {
-		new StringLiteral(15);
-	}
-	
 	@Test
 	public void test_equals() {
 		StringLiteral stringLiteral1 = new StringLiteral("test1");

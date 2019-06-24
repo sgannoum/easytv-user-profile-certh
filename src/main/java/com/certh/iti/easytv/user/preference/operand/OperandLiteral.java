@@ -1,7 +1,6 @@
 package com.certh.iti.easytv.user.preference.operand;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
-import org.json.JSONObject;
 
 
 /**
@@ -16,15 +15,18 @@ public abstract class OperandLiteral implements Clusterable{
 	protected Object literal;
 	protected Type type;
 	protected double operandMissingValue = -1.0;
+	protected double[] range;
 	
-	public OperandLiteral(Object literal, Type type) {
+	public OperandLiteral(Object literal, Type type, double[] range) {
 		this.literal = literal;
 		this.type = type;
+		this.range = range;
 	}
 	
-	public OperandLiteral(Object literal, Type type, double operandMissingValue) {
+	public OperandLiteral(Object literal, Type type, double[] range, double operandMissingValue) {
 		this.literal = literal;
 		this.type = type;
+		this.range = range;
 		this.operandMissingValue = operandMissingValue;
 	}
 		
@@ -36,6 +38,10 @@ public abstract class OperandLiteral implements Clusterable{
 		return type;
 	}
 	
+	public double[] getRange() {
+		return range;
+	}
+	
 	public double getOperandMissingValue() {
 		return operandMissingValue;
 	}
@@ -44,7 +50,21 @@ public abstract class OperandLiteral implements Clusterable{
 		return new double[] {operandMissingValue};
 	}
 	
-	public abstract JSONObject toJSON();
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+		if(obj == this) return true;
+		if(!OperandLiteral.class.isInstance(obj)) return false;
+		OperandLiteral other = (OperandLiteral) obj;
+		
+		return literal.equals(other.literal);
+	}
+	
+	
+	@Override
+	public String toString() {		
+		return literal.toString();
+	}
 	
 	/**
 	 * Create on operand instance from the given value

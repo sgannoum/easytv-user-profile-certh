@@ -30,29 +30,29 @@ public class Preference implements Clusterable, Comparable<Preference> {
 
 	{
 		
-		put(COMMON_PREFIX + "content/audio/volume",  new NumericLiteral(0));
+		put(COMMON_PREFIX + "content/audio/volume",  new NumericLiteral(0, new double[] {0.0, 100.0}));
 		put(COMMON_PREFIX + "content/audio/language", new LanguageLiteral("en"));
-		put(COMMON_PREFIX + "display/screen/enhancement/font/size", new NumericLiteral(0));
+		put(COMMON_PREFIX + "display/screen/enhancement/font/size", new NumericLiteral(1 , new double[] {1.0, 50.0}));
 		put(COMMON_PREFIX + "display/screen/enhancement/font/type", new FontLiteral("fantasy"));
 		put(COMMON_PREFIX + "display/screen/enhancement/font/color", new ColorLiteral("#000000"));
 		put(COMMON_PREFIX + "display/screen/enhancement/background", new ColorLiteral("#000000"));
 		put(COMMON_PREFIX + "subtitles", new LanguageLiteral("en"));
 		put(COMMON_PREFIX + "signLanguage", new LanguageLiteral("en"));
-		put(COMMON_PREFIX + "displayContrast", new NumericLiteral(0));
+		put(COMMON_PREFIX + "displayContrast", new NumericLiteral(0, new double[] {0.0, 100.0}));
 
-		put(APPLICATION_PREFIX + "tts/speed", new NumericLiteral(0));
-		put(APPLICATION_PREFIX + "tts/volume", new NumericLiteral(0));
+		put(APPLICATION_PREFIX + "tts/speed", new NumericLiteral(0, new double[] {0.0, 100.0}));
+		put(APPLICATION_PREFIX + "tts/volume", new NumericLiteral(0, new double[] {0.0, 100.0}));
 		put(APPLICATION_PREFIX + "tts/language",  new LanguageLiteral("en"));
-		put(APPLICATION_PREFIX + "tts/audioQuality", new NumericLiteral(0));
-		put(APPLICATION_PREFIX + "cs/accessibility/imageMagnification/scale", new NumericLiteral(0));
+		put(APPLICATION_PREFIX + "tts/audioQuality", new NumericLiteral(0, new double[] {0.0, 100.0}));
+		put(APPLICATION_PREFIX + "cs/accessibility/imageMagnification/scale", new NumericLiteral(0, new double[] {0.0, 100.0}));
 		put(APPLICATION_PREFIX + "cs/accessibility/textDetection", new SymmetricBooleanLiteral(false));
 		put(APPLICATION_PREFIX + "cs/accessibility/faceDetection", new SymmetricBooleanLiteral(false));
-		put(APPLICATION_PREFIX + "cs/audio/volume",  new NumericLiteral(0));
+		put(APPLICATION_PREFIX + "cs/audio/volume",  new NumericLiteral(0, new double[] {0.0, 100.0}));
 		put(APPLICATION_PREFIX + "cs/audio/track", new LanguageLiteral("en"));
 		put(APPLICATION_PREFIX + "cs/audio/audioDescription", new SymmetricBooleanLiteral(false));
 		put(APPLICATION_PREFIX + "cs/cc/audioSubtitles", new SymmetricBooleanLiteral(false));
 		put(APPLICATION_PREFIX + "cs/cc/subtitles/language", new LanguageLiteral("en"));
-		put(APPLICATION_PREFIX + "cs/cc/subtitles/fontSize", new NumericLiteral(0));
+		put(APPLICATION_PREFIX + "cs/cc/subtitles/fontSize", new NumericLiteral(0, new double[] {0.0, 100.0}));
 		put(APPLICATION_PREFIX + "cs/cc/subtitles/fontColor", new ColorLiteral("#000000"));
 		put(APPLICATION_PREFIX + "cs/cc/subtitles/backgroundColor", new ColorLiteral("#000000"));
 		
@@ -202,5 +202,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		
 		return 	operandsLiteral;
 	}
+	
 	
 }

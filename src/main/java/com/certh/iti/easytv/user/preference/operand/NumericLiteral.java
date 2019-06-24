@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 
 public class NumericLiteral  extends OperandLiteral {
@@ -18,8 +17,8 @@ public class NumericLiteral  extends OperandLiteral {
 	private double Maxvalue = Double.MIN_VALUE;
 	private double Minvalue = Double.MAX_VALUE;
 	
-	public NumericLiteral(Object literal) {
-		super(literal, Type.Numeric);
+	public NumericLiteral(Object literal, double[] range) {
+		super(literal, Type.Numeric, range);
 		
 		if(Double.class.isInstance(literal)) {
 			value = Double.class.cast(literal);
@@ -27,24 +26,34 @@ public class NumericLiteral  extends OperandLiteral {
 			value = Integer.class.cast(literal);
 		}
 
+		checkValue();
 		setMinMaxValue(value);
 	}
 	
-	public NumericLiteral(double literal) {
-		super(literal, Type.Numeric);
+	public NumericLiteral(double literal, double[] range) {
+		super(literal, Type.Numeric, range);
 		value = literal;
+		checkValue();
 	}
 	
-	public NumericLiteral(long literal) {
-		super(literal, Type.Numeric);
+	public NumericLiteral(long literal, double[] range) {
+		super(literal, Type.Numeric, range);
 		value = literal * 1.0;
+		checkValue();
 	}
 	
-	public NumericLiteral(int literal) {
-		super(literal, Type.Numeric);
+	public NumericLiteral(int literal, double[] range) {
+		super(literal, Type.Numeric, range);
 		value = literal * 1.0;
+		checkValue();
 	}
 
+	protected void checkValue() {
+		if(value < range[0] || value > range[1]) {
+			throw new IllegalArgumentException("Value out of range: "+ value);
+		}
+	}
+	
 	private void setMinMaxValue(double value) {
 		
 		if(value > Maxvalue ) {
@@ -112,10 +121,6 @@ public class NumericLiteral  extends OperandLiteral {
 	}
 	
 	@Override
-	public JSONObject toJSON() {
-		return null;
-	}
-	@Override
 	public String toString() {
 		return String.valueOf(literal);
 	}
@@ -138,7 +143,7 @@ public class NumericLiteral  extends OperandLiteral {
 	public OperandLiteral clone(Object value) {
 		try {			
 			//Set the min max value from all cloned attributes
-			NumericLiteral res = new NumericLiteral(value);
+			NumericLiteral res = new NumericLiteral(value, range);
 			
 			Long tmp = frequencyHistogram.get(res.value);
 			if( tmp == null) {

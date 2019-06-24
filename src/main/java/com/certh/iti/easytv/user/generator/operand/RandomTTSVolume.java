@@ -7,7 +7,7 @@ import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
 public class RandomTTSVolume extends NumericLiteral {
 
 	public RandomTTSVolume(Random literal) {
-		super(literal.nextInt(100));
+		super(literal.nextInt(100), new double[] {0.0, 100.0});
 	}
 
 }

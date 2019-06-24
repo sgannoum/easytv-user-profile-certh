@@ -1,19 +1,19 @@
 package com.certh.iti.easytv.user.preference;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.preference.operand.BooleanLiteral;
 import com.certh.iti.easytv.user.preference.operand.ConditionLiteral;
-import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
+import com.certh.iti.easytv.user.preference.operand.NominalLiteral;
 import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
 import com.certh.iti.easytv.user.preference.operand.StringLiteral;
-import com.certh.iti.easytv.user.preference.operand.SymmetricBooleanLiteral;
-
+import com.certh.iti.easytv.user.preference.operand.TimeLiteral;
+import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
 
 /**
  * Each condition object shall have exactly one type (type string) and an operands object with one or more operand objects.
@@ -27,6 +27,20 @@ public class Condition {
 	protected int type;
 	protected List<OperandLiteral> operands;
 	protected JSONObject jsonObj;
+	
+	
+	protected static final String CONTEXT_PREFIX = "http://registry.easytv.eu/context/";
+
+	
+	public static final LinkedHashMap<String, OperandLiteral> contextToOperand  =  new LinkedHashMap<String, OperandLiteral>() {
+		private static final long serialVersionUID = 1L;
+
+	{
+		put(CONTEXT_PREFIX + "time",  new TimeLiteral("2019-05-30T09:47:47.619Z"));
+		put(CONTEXT_PREFIX + "location", new NominalLiteral("gr", new String[] {"gr", "fr", "sp", "it"}));
+		put(CONTEXT_PREFIX + "contrast", new NumericLiteral(0, new double[] {0.0, 100.0}));
+
+    }};
 	
 	
 	public Condition(JSONObject json) {
@@ -97,7 +111,7 @@ public class Condition {
 			JSONArray jsonOperands = new JSONArray();
 			
 			for(int i = 0 ; i < operands.size(); i++) 
-				jsonOperands.put(operands.get(i).toJSON());
+				jsonOperands.put(operands.get(i).getValue());
 					
 			jsonObj.put("type", StrTypes[type].toLowerCase());
 			jsonObj.put("operands", jsonOperands);
@@ -112,28 +126,15 @@ public class Condition {
 		if(!Condition.class.isInstance(obj)) return false;
 		Condition other = (Condition) obj;
 		
+		if(other.type != type) return false;
 		if(other.operands.size() != operands.size()) return false;
 		
-		boolean equalOperands = true;
-		for(int i = 0 ; i < operands.size() && equalOperands; i++) {
-			equalOperands = false;
-			for(int j = 0 ; j < other.operands.size() && !equalOperands; j++)
-				if(other.operands.get(j).equals(operands.get(i))) 
-					equalOperands = true;
-		}
-		return equalOperands;
+
+		int i = 0;
+		for(i = 0 ; i < operands.size() && other.operands.contains(operands.get(i)); i++);
+
+		return i == operands.size();
 	}
-	
-	public double distanceTo(Condition other) {
-		//TO-DO specify how to calculate distance between conditions
-		
-		if(this.type == other.type) {
-			
-		}
-		
-		return 0;
-	}
-	
 
 	/**
 	 * @brief Check type and operands compatibility
@@ -180,40 +181,23 @@ public class Condition {
 	private List<OperandLiteral> toOperands(JSONArray jsonOperands) {
 		List<OperandLiteral> operands = new ArrayList<OperandLiteral>();
 		for(int i = 0; i < jsonOperands.length(); i++) {
-			boolean found = false;
 			
 			// Specify entry type
 			// try convert to JSONObject
 			try {
 				JSONObject obj = jsonOperands.getJSONObject(i);
 				operands.add( new ConditionLiteral(obj));
-				found = true;
+				continue;
 			} catch (JSONException e1) {}	
 			
-			// try convert to string
-			if(!found)
-			try {
-				String obj = jsonOperands.getString(i);
-				operands.add( new StringLiteral(obj));
-				found = true;
-			} catch (JSONException e2) {}
 			
-			// try convert to number
-			if(!found)
-			try {
-				double obj = jsonOperands.getDouble(i);
-				operands.add( new NumericLiteral(obj));
-				found = true;
-			} catch (JSONException e3) {}
-		
-			// try convert to boolean
-			if(!found)
-			try {
-				boolean obj = jsonOperands.getBoolean(i);
-				operands.add( new SymmetricBooleanLiteral(obj));
-				found = true;
-			} catch (JSONException e4) {}
+			//get URI
+			String uri = jsonOperands.getString(i++);
+			operands.add(new StringLiteral(uri));
 			
+			//get Value
+			OperandLiteral literal = contextToOperand.get(uri);
+			operands.add(literal.clone(jsonOperands.get(i)));
 		}
 		return operands;
 	}

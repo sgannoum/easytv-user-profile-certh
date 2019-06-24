@@ -2,7 +2,7 @@
     "user_preferences": {"default": {"preferences": {
         "http://registry.easytv.eu/application/cs/cc/audioSubtitles": false,
         "http://registry.easytv.eu/application/cs/audio/track": "en",
-        "http://registry.easytv.eu/application/tts/speed": -1,
+        "http://registry.easytv.eu/application/tts/speed": 92.0,
         "http://registry.easytv.eu/application/cs/accessibility/textDetection": false,
         "http://registry.easytv.eu/application/cs/cc/subtitles/backgroundColor": "#cf34d7",
         "http://registry.easytv.eu/common/subtitles": "ca",
@@ -15,7 +15,7 @@
         "http://registry.easytv.eu/common/display/screen/enhancement/font/type": "cursive",
         "http://registry.easytv.eu/common/display/screen/enhancement/background": "#3f5265",
         "http://registry.easytv.eu/application/tts/language": "gr",
-        "http://registry.easytv.eu/common/displayContrast": 111,
+        "http://registry.easytv.eu/common/displayContrast": 90,
         "http://registry.easytv.eu/application/tts/volume": 41,
         "http://registry.easytv.eu/common/content/audio/volume": 77,
         "http://registry.easytv.eu/application/cs/audio/volume": 78,

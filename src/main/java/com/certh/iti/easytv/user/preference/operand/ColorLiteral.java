@@ -3,20 +3,19 @@ package com.certh.iti.easytv.user.preference.operand;
 import java.awt.Color;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class ColorLiteral extends OperandLiteral{
 
 	private Color color;
 	
 	public ColorLiteral(Object literal) {
-		super(literal, Type.Numeric);
+		super(literal, Type.Numeric, new double[] {0.0, 12777215.0});
 		color = Color.decode((String) literal);
 	}
-
-	@Override
-	public JSONObject toJSON() {
-		return null;
+	
+	public ColorLiteral(Object literal, double[] range) {
+		super(literal, Type.Numeric, range);
+		color = Color.decode((String) literal);
 	}
 	
 	@Override

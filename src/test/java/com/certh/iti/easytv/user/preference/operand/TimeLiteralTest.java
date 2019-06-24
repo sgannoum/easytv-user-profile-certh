@@ -33,5 +33,13 @@ public class TimeLiteralTest {
 
 		Assert.assertNotEquals(timeLiteral1, timeLiteral2);
 	}
+	
+	@Test
+	public void test_not_equals_1() {
+		OperandLiteral timeLiteral1 = new TimeLiteral("2019-05-30T09:47:47.619Z");
+		OperandLiteral timeLiteral2 = new TimeLiteral("2019-05-30T09:47:47.620Z");
+
+		Assert.assertNotEquals(timeLiteral1, timeLiteral2);
+	}
 
 }

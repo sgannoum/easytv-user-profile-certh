@@ -1,7 +1,6 @@
 package com.certh.iti.easytv.user.preference.operand;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class LanguageLiteral extends NominalLiteral {
 	
@@ -10,12 +9,6 @@ public class LanguageLiteral extends NominalLiteral {
 	public LanguageLiteral(Object literal) {
 		super(literal, languagesStr);
 	}
-
-	@Override
-	public JSONObject toJSON() {
-		return null;
-	}
-	
 	
 	@Override
 	public boolean equals(Object obj) {

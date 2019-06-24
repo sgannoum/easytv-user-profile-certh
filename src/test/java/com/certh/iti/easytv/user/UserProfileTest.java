@@ -38,7 +38,7 @@ public class UserProfileTest {
 		Assert.assertTrue(userProfile2.getJSONObject().similar(json), "Expected: " + json.toString(4)+" \n but found: \n"+userProfile2.getJSONObject().toString(4));
 	}
 	
-	@Test
+	//@Test
 	public void test_getPoints() throws IOException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" +  

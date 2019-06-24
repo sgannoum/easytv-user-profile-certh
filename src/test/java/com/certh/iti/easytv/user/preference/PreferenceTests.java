@@ -76,30 +76,30 @@ public class PreferenceTests {
 	public void test_operands_literal_order() {
 
 		OperandLiteral[] actual = Preference.getOperands();
-		OperandLiteral[] expected = {new NumericLiteral(0),
+		OperandLiteral[] expected = {  new NumericLiteral(0.0, new double[] {0.0, 100.0}),
 									 new LanguageLiteral("en"),
-									 new NumericLiteral(0),
+									 new NumericLiteral(1.0 , new double[] {1.0, 50.0}),
 									 new FontLiteral("fantasy"),
 									 new ColorLiteral("#000000"),
 									 new ColorLiteral("#000000"),
 									 new LanguageLiteral("en"),
 									 new LanguageLiteral("en"),
-									 new NumericLiteral(0),
-									 new NumericLiteral(0),
-									 new NumericLiteral(0),
+									 new NumericLiteral(0, new double[] {0.0, 100.0}),
+									 new NumericLiteral(0, new double[] {0.0, 100.0}),
+									 new NumericLiteral(0, new double[] {0.0, 100.0}),
 									 new LanguageLiteral("en"),
-									 new NumericLiteral(0),
-									 new NumericLiteral(0),
+									 new NumericLiteral(0, new double[] {0.0, 100.0}),
+									 new NumericLiteral(0, new double[] {0.0, 100.0}),
 									 new SymmetricBooleanLiteral(false),
 									 new SymmetricBooleanLiteral(false),
-									  new NumericLiteral(0),
-									  new LanguageLiteral("en"),
-									  new SymmetricBooleanLiteral(false),
-									  new SymmetricBooleanLiteral(false),
-									  new LanguageLiteral("en"),
-									  new NumericLiteral(0),
-									  new ColorLiteral("#000000"),
-									  new ColorLiteral("#000000") };
+									 new NumericLiteral(0, new double[] {0.0, 100.0}),
+									 new LanguageLiteral("en"),
+									 new SymmetricBooleanLiteral(false),
+									 new SymmetricBooleanLiteral(false),
+									 new LanguageLiteral("en"),
+									 new NumericLiteral(0, new double[] {0.0, 100.0}),
+									 new ColorLiteral("#000000"),
+									 new ColorLiteral("#000000") };
 		
 		Assert.assertEquals(actual.length, expected.length);
 		Assert.assertEquals(actual, expected);

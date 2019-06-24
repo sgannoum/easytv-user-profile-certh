@@ -1,7 +1,6 @@
 package com.certh.iti.easytv.user.preference.operand;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class FontLiteral extends NominalLiteral {
 	
@@ -11,11 +10,6 @@ public class FontLiteral extends NominalLiteral {
 		super(literal, fontsStr);
 	}
 
-	@Override
-	public JSONObject toJSON() {
-		return null;
-	}
-	
 	@Override
 	public boolean equals(Object obj) {
 		if(obj == null) return false;

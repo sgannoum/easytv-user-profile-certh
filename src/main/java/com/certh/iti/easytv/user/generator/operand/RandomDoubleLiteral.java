@@ -7,7 +7,9 @@ import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
 public class RandomDoubleLiteral extends NumericLiteral {
 
 	public RandomDoubleLiteral(Random literal) {
-		super(literal.nextDouble());
+		super(literal.nextDouble(), null);
 	}
 
+	@Override
+	protected void checkValue() {}
 }

@@ -1,7 +1,6 @@
 package com.certh.iti.easytv.user.preference.operand;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class OrdinalLiteral extends OperandLiteral{
 
@@ -12,7 +11,19 @@ public class OrdinalLiteral extends OperandLiteral{
 	private double Minvalue = Double.MAX_VALUE;
 
 	public OrdinalLiteral(Object literal, String[] states) {
-		super(literal, Type.Ordinal);
+		super(literal, Type.Ordinal, new double[] {0.0, states.length});
+		this.states = states;
+		this.counts = new long[states.length];
+		
+		state = orderOf((String) literal);
+		
+		if(state == -1)
+			throw new IllegalStateException("Unknown state " + literal);
+		
+	}
+	
+	public OrdinalLiteral(Object literal, String[] states, double[] range) {
+		super(literal, Type.Ordinal, range);
 		this.states = states;
 		this.counts = new long[states.length];
 		
@@ -76,12 +87,6 @@ public class OrdinalLiteral extends OperandLiteral{
 	
 	public double[] getPoint() {
 		return new double[] {(state)/(states.length - 1)};
-	}
-
-	@Override
-	public JSONObject toJSON() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 	
 	@Override

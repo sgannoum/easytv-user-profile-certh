@@ -1,18 +1,16 @@
 package com.certh.iti.easytv.user.preference.operand;
 
-import org.json.JSONObject;
-
 public abstract class BooleanLiteral extends OperandLiteral {
 	private boolean booleanLiteral;
 	
 	public BooleanLiteral(Object literal, Type type) {
-		super(literal, type);
+		super(literal, type, new double[]{0.0, 1.0});
 		booleanLiteral = (Boolean) literal;
 	}
-
-	@Override
-	public JSONObject toJSON() {
-		return null;
+	
+	public BooleanLiteral(Object literal, Type type, double[] range) {
+		super(literal, type, range);
+		booleanLiteral = (Boolean) literal;
 	}
 	
 	@Override

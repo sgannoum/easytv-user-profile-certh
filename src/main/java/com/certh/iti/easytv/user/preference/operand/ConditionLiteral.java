@@ -9,25 +9,25 @@ import com.certh.iti.easytv.user.preference.Condition;
 public class ConditionLiteral extends OperandLiteral {
 	
 	public ConditionLiteral(Object obj) {
-		super(new Condition((JSONObject) obj), Type.Non);
+		super(new Condition((JSONObject) obj), Type.Non, null);
 	}
 	
 	public ConditionLiteral(JSONObject obj) {
-		super(new Condition(obj), Type.Non);
+		super(new Condition(obj), Type.Non, null);
 	}
 	
 	public ConditionLiteral(Condition literal) {
-		super(literal, Type.Non);
-	}
-
-	@Override
-	public JSONObject toJSON() {
-		return ((Condition) literal).toJSON();
+		super(literal, Type.Non, null);
 	}
 	
 	@Override
 	public String toString() {
 		return ((Condition) literal).toJSON().toString();
+	}
+	
+	@Override
+	public Object getValue() {
+		return ((Condition) literal).toJSON();
 	}
 	
 	@Override

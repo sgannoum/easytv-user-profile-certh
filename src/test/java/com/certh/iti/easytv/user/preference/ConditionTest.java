@@ -9,12 +9,12 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.certh.iti.easytv.user.preference.operand.BooleanLiteral;
 import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
 import com.certh.iti.easytv.user.preference.operand.ConditionLiteral;
+import com.certh.iti.easytv.user.preference.operand.NominalLiteral;
 import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
 import com.certh.iti.easytv.user.preference.operand.StringLiteral;
-import com.certh.iti.easytv.user.preference.operand.SymmetricBooleanLiteral;
+import com.certh.iti.easytv.user.preference.operand.TimeLiteral;
 
 public class ConditionTest {
 	
@@ -29,8 +29,8 @@ public class ConditionTest {
 		JSONObject jsonCondition1 = new JSONObject("{\r\n" + 
 				"              \"type\": \"ge\",\r\n" + 
 				"              \"operands\": [\r\n" + 
-				"                \"time\",\r\n" + 
-				"                \"NaN:NaN\"\r\n" + 
+				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
 				"              ]\r\n" + 
 				"            }");
 		
@@ -38,16 +38,16 @@ public class ConditionTest {
 		JSONObject jsonCondition2 = new JSONObject("{\r\n" + 
 				"              \"type\": \"le\",\r\n" + 
 				"              \"operands\": [\r\n" + 
-				"                \"time\",\r\n" + 
-				"                \"NaN:NaN\"\r\n" + 
+				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
 				"              ]\r\n" + 
 				"            }");
 		
 		JSONObject jsonCondition3 = new JSONObject("{\r\n" + 
 				"          \"type\": \"ne\",\r\n" + 
 				"          \"operands\": [\r\n" + 
-				"            \"language_sign\",\r\n" + 
-				"            \"spanish\"\r\n" + 
+				"                \"http://registry.easytv.eu/context/location\",\r\n" + 
+				"            \"sp\"\r\n" + 
 				"          ]\r\n" + 
 				"        }");
 		
@@ -83,8 +83,8 @@ public class ConditionTest {
 		JSONObject jsonCondition1 = new JSONObject("{\r\n" + 
 				"              \"type\": \"ge\",\r\n" + 
 				"              \"operands\": [\r\n" + 
-				"                \"time\",\r\n" + 
-				"                \"NaN:NaN\"\r\n" + 
+				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
 				"              ]\r\n" + 
 				"            }");
 		
@@ -92,16 +92,16 @@ public class ConditionTest {
 		JSONObject jsonCondition2 = new JSONObject("{\r\n" + 
 				"              \"type\": \"le\",\r\n" + 
 				"              \"operands\": [\r\n" + 
-				"                \"time\",\r\n" + 
-				"                \"NaN:NaN\"\r\n" + 
+				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
 				"              ]\r\n" + 
 				"            }");
 		
 		JSONObject jsonCondition3 = new JSONObject("{\r\n" + 
 				"          \"type\": \"ne\",\r\n" + 
 				"          \"operands\": [\r\n" + 
-				"            \"language_sign\",\r\n" + 
-				"            \"spanish\"\r\n" + 
+				"                \"http://registry.easytv.eu/context/location\",\r\n" + 
+				"            \"sp\"\r\n" + 
 				"          ]\r\n" + 
 				"        }");
 		
@@ -150,8 +150,8 @@ public class ConditionTest {
 		JSONObject jsonCondition1 = new JSONObject("{\r\n" + 
 				"              \"type\": \"ge\",\r\n" + 
 				"              \"operands\": [\r\n" + 
-				"                \"time\",\r\n" + 
-				"                \"NaN:NaN\"\r\n" + 
+				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"                \"2019-11-30T09:47:47.619Z\"\r\n" + 
 				"              ]\r\n" + 
 				"            }");
 		
@@ -176,14 +176,10 @@ public class ConditionTest {
 				"        {\r\n" + 
 				"          \"type\": \"and\",\r\n" + 
 				"          \"operands\": [\r\n" + 
-				"                \"time\",\r\n" + 
-				"                \"19:00\",\r\n" + 
-				"                \"contrast\",\r\n" + 
-				"                100,\r\n" + 
-				"                \"color_temperature\",\r\n" + 
-				"                0.008,\r\n" + 
-				"                \"avatar\",\r\n" + 
-				"                true\r\n" + 
+				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
+				"                \"http://registry.easytv.eu/context/location\",\r\n" + 
+				"                \"fr\"\r\n" + 
 				"          ]\r\n" + 
 				"        }\r\n" + 
 				"      ]}");
@@ -193,12 +189,10 @@ public class ConditionTest {
 		for(int i = 0 ; i < jsonConditions.length(); i++) 
 			actualConditions.add(new Condition(jsonConditions.getJSONObject(i)));
 		
-		expectedConditions.add(new Condition("AND", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("time"), new StringLiteral("19:00"), 
-																								  new StringLiteral("contrast"), new NumericLiteral(100),
-																								  new StringLiteral("color_temperature"), new NumericLiteral(0.008),
-																								  new StringLiteral("avatar"), new SymmetricBooleanLiteral(true)
-																								  ))));
-	
+		expectedConditions.add(new Condition("AND", Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/time"), new TimeLiteral("2019-11-30T09:47:47.619Z"), 
+																	new StringLiteral("http://registry.easytv.eu/context/location"), new NominalLiteral("fr", new String[] {"gr", "fr", "sp", "it"})
+																								  )));
+
 		Assert.assertEquals(actualConditions, expectedConditions);
 	}
 	
@@ -216,29 +210,29 @@ public class ConditionTest {
 													"            {\r\n" + 
 													"              \"type\": \"ge\",\r\n" + 
 													"              \"operands\": [\r\n" + 
-													"                \"time\",\r\n" + 
-													"                \"19:00\"\r\n" + 
+													"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+													"                \"2019-01-30T09:47:47.619Z\",\r\n" + 
 													"              ]\r\n" + 
 													"            },\r\n" + 
 													"            {\r\n" + 
 													"              \"type\": \"le\",\r\n" + 
 													"              \"operands\": [\r\n" + 
-													"                \"contrast\",\r\n" + 
-													"                100\r\n" + 
+													"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+													"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
+													"              ]\r\n" + 
+													"            },\r\n" + 
+													"            {\r\n" + 
+													"              \"type\": \"ge\",\r\n" + 
+													"              \"operands\": [\r\n" + 
+													"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
+													"                10.0,\r\n" + 
 													"              ]\r\n" + 
 													"            },\r\n" + 
 													"            {\r\n" + 
 													"              \"type\": \"le\",\r\n" + 
 													"              \"operands\": [\r\n" + 
-													"                \"color_temperature\",\r\n" + 
-													"                0.008\r\n" + 
-													"              ]\r\n" + 
-													"            },\r\n" + 
-													"            {\r\n" + 
-													"              \"type\": \"le\",\r\n" + 
-													"              \"operands\": [\r\n" + 
-													"                \"avatar\",\r\n" + 
-													"                true\r\n" + 
+													"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
+													"                90.0,\r\n" + 
 													"              ]\r\n" + 
 													"            }\r\n" + 
 													"          ]\r\n" + 
@@ -251,10 +245,10 @@ public class ConditionTest {
 		for(int i = 0 ; i < jsonConditions.length(); i++) 
 			actualConditions.add(new Condition(jsonConditions.getJSONObject(i)));
 		
-		expectedOperands.add(new ConditionLiteral(new Condition("ge", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("time"), new StringLiteral("19:00"))))));
-		expectedOperands.add(new ConditionLiteral(new Condition("lt", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("contrast"), new NumericLiteral(100))))));
-		expectedOperands.add(new ConditionLiteral(new Condition("lt", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("color_temperature"), new NumericLiteral(0.008))))));
-		expectedOperands.add(new ConditionLiteral(new Condition("lt", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("avatar"), new SymmetricBooleanLiteral(true))))));
+		expectedOperands.add(new ConditionLiteral(new Condition("ge", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/time"), new TimeLiteral("2019-01-30T09:47:47.619Z"))))));
+		expectedOperands.add(new ConditionLiteral(new Condition("le", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/time"), new TimeLiteral("2019-11-30T09:47:47.619Z"))))));
+		expectedOperands.add(new ConditionLiteral(new Condition("ge", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/contrast"), new NumericLiteral(10.0, new double[] {0.0, 100.0}))))));
+		expectedOperands.add(new ConditionLiteral(new Condition("le", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/contrast"), new NumericLiteral(90.0, new double[] {0.0, 100.0}))))));
 		expectedConditions.add(new Condition("and", expectedOperands));
 	
 		Assert.assertEquals(actualConditions, expectedConditions);
@@ -263,44 +257,43 @@ public class ConditionTest {
 	@Test
 	public void test_toJSON() {
 		
-		JSONObject jsonCondition1 = new JSONObject("        {\r\n" + 
+		JSONObject jsonCondition1 = new JSONObject(" {\r\n" + 
 				"          \"type\": \"and\",\r\n" + 
 				"          \"operands\": [\r\n" + 
 				"            {\r\n" + 
 				"              \"type\": \"ge\",\r\n" + 
 				"              \"operands\": [\r\n" + 
-				"                \"time\",\r\n" + 
-				"                \"19:00\"\r\n" + 
+				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"                \"2019-01-30T09:47:47.619Z\",\r\n" + 
 				"              ]\r\n" + 
 				"            },\r\n" + 
 				"            {\r\n" + 
 				"              \"type\": \"le\",\r\n" + 
 				"              \"operands\": [\r\n" + 
-				"                \"contrast\",\r\n" + 
-				"                100\r\n" + 
+				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
+				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
+				"              ]\r\n" + 
+				"            },\r\n" + 
+				"            {\r\n" + 
+				"              \"type\": \"ge\",\r\n" + 
+				"              \"operands\": [\r\n" + 
+				"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
+				"                10.0,\r\n" + 
 				"              ]\r\n" + 
 				"            },\r\n" + 
 				"            {\r\n" + 
 				"              \"type\": \"le\",\r\n" + 
 				"              \"operands\": [\r\n" + 
-				"                \"color_temperature\",\r\n" + 
-				"                0.008\r\n" + 
-				"              ]\r\n" + 
-				"            },\r\n" + 
-				"            {\r\n" + 
-				"              \"type\": \"le\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"avatar\",\r\n" + 
-				"                true\r\n" + 
+				"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
+				"                90.0,\r\n" + 
 				"              ]\r\n" + 
 				"            }\r\n" + 
 				"          ]\r\n" + 
-				"        }"
-				+ "}");
+				"        }\r\n");
 		
 		Condition condition1 = new Condition(jsonCondition1);
 		Condition condition2 = new Condition(condition1.getType(), condition1.getOperands());
-				
+		
 		Assert.assertTrue(condition2.toJSON().similar(jsonCondition1));
 	}
 
