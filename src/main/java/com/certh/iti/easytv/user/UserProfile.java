@@ -3,10 +3,13 @@ package com.certh.iti.easytv.user;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
+
+import com.certh.iti.easytv.user.config.Config;
 
 public class UserProfile implements Clusterable {
 	
@@ -28,6 +31,20 @@ public class UserProfile implements Clusterable {
 		num_profiles++;
 	}
 	
+	public UserProfile(File file) throws IOException {
+		jsonObj = null;
+		
+		String line;
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		StringBuffer buff = new StringBuffer();
+		
+		while((line = reader.readLine()) != null) 
+			buff.append(line);
+
+		setJSONObject( new JSONObject(buff.toString()));
+		
+		num_profiles++;
+	}
 	
 	public UserProfile(JSONObject json) throws IOException {
 		jsonObj = null;
