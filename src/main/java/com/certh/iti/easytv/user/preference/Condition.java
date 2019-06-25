@@ -8,12 +8,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.preference.operand.ConditionLiteral;
-import com.certh.iti.easytv.user.preference.operand.NominalLiteral;
-import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
-import com.certh.iti.easytv.user.preference.operand.StringLiteral;
-import com.certh.iti.easytv.user.preference.operand.TimeLiteral;
-import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
+import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
+import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
+import com.certh.iti.easytv.user.preference.attributes.TimeAttribute;
 
 /**
  * Each condition object shall have exactly one type (type string) and an operands object with one or more operand objects.
@@ -24,21 +22,21 @@ public class Condition {
 	
 	protected static final String[] StrTypes = { "NOT", "EQ" ,"NE","LT","LE","GT","GE","AND","OR","AP"};
 
-	protected int type;
-	protected List<OperandLiteral> operands;
+	protected String type;
+	protected List<Object> operands;
 	protected JSONObject jsonObj;
 	
 	
 	protected static final String CONTEXT_PREFIX = "http://registry.easytv.eu/context/";
 
 	
-	public static final LinkedHashMap<String, OperandLiteral> contextToOperand  =  new LinkedHashMap<String, OperandLiteral>() {
+	public static final LinkedHashMap<String, Attribute> contextToOperand  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
 
 	{
-		put(CONTEXT_PREFIX + "time",  new TimeLiteral("2019-05-30T09:47:47.619Z"));
-		put(CONTEXT_PREFIX + "location", new NominalLiteral("gr", new String[] {"gr", "fr", "sp", "it"}));
-		put(CONTEXT_PREFIX + "contrast", new NumericLiteral(0, new double[] {0.0, 100.0}));
+		put("http://registry.easytv.eu/context/time",  new TimeAttribute());
+		put("http://registry.easytv.eu/context/location", new NominalAttribute( new String[] {"gr", "fr", "sp", "it"}));
+		put("http://registry.easytv.eu/context/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, -1));
 
     }};
 	
@@ -47,7 +45,7 @@ public class Condition {
 		this.setJSONObject(json);
 	}
 	
-	public Condition(String type, List<OperandLiteral> operands) {
+	public Condition(String type, List<Object> operands) {
 		this.setType(type);
 		this.setOperands(operands);
 		
@@ -58,26 +56,21 @@ public class Condition {
 	}
 	
 	public String getType() {
-		return StrTypes[type];
+		return type;
 	}
 	
 	public void setType(String type) {
-		this.type = indexOf(type);
-		
-		if(this.type == -1) 
-			throw new IllegalStateException("A condition with unknown type "+ type);
-		
-	}
-
-	public void setType(int type) {
 		this.type = type;
+		if(indexOf(type) == -1) 
+			throw new IllegalStateException("A condition with unknown type "+ type);
 	}
 
-	public List<OperandLiteral> getOperands() {
+
+	public List<Object> getOperands() {
 		return operands;
 	}
 
-	public void setOperands(List<OperandLiteral> operands) {
+	public void setOperands(List<Object> operands) {
 		this.operands = operands;
 	}
 	
@@ -91,7 +84,7 @@ public class Condition {
 	 * @param jsonObj
 	 */
 	public void setJSONObject(JSONObject jsonObj) {
-		this.type = indexOf(jsonObj.getString("type"));
+		this.type = jsonObj.getString("type");
 		this.operands = toOperands(jsonObj.getJSONArray("operands"));
 		
 		//Check that operands size and type
@@ -110,10 +103,12 @@ public class Condition {
 			jsonObj = new JSONObject();
 			JSONArray jsonOperands = new JSONArray();
 			
-			for(int i = 0 ; i < operands.size(); i++) 
-				jsonOperands.put(operands.get(i).getValue());
+			for(Object operand : operands) 
+				if(Condition.class.isInstance(operand)) 
+					jsonOperands.put(((Condition) operand).toJSON());
+				else jsonOperands.put(operand);
 					
-			jsonObj.put("type", StrTypes[type].toLowerCase());
+			jsonObj.put("type", type.toLowerCase());
 			jsonObj.put("operands", jsonOperands);
 		}
 		return jsonObj;
@@ -126,7 +121,7 @@ public class Condition {
 		if(!Condition.class.isInstance(obj)) return false;
 		Condition other = (Condition) obj;
 		
-		if(other.type != type) return false;
+		if(!other.type.equalsIgnoreCase(type)) return false;
 		if(other.operands.size() != operands.size()) return false;
 		
 
@@ -146,14 +141,14 @@ public class Condition {
 	 * @param type
 	 * @param operands
 	 */
-	private void isTypeAndOperandCompatibility(int type, List<OperandLiteral> operands) {
-		
-		if(type == 0 && operands.size() != 1) {
+	private void isTypeAndOperandCompatibility(String type, List<Object> operands) {
+		int int_type = indexOf(type);
+		if(int_type == 0 && operands.size() != 1) {
 			throw new IllegalStateException("A condition of type NOT must have only one operand, given "+ operands.size());
-		} else if((type == 7 || type == 8) && operands.size() < 2) {
-			throw new IllegalStateException("A condition of type "+StrTypes[type]+" must have at least two operands, given "+ operands.size());
-		} else if((type != 0 && type != 7 && type != 8) && operands.size() != 2) {
-			throw new IllegalStateException("A condition of type "+StrTypes[type]+" must have exaclty two operands, given "+ operands.size());
+		} else if((int_type == 7 || int_type == 8) && operands.size() < 2) {
+			throw new IllegalStateException("A condition of type "+ type +" must have at least two operands, given "+ operands.size());
+		} else if((int_type != 0 && int_type != 7 && int_type != 8) && operands.size() != 2) {
+			throw new IllegalStateException("A condition of type "+ type +" must have exaclty two operands, given "+ operands.size());
 		}
 	}
 	
@@ -178,26 +173,30 @@ public class Condition {
 	 * @param jsonOperands
 	 * @return A list of operand literals
 	 */
-	private List<OperandLiteral> toOperands(JSONArray jsonOperands) {
-		List<OperandLiteral> operands = new ArrayList<OperandLiteral>();
+	private List<Object> toOperands(JSONArray jsonOperands) {
+		List<Object> operands = new ArrayList<Object>();
 		for(int i = 0; i < jsonOperands.length(); i++) {
 			
 			// Specify entry type
 			// try convert to JSONObject
 			try {
 				JSONObject obj = jsonOperands.getJSONObject(i);
-				operands.add( new ConditionLiteral(obj));
+				operands.add( new Condition(obj));
 				continue;
 			} catch (JSONException e1) {}	
 			
 			
 			//get URI
 			String uri = jsonOperands.getString(i++);
-			operands.add(new StringLiteral(uri));
+			operands.add(uri);
 			
 			//get Value
-			OperandLiteral literal = contextToOperand.get(uri);
-			operands.add(literal.clone(jsonOperands.get(i)));
+			Attribute attributeHandler = contextToOperand.get(uri);
+			if(attributeHandler == null) 
+				throw new IllegalArgumentException("Unknown context Uri: " + uri);
+			
+			
+			operands.add(attributeHandler.clone(jsonOperands.get(i)));
 		}
 		return operands;
 	}

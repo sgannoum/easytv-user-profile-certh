@@ -9,22 +9,15 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
-import com.certh.iti.easytv.user.preference.operand.ConditionLiteral;
-import com.certh.iti.easytv.user.preference.operand.NominalLiteral;
-import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
-import com.certh.iti.easytv.user.preference.operand.StringLiteral;
-import com.certh.iti.easytv.user.preference.operand.TimeLiteral;
-
 public class ConditionTest {
 	
 	
 	@Test
 	public void test_condition_construction() {
 
-		List<OperandLiteral> operands_One = new ArrayList<OperandLiteral>();
-		List<OperandLiteral> operands_Two = new ArrayList<OperandLiteral>();
-		List<OperandLiteral> operands_MoreThanTwo= new ArrayList<OperandLiteral>();
+		List<Object> operands_One = new ArrayList<Object>();
+		List<Object> operands_Two = new ArrayList<Object>();
+		List<Object> operands_MoreThanTwo= new ArrayList<Object>();
 		
 		JSONObject jsonCondition1 = new JSONObject("{\r\n" + 
 				"              \"type\": \"ge\",\r\n" + 
@@ -52,21 +45,21 @@ public class ConditionTest {
 				"        }");
 		
 		
-		operands_One.add(new ConditionLiteral(jsonCondition1));
+		operands_One.add(new Condition(jsonCondition1));
 		
-		operands_Two.add(new ConditionLiteral(jsonCondition1));
-		operands_Two.add(new ConditionLiteral(jsonCondition2));
+		operands_Two.add(new Condition(jsonCondition1));
+		operands_Two.add(new Condition(jsonCondition2));
 		
-		operands_MoreThanTwo.add(new ConditionLiteral(jsonCondition1));
-		operands_MoreThanTwo.add(new ConditionLiteral(jsonCondition2));
-		operands_MoreThanTwo.add(new ConditionLiteral(jsonCondition3));
+		operands_MoreThanTwo.add(new Condition(jsonCondition1));
+		operands_MoreThanTwo.add(new Condition(jsonCondition2));
+		operands_MoreThanTwo.add(new Condition(jsonCondition3));
 
 
 		String[] types =  { "NOT", "EQ" ,"NE","LT","LE","GT","GE","AND","OR","AP"};
 		Object[] operands = {operands_One, operands_Two, operands_Two, operands_Two, operands_Two, operands_Two, operands_Two, operands_MoreThanTwo, operands_MoreThanTwo, operands_Two};
 
 		for(int i = 0; i < types.length; i++) {
-			new Condition(types[i], (List<OperandLiteral>) operands[i]);
+			new Condition(types[i], (List<Object>) operands[i]);
 		}
 	}
 	
@@ -76,9 +69,9 @@ public class ConditionTest {
 		List<IllegalStateException> expectedExceptions = new ArrayList<IllegalStateException>();
 		List<IllegalStateException> actualExceptions = new ArrayList<IllegalStateException>();
 
-		List<OperandLiteral> operands_One = new ArrayList<OperandLiteral>();
-		List<OperandLiteral> operands_Two = new ArrayList<OperandLiteral>();
-		List<OperandLiteral> operands_MoreThanTwo= new ArrayList<OperandLiteral>();
+		List<Object> operands_One = new ArrayList<Object>();
+		List<Object> operands_Two = new ArrayList<Object>();
+		List<Object> operands_MoreThanTwo= new ArrayList<Object>();
 		
 		JSONObject jsonCondition1 = new JSONObject("{\r\n" + 
 				"              \"type\": \"ge\",\r\n" + 
@@ -106,14 +99,14 @@ public class ConditionTest {
 				"        }");
 		
 		
-		operands_One.add(new ConditionLiteral(jsonCondition1));
+		operands_One.add(new Condition(jsonCondition1));
 		
-		operands_Two.add(new ConditionLiteral(jsonCondition1));
-		operands_Two.add(new ConditionLiteral(jsonCondition2));
+		operands_Two.add(new Condition(jsonCondition1));
+		operands_Two.add(new Condition(jsonCondition2));
 		
-		operands_MoreThanTwo.add(new ConditionLiteral(jsonCondition1));
-		operands_MoreThanTwo.add(new ConditionLiteral(jsonCondition2));
-		operands_MoreThanTwo.add(new ConditionLiteral(jsonCondition3));
+		operands_MoreThanTwo.add(new Condition(jsonCondition1));
+		operands_MoreThanTwo.add(new Condition(jsonCondition2));
+		operands_MoreThanTwo.add(new Condition(jsonCondition3));
 
 
 		String[] types =  { "NOT", "EQ" ,"NE","LT","LE","GT","GE","AND","OR","AP"};
@@ -121,7 +114,7 @@ public class ConditionTest {
 
 		for (int i = 0; i < types.length; i++)
 			try {
-				new Condition(types[i], (List<OperandLiteral>) operands[i]);
+				new Condition(types[i], (List<Object>) operands[i]);
 			} catch (IllegalStateException e) {
 				actualExceptions.add(e);
 			}
@@ -145,7 +138,7 @@ public class ConditionTest {
 	@Test(expectedExceptions=IllegalStateException.class)
 	public void test_unknown_condition() {
 
-		List<OperandLiteral> operands_One = new ArrayList<OperandLiteral>();
+		List<Object> operands_One = new ArrayList<Object>();
 		
 		JSONObject jsonCondition1 = new JSONObject("{\r\n" + 
 				"              \"type\": \"ge\",\r\n" + 
@@ -155,13 +148,13 @@ public class ConditionTest {
 				"              ]\r\n" + 
 				"            }");
 		
-		operands_One.add(new ConditionLiteral(jsonCondition1));
+		operands_One.add(new Condition(jsonCondition1));
 	
 		String[] types =  { "NON"};
 		Object[] operands = {operands_One};
 
 		for(int i = 0; i < types.length; i++) {
-			new Condition(types[i], (List<OperandLiteral>) operands[i]);
+			new Condition(types[i], (List<Object>) operands[i]);
 		}
 	}
 	
@@ -170,7 +163,7 @@ public class ConditionTest {
 
 		List<Condition> actualConditions= new ArrayList<Condition>();
 		List<Condition> expectedConditions= new ArrayList<Condition>();
-		List<OperandLiteral> expectedOperands = new ArrayList<OperandLiteral>();
+		List<Object> expectedOperands = new ArrayList<Object>();
 		
 		JSONObject jsonCondition1 = new JSONObject("{\"conditions\": [\r\n" + 
 				"        {\r\n" + 
@@ -189,9 +182,9 @@ public class ConditionTest {
 		for(int i = 0 ; i < jsonConditions.length(); i++) 
 			actualConditions.add(new Condition(jsonConditions.getJSONObject(i)));
 		
-		expectedConditions.add(new Condition("AND", Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/time"), new TimeLiteral("2019-11-30T09:47:47.619Z"), 
-																	new StringLiteral("http://registry.easytv.eu/context/location"), new NominalLiteral("fr", new String[] {"gr", "fr", "sp", "it"})
-																								  )));
+		expectedConditions.add(new Condition("AND", Arrays.asList("http://registry.easytv.eu/context/time", "2019-11-30T09:47:47.619Z", 
+																	"http://registry.easytv.eu/context/location", "fr")
+																								  ));
 
 		Assert.assertEquals(actualConditions, expectedConditions);
 	}
@@ -201,7 +194,7 @@ public class ConditionTest {
 
 		List<Condition> actualConditions= new ArrayList<Condition>();
 		List<Condition> expectedConditions= new ArrayList<Condition>();
-		List<OperandLiteral> expectedOperands = new ArrayList<OperandLiteral>();
+		List<Object> expectedOperands = new ArrayList<Object>();
 		
 		JSONObject jsonCondition1 = new JSONObject("{\"conditions\": [\r\n" + 
 													"        {\r\n" + 
@@ -225,14 +218,14 @@ public class ConditionTest {
 													"              \"type\": \"ge\",\r\n" + 
 													"              \"operands\": [\r\n" + 
 													"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
-													"                10.0,\r\n" + 
+													"                10,\r\n" + 
 													"              ]\r\n" + 
 													"            },\r\n" + 
 													"            {\r\n" + 
 													"              \"type\": \"le\",\r\n" + 
 													"              \"operands\": [\r\n" + 
 													"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
-													"                90.0,\r\n" + 
+													"                90,\r\n" + 
 													"              ]\r\n" + 
 													"            }\r\n" + 
 													"          ]\r\n" + 
@@ -245,10 +238,10 @@ public class ConditionTest {
 		for(int i = 0 ; i < jsonConditions.length(); i++) 
 			actualConditions.add(new Condition(jsonConditions.getJSONObject(i)));
 		
-		expectedOperands.add(new ConditionLiteral(new Condition("ge", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/time"), new TimeLiteral("2019-01-30T09:47:47.619Z"))))));
-		expectedOperands.add(new ConditionLiteral(new Condition("le", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/time"), new TimeLiteral("2019-11-30T09:47:47.619Z"))))));
-		expectedOperands.add(new ConditionLiteral(new Condition("ge", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/contrast"), new NumericLiteral(10.0, new double[] {0.0, 100.0}))))));
-		expectedOperands.add(new ConditionLiteral(new Condition("le", new ArrayList<OperandLiteral>(Arrays.asList(new StringLiteral("http://registry.easytv.eu/context/contrast"), new NumericLiteral(90.0, new double[] {0.0, 100.0}))))));
+		expectedOperands.add(new Condition("ge", new ArrayList<Object>(Arrays.asList("http://registry.easytv.eu/context/time", "2019-01-30T09:47:47.619Z"))));
+		expectedOperands.add(new Condition("le", new ArrayList<Object>(Arrays.asList("http://registry.easytv.eu/context/time", "2019-11-30T09:47:47.619Z"))));
+		expectedOperands.add(new Condition("ge", new ArrayList<Object>(Arrays.asList("http://registry.easytv.eu/context/contrast",  10))));
+		expectedOperands.add(new Condition("le", new ArrayList<Object>(Arrays.asList("http://registry.easytv.eu/context/contrast",  90))));
 		expectedConditions.add(new Condition("and", expectedOperands));
 	
 		Assert.assertEquals(actualConditions, expectedConditions);
@@ -278,14 +271,14 @@ public class ConditionTest {
 				"              \"type\": \"ge\",\r\n" + 
 				"              \"operands\": [\r\n" + 
 				"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
-				"                10.0,\r\n" + 
+				"                10,\r\n" + 
 				"              ]\r\n" + 
 				"            },\r\n" + 
 				"            {\r\n" + 
 				"              \"type\": \"le\",\r\n" + 
 				"              \"operands\": [\r\n" + 
 				"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
-				"                90.0,\r\n" + 
+				"                90,\r\n" + 
 				"              ]\r\n" + 
 				"            }\r\n" + 
 				"          ]\r\n" + 

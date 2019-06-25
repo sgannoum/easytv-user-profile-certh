@@ -6,10 +6,9 @@ import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
-
-import com.certh.iti.easytv.user.config.Config;
 
 public class UserProfile implements Clusterable {
 	

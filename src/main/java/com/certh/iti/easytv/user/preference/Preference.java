@@ -12,66 +12,61 @@ import java.util.Map.Entry;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.preference.operand.ColorLiteral;
-import com.certh.iti.easytv.user.preference.operand.FontLiteral;
-import com.certh.iti.easytv.user.preference.operand.LanguageLiteral;
-import com.certh.iti.easytv.user.preference.operand.NumericLiteral;
-import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
-import com.certh.iti.easytv.user.preference.operand.SymmetricBooleanLiteral;
+import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.ColorAttribute;
+import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
+import com.certh.iti.easytv.user.preference.attributes.LanguageAttribute;
+import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
+import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
 
 public class Preference implements Clusterable, Comparable<Preference> {
 
-	
-	protected static final String COMMON_PREFIX = "http://registry.easytv.eu/common/";
-	protected static final String APPLICATION_PREFIX = "http://registry.easytv.eu/application/";
-	
-	public static final LinkedHashMap<String, OperandLiteral> preferencesToOperand  =  new LinkedHashMap<String, OperandLiteral>() {
+	public static final LinkedHashMap<String, Attribute> preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
 
 	{
-		
-		put(COMMON_PREFIX + "content/audio/volume",  new NumericLiteral(0, new double[] {0.0, 100.0}));
-		put(COMMON_PREFIX + "content/audio/language", new LanguageLiteral("en"));
-		put(COMMON_PREFIX + "display/screen/enhancement/font/size", new NumericLiteral(1 , new double[] {1.0, 50.0}));
-		put(COMMON_PREFIX + "display/screen/enhancement/font/type", new FontLiteral("fantasy"));
-		put(COMMON_PREFIX + "display/screen/enhancement/font/color", new ColorLiteral("#000000"));
-		put(COMMON_PREFIX + "display/screen/enhancement/background", new ColorLiteral("#000000"));
-		put(COMMON_PREFIX + "subtitles", new LanguageLiteral("en"));
-		put(COMMON_PREFIX + "signLanguage", new LanguageLiteral("en"));
-		put(COMMON_PREFIX + "displayContrast", new NumericLiteral(0, new double[] {0.0, 100.0}));
+		put("http://registry.easytv.eu/common/content/audio/volume",  new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+		put("http://registry.easytv.eu/common/content/audio/language", new LanguageAttribute());
+		put("http://registry.easytv.eu/common/display/screen/enhancement/font/size", new IntegerAttribute(new double[] {1.0, 50.0} , 1));
+		put("http://registry.easytv.eu/common/display/screen/enhancement/font/type", new NominalAttribute(new String[] {"fantasy", "monospace", "sans-serif", "serif", "cursive"}));
+		put("http://registry.easytv.eu/common/display/screen/enhancement/font/color", new ColorAttribute());
+		put("http://registry.easytv.eu/common/display/screen/enhancement/background", new ColorAttribute());
+		put("http://registry.easytv.eu/common/subtitles",  new LanguageAttribute());
+		put("http://registry.easytv.eu/common/signLanguage", new LanguageAttribute());
+		put("http://registry.easytv.eu/common/displayContrast", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
 
-		put(APPLICATION_PREFIX + "tts/speed", new NumericLiteral(0, new double[] {0.0, 100.0}));
-		put(APPLICATION_PREFIX + "tts/volume", new NumericLiteral(0, new double[] {0.0, 100.0}));
-		put(APPLICATION_PREFIX + "tts/language",  new LanguageLiteral("en"));
-		put(APPLICATION_PREFIX + "tts/audioQuality", new NumericLiteral(0, new double[] {0.0, 100.0}));
-		put(APPLICATION_PREFIX + "cs/accessibility/imageMagnification/scale", new NumericLiteral(0, new double[] {0.0, 100.0}));
-		put(APPLICATION_PREFIX + "cs/accessibility/textDetection", new SymmetricBooleanLiteral(false));
-		put(APPLICATION_PREFIX + "cs/accessibility/faceDetection", new SymmetricBooleanLiteral(false));
-		put(APPLICATION_PREFIX + "cs/audio/volume",  new NumericLiteral(0, new double[] {0.0, 100.0}));
-		put(APPLICATION_PREFIX + "cs/audio/track", new LanguageLiteral("en"));
-		put(APPLICATION_PREFIX + "cs/audio/audioDescription", new SymmetricBooleanLiteral(false));
-		put(APPLICATION_PREFIX + "cs/cc/audioSubtitles", new SymmetricBooleanLiteral(false));
-		put(APPLICATION_PREFIX + "cs/cc/subtitles/language", new LanguageLiteral("en"));
-		put(APPLICATION_PREFIX + "cs/cc/subtitles/fontSize", new NumericLiteral(0, new double[] {0.0, 100.0}));
-		put(APPLICATION_PREFIX + "cs/cc/subtitles/fontColor", new ColorLiteral("#000000"));
-		put(APPLICATION_PREFIX + "cs/cc/subtitles/backgroundColor", new ColorLiteral("#000000"));
+		put("http://registry.easytv.eu/application/tts/speed", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+		put("http://registry.easytv.eu/application/tts/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+		put("http://registry.easytv.eu/application/tts/language",   new LanguageAttribute());
+		put("http://registry.easytv.eu/application/tts/audioQuality", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+		put("http://registry.easytv.eu/application/cs/accessibility/imageMagnification/scale", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+		put("http://registry.easytv.eu/application/cs/accessibility/textDetection", new SymmetricBinaryAttribute());
+		put("http://registry.easytv.eu/application/cs/accessibility/faceDetection", new SymmetricBinaryAttribute());
+		put("http://registry.easytv.eu/application/cs/audio/volume",  new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+		put("http://registry.easytv.eu/application/cs/audio/track",  new LanguageAttribute());
+		put("http://registry.easytv.eu/application/cs/audio/audioDescription", new SymmetricBinaryAttribute());
+		put("http://registry.easytv.eu/application/cs/cc/audioSubtitles", new SymmetricBinaryAttribute());
+		put("http://registry.easytv.eu/application/cs/cc/subtitles/language",  new LanguageAttribute());
+		put("http://registry.easytv.eu/application/cs/cc/subtitles/fontSize", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+		put("http://registry.easytv.eu/application/cs/cc/subtitles/fontColor", new ColorAttribute());
+		put("http://registry.easytv.eu/application/cs/cc/subtitles/backgroundColor", new ColorAttribute());
 		
     }};
 	
 	protected String name;
-	protected Map<String, OperandLiteral> preferences;
+	protected Map<String, Object> preferences;
 	protected JSONObject jsonObj;
 	
-	public Preference(String name, Map<String, OperandLiteral> entries) {
+	public Preference(String name, Map<String, Object> entries) {
 		this.name = name;
-		this.preferences = new HashMap<String, OperandLiteral>();
+		this.preferences = new HashMap<String, Object>();
 		this.setPreferences(entries);
 		jsonObj = null;
 	}
 	
 	public Preference(String name, JSONObject json) {
 		this.name = name;
-		this.preferences = new HashMap<String, OperandLiteral>();
+		this.preferences = new HashMap<String, Object>();
 		setJSONObject(json);
 	}
 
@@ -83,11 +78,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		this.name = name;
 	}
 
-	public Map<String, OperandLiteral> getPreferences() {
+	public Map<String, Object> getPreferences() {
 		return preferences;
 	}
 
-	public void setPreferences(Map<String, OperandLiteral> entries) {
+	public void setPreferences(Map<String, Object> entries) {
 		this.preferences = entries;
 	}
 
@@ -101,12 +96,12 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		
 		for(int i = 0 ; i < fields.length; i++) {
 			String preferenceUri = fields[i];
-			OperandLiteral instance = preferencesToOperand.get(preferenceUri);
+			Attribute attributeHandler = preferencesAttributes.get(preferenceUri);
 			
-			if(instance == null)
+			if(attributeHandler == null)
 				throw new IllegalStateException("Unknown preference type");
 			
-			preferences.put(preferenceUri, (OperandLiteral) instance.clone(jsonPreference.get(preferenceUri)));
+			preferences.put(preferenceUri, attributeHandler.clone(jsonPreference.get(preferenceUri)));
 		}
 		
 		this.jsonObj = json;
@@ -117,11 +112,9 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			jsonObj = new JSONObject();
 			JSONObject jsonPreferences = new JSONObject();
 			
-			Iterator<Entry<String, OperandLiteral>> interator = preferences.entrySet().iterator();
-			while(interator.hasNext()) {
-				Entry<String, OperandLiteral> entry = interator.next();
-				jsonPreferences.put(entry.getKey(), entry.getValue().getValue());
-			}
+			for(Entry<String, Object> entry : preferences.entrySet()) 
+				jsonPreferences.put(entry.getKey(), entry.getValue());
+			
 			jsonObj.put("preferences", jsonPreferences);
 		}
 		return jsonObj;
@@ -130,18 +123,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	public double[] getPoint() {
 		List<Double> pointsList = new ArrayList<Double>();
 		
-		Iterator<Entry<String, OperandLiteral>> iter = preferencesToOperand.entrySet().iterator();
-		while(iter.hasNext()) {
-			Entry<String, OperandLiteral> entry = iter.next();
-			OperandLiteral operand = preferences.get(entry.getKey());
-			double[] d;
+		for(Entry<String, Attribute> entry : preferencesAttributes.entrySet()) {
+			Attribute attributeHandler = entry.getValue();
 			
-			if(operand == null) {
-				//user dimension default value
-				d = entry.getValue().getPoint();
-			} else {
-				d = operand.getMissingPoint();
-			}
+			//get the corresponding points
+			double[] d = attributeHandler.getPoints(preferences.get(entry.getKey()));
 			
 			for(int i = 0; i < d.length && pointsList.add(new Double(d[i])); i++);
 		}
@@ -191,12 +177,12 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	 * 
 	 * @return 
 	 */
-	public static final OperandLiteral[] getOperands() {
-		Collection<OperandLiteral> values = preferencesToOperand.values();
-		OperandLiteral[] operandsLiteral = new OperandLiteral[values.size()];
+	public static final Attribute[] getOperands() {
+		Collection<Attribute> values = preferencesAttributes.values();
+		Attribute[] operandsLiteral = new Attribute[values.size()];
 		int index = 0;		
 		
-		Iterator<java.util.Map.Entry<String, OperandLiteral>> interator = preferencesToOperand.entrySet().iterator();
+		Iterator<java.util.Map.Entry<String, Attribute>> interator = preferencesAttributes.entrySet().iterator();
 		while(interator.hasNext()) 
 			operandsLiteral[index++] = interator.next().getValue();
 		

@@ -8,15 +8,13 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
-
 
 
 public class ConditionalPreference extends Preference {
 	
 	private List<Condition> conditions;
 	
-	public ConditionalPreference(String name, Map<String, OperandLiteral> entries, List<Condition> conditions) {
+	public ConditionalPreference(String name, Map<String, Object> entries, List<Condition> conditions) {
 		super(name, entries);
 		this.conditions = new ArrayList<Condition>(conditions);
 		this.jsonObj = null;

@@ -10,16 +10,6 @@
       <class name="com.certh.iti.easytv.user.preference.ConditionPreferenceTest"/>
       <class name="com.certh.iti.easytv.user.preference.ConditionTest"/>
       <class name="com.certh.iti.easytv.user.preference.PreferenceTests"/>
-      
-      <class name="com.certh.iti.easytv.user.preference.operand.NominalLiteralTest"/>
-      <class name="com.certh.iti.easytv.user.preference.operand.OrdinalLiteralTest"/>
-      <class name="com.certh.iti.easytv.user.preference.operand.BooleanLiteralTest"/>
-      <class name="com.certh.iti.easytv.user.preference.operand.ColorLiteralTest"/>
-      <class name="com.certh.iti.easytv.user.preference.operand.ConditionListeralTest"/>
-      <class name="com.certh.iti.easytv.user.preference.operand.LanguageLiteralTest"/>
-      <class name="com.certh.iti.easytv.user.preference.operand.NumericLiteralTest"/>
-      <class name="com.certh.iti.easytv.user.preference.operand.StringLiteralTest"/>
-      <class name="com.certh.iti.easytv.user.preference.operand.TimeLiteralTest"/>
      
     </classes>
   </test>

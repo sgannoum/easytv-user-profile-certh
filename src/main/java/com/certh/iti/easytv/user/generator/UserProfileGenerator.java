@@ -3,7 +3,6 @@ package com.certh.iti.easytv.user.generator;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -11,57 +10,15 @@ import java.util.Random;
 
 import com.certh.iti.easytv.user.UserPreferences;
 import com.certh.iti.easytv.user.UserProfile;
-import com.certh.iti.easytv.user.generator.operand.RandomBooleanLiteral;
-import com.certh.iti.easytv.user.generator.operand.RandomColorLiteral;
-import com.certh.iti.easytv.user.generator.operand.RandomDisplayContrastLiteral;
-import com.certh.iti.easytv.user.generator.operand.RandomFontLiteral;
-import com.certh.iti.easytv.user.generator.operand.RandomImageMagnificationScaleLiteral;
-import com.certh.iti.easytv.user.generator.operand.RandomIntLiteral;
-import com.certh.iti.easytv.user.generator.operand.RandomLanguageLiteral;
-import com.certh.iti.easytv.user.generator.operand.RandomTTSQualityLiteral;
-import com.certh.iti.easytv.user.generator.operand.RandomTTSSpeed;
-import com.certh.iti.easytv.user.generator.operand.RandomTTSVolume;
 import com.certh.iti.easytv.user.preference.ConditionalPreference;
 import com.certh.iti.easytv.user.preference.Preference;
-import com.certh.iti.easytv.user.preference.operand.OperandLiteral;
+import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.BinaryAttribute;
+import com.certh.iti.easytv.user.preference.attributes.ColorAttribute;
 
 public class UserProfileGenerator {
 	
-	protected static final String COMMON_PREFIX = "http://registry.easytv.eu/common/";
-	protected static final String APPLICATION_PREFIX = "http://registry.easytv.eu/application/";
-	
 	private Random rand;
-	
-	public static final HashMap<String, Class<?>> preferencesToRandOperand  =  new HashMap<String, Class<?>>() {{
-		
-		put(COMMON_PREFIX + "content/audio/volume",   RandomIntLiteral.class);
-		put(COMMON_PREFIX + "content/audio/language", RandomLanguageLiteral.class);
-		put(COMMON_PREFIX + "displayContrast", RandomDisplayContrastLiteral.class);
-		put(COMMON_PREFIX + "display/screen/enhancement/font/size", RandomIntLiteral.class);
-		put(COMMON_PREFIX + "display/screen/enhancement/font/type", RandomFontLiteral.class);
-		put(COMMON_PREFIX + "subtitles", RandomLanguageLiteral.class);
-		put(COMMON_PREFIX + "signLanguage", RandomLanguageLiteral.class);
-		put(COMMON_PREFIX + "display/screen/enhancement/font/color", RandomColorLiteral.class);
-		put(COMMON_PREFIX + "display/screen/enhancement/background", RandomColorLiteral.class);
-
-		put(APPLICATION_PREFIX + "tts/speed", RandomTTSSpeed.class);
-		put(APPLICATION_PREFIX + "tts/volume",  RandomTTSVolume.class);
-		put(APPLICATION_PREFIX + "tts/language",  RandomLanguageLiteral.class);
-		put(APPLICATION_PREFIX + "tts/audioQuality", RandomTTSQualityLiteral.class);
-		put(APPLICATION_PREFIX + "cs/accessibility/imageMagnification/scale", RandomImageMagnificationScaleLiteral.class);
-		put(APPLICATION_PREFIX + "cs/accessibility/textDetection", RandomBooleanLiteral.class);
-		put(APPLICATION_PREFIX + "cs/accessibility/faceDetection", RandomBooleanLiteral.class);
-		put(APPLICATION_PREFIX + "cs/audio/volume",  RandomIntLiteral.class);
-		put(APPLICATION_PREFIX + "cs/audio/track", RandomLanguageLiteral.class);
-		put(APPLICATION_PREFIX + "cs/audio/audioDescription", RandomBooleanLiteral.class);
-		put(APPLICATION_PREFIX + "cs/cc/audioSubtitles", RandomBooleanLiteral.class);
-		put(APPLICATION_PREFIX + "cs/cc/subtitles/language", RandomLanguageLiteral.class);
-		put(APPLICATION_PREFIX + "cs/cc/subtitles/fontSize", RandomIntLiteral.class);
-		put(APPLICATION_PREFIX + "cs/cc/subtitles/fontColor", RandomColorLiteral.class);
-		put(APPLICATION_PREFIX + "cs/cc/subtitles/backgroundColor", RandomColorLiteral.class);
-		
-    }};
-	
 	
 	public UserProfileGenerator() {
 		rand = new Random();
@@ -70,7 +27,7 @@ public class UserProfileGenerator {
 	public UserProfileGenerator(long seed) {
 		rand = new Random(seed);
 	}
-
+	
 	/**
 	 * Generate randomly initiated set of user profiles. 
 	 * 
@@ -88,12 +45,22 @@ public class UserProfileGenerator {
 		List<UserProfile> profiles =  new ArrayList<UserProfile>(num);	
 		for(int i = 0; i < num; i++) {
 				
-			Map<String, OperandLiteral> map = new HashMap<String, OperandLiteral>();
-			Iterator<Map.Entry<String, Class<?>>> interator = preferencesToRandOperand.entrySet().iterator();
-			while(interator.hasNext()) {
-				Entry<String, Class<?>> entry = interator.next();
-				Class<?> cls = entry.getValue();
-				map.put(entry.getKey(), (OperandLiteral) cls.getConstructor(Random.class).newInstance(rand));
+			Map<String, Object> map = new HashMap<String, Object>();
+
+			for(final Entry<String, Attribute> e : Preference.preferencesAttributes.entrySet()) {
+				Attribute oprand = e.getValue();
+				double[] range = oprand.getRange();
+				Object literal = null;
+				
+				if (ColorAttribute.class.isInstance(oprand)) {
+					literal ="#"+Integer.toHexString(rand.nextInt(255))+Integer.toHexString(rand.nextInt(255))+Integer.toHexString(rand.nextInt(255));		
+				}
+				else if (BinaryAttribute.class.isInstance(oprand)) {
+					literal = rand.nextInt(1) == 0 ? false : true;	
+				}
+				else literal = rand.nextInt((int) (range[1] - range[0])) -  range[0];
+				
+				map.put(e.getKey(), literal);
 			}
 			
 			Preference defaultPreference = new Preference("default", map);
