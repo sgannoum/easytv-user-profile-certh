@@ -101,7 +101,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			if(attributeHandler == null)
 				throw new IllegalStateException("Unknown preference type");
 			
-			preferences.put(preferenceUri, attributeHandler.clone(jsonPreference.get(preferenceUri)));
+			preferences.put(preferenceUri, attributeHandler.handle(jsonPreference.get(preferenceUri)));
 		}
 		
 		this.jsonObj = json;

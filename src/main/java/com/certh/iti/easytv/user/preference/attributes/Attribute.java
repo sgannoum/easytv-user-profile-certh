@@ -34,7 +34,7 @@ public abstract class Attribute {
 	 * @param value
 	 * @return
 	 */
-	public Object clone(Object value) {
+	public Object handle(Object value) {
 		return value;
 	}
 

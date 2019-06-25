@@ -21,7 +21,7 @@ public class DoubleAttribute extends NumericAttribute {
 	}
 
 	@Override
-	public Object clone(Object value) {
+	public Object handle(Object value) {
 
 		double numericValue = Double.class.cast(value);
 

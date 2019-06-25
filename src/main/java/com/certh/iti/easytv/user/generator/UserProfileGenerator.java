@@ -58,7 +58,15 @@ public class UserProfileGenerator {
 				else if (BinaryAttribute.class.isInstance(oprand)) {
 					literal = rand.nextInt(1) == 0 ? false : true;	
 				}
-				else literal = rand.nextInt((int) (range[1] - range[0])) -  range[0];
+				else {
+					int root = (int) (range[1] - range[0]);
+					literal = (root / Math.abs(root)) * rand.nextInt(Math.abs(root)) + range[0];
+					
+					double res = (double) literal;
+					if(res < range[0] || res > range[1]) {
+						throw new IllegalArgumentException("Value "+res+" out of range ["+range[0]+", "+range[1]+"]");
+					}
+				}
 				
 				map.put(e.getKey(), literal);
 			}

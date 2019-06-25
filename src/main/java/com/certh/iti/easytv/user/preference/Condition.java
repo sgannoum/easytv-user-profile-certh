@@ -196,7 +196,7 @@ public class Condition {
 				throw new IllegalArgumentException("Unknown context Uri: " + uri);
 			
 			
-			operands.add(attributeHandler.clone(jsonOperands.get(i)));
+			operands.add(attributeHandler.handle(jsonOperands.get(i)));
 		}
 		return operands;
 	}

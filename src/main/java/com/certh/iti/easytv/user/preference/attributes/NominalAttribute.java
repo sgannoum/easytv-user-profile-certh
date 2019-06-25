@@ -58,7 +58,7 @@ public class NominalAttribute extends Attribute implements INominal {
 	}
 
 	@Override
-	public Object clone(Object value) {
+	public Object handle(Object value) {
 		String str = String.valueOf(value);
 
 		int state = orderOf(str);

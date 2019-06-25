@@ -21,7 +21,7 @@ public class IntegerAttribute extends NumericAttribute {
 	}
 
 	@Override
-	public Object clone(Object value) {
+	public Object handle(Object value) {
 
 		int numericValue = Integer.class.cast(value);
 
