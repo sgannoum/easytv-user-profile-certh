@@ -9,25 +9,16 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 	public OrdinalAttribute(String[] states) {
 		super(states);
 		this.states = states;
-		
-		Minvalue = range[0];
-		Maxvalue = range[1];
 	}
 
 	public OrdinalAttribute(double[] range, String[] states) {
 		super(range, states);
 		this.states = states;
-		
-		Minvalue = range[0];
-		Maxvalue = range[1];
 	}
 
 	public OrdinalAttribute(double[] range, double operandMissingValue, String[] states) {
 		super(range, operandMissingValue, states);
 		this.states = states;
-		
-		Minvalue = range[0];
-		Maxvalue = range[1];
 	}
 
 	private void setMinMaxValue(double value) {
@@ -96,8 +87,9 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		if (state == -1)
 			throw new IllegalStateException("Unknown state " + literal);
 
-		return new double[] { (state) / (states.length - 1) };
+		return new double[] { state };
 	}
+	
 
 	@Override
 	public Object handle(Object value) {

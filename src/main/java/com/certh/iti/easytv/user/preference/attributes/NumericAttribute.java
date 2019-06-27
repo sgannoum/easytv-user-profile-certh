@@ -16,16 +16,10 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 
 	public NumericAttribute(double[] range) {
 		super(range);
-		
-		Minvalue = range[0];
-		Maxvalue = range[1];
 	}
 	
 	public NumericAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
-		
-		Minvalue = range[0];
-		Maxvalue = range[1];
 	}
 	
 	protected void setMinMaxValue(double value) {

@@ -26,6 +26,31 @@ public class ColorAttribute extends NumericAttribute {
 		Color color = Color.decode((String) literal);
 		return new double[] {color.getRed(), color.getGreen(), color.getBlue()};
 	}
+	
+	@Override
+	public Object handle(Object value) {
+
+		Color color = Color.decode((String) value);
+		
+		int numericValue = Math.abs(color.getRGB());
+
+/*		// Increate histogram counts
+		Long tmp = frequencyHistogram.get(numericValue);
+		if (tmp == null) {
+			frequencyHistogram.put((double) numericValue, 1L);
+		} else {
+			frequencyHistogram.put((double) numericValue, tmp + 1);
+		}
+*/
+
+		// Set Min Max vlaue
+		setMinMaxValue(numericValue);
+
+		//sum += numericValue;
+
+		n++;
+		return value;
+	}
 
 
 }

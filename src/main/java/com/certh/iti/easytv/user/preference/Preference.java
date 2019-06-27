@@ -23,7 +23,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 
 	public static final LinkedHashMap<String, Attribute> preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
-
+ 
 	{
 		put("http://registry.easytv.eu/common/content/audio/volume",  new IntegerAttribute(new double[] {0.0, 100.0}, 0));
 		put("http://registry.easytv.eu/common/content/audio/language", new LanguageAttribute());
@@ -91,8 +91,14 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	}
 
 	public void setJSONObject(JSONObject json) {
+		this.jsonObj = json;
+		
 		JSONObject jsonPreference = json.getJSONObject("preferences");
 		String[] fields = JSONObject.getNames(jsonPreference);
+		
+		if(fields == null) 
+			return;
+		
 		
 		for(int i = 0 ; i < fields.length; i++) {
 			String preferenceUri = fields[i];
@@ -104,7 +110,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			preferences.put(preferenceUri, attributeHandler.handle(jsonPreference.get(preferenceUri)));
 		}
 		
-		this.jsonObj = json;
+		
 	}
 	
 	public JSONObject toJSON() {
