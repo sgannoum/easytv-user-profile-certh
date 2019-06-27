@@ -13,20 +13,20 @@ import com.certh.iti.easytv.user.preference.Preference;
 public class UserPreferences implements Clusterable {
 	
 	private Preference defaultPreference;
-	private List<ConditionalPreference> conditionalPreferences;
+	private List<Preference> conditionalPreferences;
 	private JSONObject jsonObj;
 	
 	public UserPreferences(JSONObject json) {
 		this.setJSONObject(json);
 	}
 	
-	public UserPreferences( Preference defaultPreference, List<ConditionalPreference> preferences) {
+	public UserPreferences( Preference defaultPreference, List<Preference> preferences) {
 		this.setDefaultPreferences(defaultPreference);
 		this.setConditionalPreferences(preferences);
 		jsonObj = null;
 	}
 
-	public List<ConditionalPreference> getConditionalPreferences() {
+	public List<Preference> getConditionalPreferences() {
 		return conditionalPreferences;
 	}
 	
@@ -38,7 +38,7 @@ public class UserPreferences implements Clusterable {
 		defaultPreference = preferences;
 	}
 	
-	public void setConditionalPreferences(List<ConditionalPreference> preferences) {
+	public void setConditionalPreferences(List<Preference> preferences) {
 		this.conditionalPreferences = preferences;
 	}
 
@@ -52,7 +52,7 @@ public class UserPreferences implements Clusterable {
 	public void setJSONObject(JSONObject json) {
 			
 		defaultPreference = new Preference("default", json.getJSONObject("default"));
-		conditionalPreferences = new ArrayList<ConditionalPreference>();
+		conditionalPreferences = new ArrayList<Preference>();
 
 		if(json.has("conditional")) {
 			

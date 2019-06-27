@@ -10,16 +10,22 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	protected long n = 0;
 	protected double sum = 0.0;
 	protected double standard_deviation = -1.0;
-	private double Maxvalue = Double.MIN_VALUE;
-	private double Minvalue = Double.MAX_VALUE;
+	protected double Maxvalue = Double.MIN_VALUE;
+	protected double Minvalue = Double.MAX_VALUE;
 	protected Map<Double, Long> frequencyHistogram = new HashMap<Double, Long>();
 
 	public NumericAttribute(double[] range) {
 		super(range);
+		
+		Minvalue = range[0];
+		Maxvalue = range[1];
 	}
 	
 	public NumericAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
+		
+		Minvalue = range[0];
+		Maxvalue = range[1];
 	}
 	
 	protected void setMinMaxValue(double value) {

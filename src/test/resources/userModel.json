@@ -2,7 +2,7 @@
     "user_preferences": {"default": {"preferences": {
         "http://registry.easytv.eu/application/cs/cc/audioSubtitles": false,
         "http://registry.easytv.eu/application/cs/audio/track": "en",
-        "http://registry.easytv.eu/application/tts/speed": 92.0,
+        "http://registry.easytv.eu/application/tts/speed": 92,
         "http://registry.easytv.eu/application/cs/accessibility/textDetection": false,
         "http://registry.easytv.eu/application/cs/cc/subtitles/backgroundColor": "#cf34d7",
         "http://registry.easytv.eu/common/subtitles": "ca",

@@ -33,7 +33,7 @@ public class UserProfileTest {
 	@Test
 	public void test_constructor() throws IOException {
 		UserProfile userProfile1 = new UserProfile(json);
-		UserProfile userProfile2 = new UserProfile( userProfile1.getUserPreferences(), false);
+		UserProfile userProfile2 = new UserProfile( userProfile1.getUserPreferences());
 	
 		Assert.assertTrue(userProfile2.getJSONObject().similar(json), "Expected: " + json.toString(4)+" \n but found: \n"+userProfile2.getJSONObject().toString(4));
 	}

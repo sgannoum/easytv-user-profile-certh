@@ -15,6 +15,7 @@ import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.BinaryAttribute;
 import com.certh.iti.easytv.user.preference.attributes.ColorAttribute;
+import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
 
 public class UserProfileGenerator {
 	
@@ -58,6 +59,11 @@ public class UserProfileGenerator {
 				else if (BinaryAttribute.class.isInstance(oprand)) {
 					literal = rand.nextInt(1) == 0 ? false : true;	
 				}
+				else if (NominalAttribute.class.isInstance(oprand)) {
+					NominalAttribute nominal = NominalAttribute.class.cast(oprand);
+					int state = rand.nextInt((int) nominal.getRange()[1]);
+					literal = nominal.getStates()[state];	
+				}
 				else {
 					int root = (int) (range[1] - range[0]);
 					literal = (root / Math.abs(root)) * rand.nextInt(Math.abs(root)) + range[0];
@@ -72,11 +78,11 @@ public class UserProfileGenerator {
 			}
 			
 			Preference defaultPreference = new Preference("default", map);
-			List<ConditionalPreference> preferences = new ArrayList<ConditionalPreference>();
+			List<Preference> preferences = new ArrayList<Preference>();
 			UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
 			
 			try {
-				profiles.add(new UserProfile(userPreferences, false));
+				profiles.add(new UserProfile(userPreferences));
 			} catch(Exception e) {}
 		}
 		return profiles;
