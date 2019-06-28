@@ -195,5 +195,17 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		return 	operandsLiteral;
 	}
 	
+	public static String[] getUris(){
+		Collection<String> keys = preferencesAttributes.keySet();
+		String[] uris = new String[keys.size()];
+		int index = 0;		
+		
+		Iterator<java.util.Map.Entry<String, Attribute>> interator = preferencesAttributes.entrySet().iterator();
+		while(interator.hasNext()) 
+			uris[index++] = interator.next().getKey();
+		
+		return 	uris;
+	}
+	
 	
 }
