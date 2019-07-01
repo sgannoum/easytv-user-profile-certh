@@ -12,17 +12,22 @@ import org.json.JSONObject;
 
 public class ConditionalPreference extends Preference {
 	
-	private List<Condition> conditions;
+	private List<Condition> conditions = new ArrayList<Condition>();;
+	
+	public ConditionalPreference() {
+		super();
+	}
 	
 	public ConditionalPreference(String name, Map<String, Object> entries, List<Condition> conditions) {
 		super(name, entries);
-		this.conditions = new ArrayList<Condition>(conditions);
+		this.conditions.addAll(conditions);
 		this.jsonObj = null;
 	}
 	
 	public ConditionalPreference(String name, JSONObject json) {
-		super(name, json);
-		setJSONObject(json);
+		super();
+		this.setName(name);
+		this.setJSONObject(json);
 	}
 	
 	public List<Condition> getConditions() {
@@ -31,19 +36,22 @@ public class ConditionalPreference extends Preference {
 	
 	public void setConditions(List<Condition> conditions) {
 		this.conditions = conditions;
+		jsonObj = null;
 	}
 
 	@Override
 	public void setJSONObject(JSONObject json) {
-		//Add preferences
+		//clear up old ones
+		conditions.clear();
+		
+		//Add default preferences
 		super.setJSONObject(json);
 		
 		//Add conditions
 		JSONArray jsonConditions = json.getJSONArray("conditions");
-		this.conditions = new ArrayList<Condition>();
-		for(int i = 0 ; i < jsonConditions.length(); i++) {
-			this.conditions.add(new Condition(jsonConditions.getJSONObject(i)));
-		}
+		
+		for(int i = 0 ; i < jsonConditions.length(); i++) 
+			conditions.add(new Condition(jsonConditions.getJSONObject(i)));
 		
 		this.jsonObj = json;
 	}

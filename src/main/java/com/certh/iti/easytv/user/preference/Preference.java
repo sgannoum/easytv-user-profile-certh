@@ -53,21 +53,23 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		
     }};
 	
-	protected String name;
-	protected Map<String, Object> preferences;
-	protected JSONObject jsonObj;
+	protected String name = new String();
+	protected Map<String, Object> preferences = new HashMap<String, Object>();
+	protected JSONObject jsonObj = null;
+	
+	public Preference() {
+		
+	}
 	
 	public Preference(String name, Map<String, Object> entries) {
 		this.name = name;
-		this.preferences = new HashMap<String, Object>();
 		this.setPreferences(entries);
 		jsonObj = null;
 	}
 	
 	public Preference(String name, JSONObject json) {
 		this.name = name;
-		this.preferences = new HashMap<String, Object>();
-		setJSONObject(json);
+		this.setJSONObject(json);
 	}
 
 	public String getName() {
@@ -76,6 +78,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 
 	public void setName(String name) {
 		this.name = name;
+		jsonObj = null;
 	}
 
 	public Map<String, Object> getPreferences() {
@@ -83,7 +86,8 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	}
 
 	public void setPreferences(Map<String, Object> entries) {
-		this.preferences = entries;
+		this.preferences.putAll(entries);
+		jsonObj = null;
 	}
 
 	public JSONObject getJSONObject() {
@@ -93,12 +97,15 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	public void setJSONObject(JSONObject json) {
 		this.jsonObj = json;
 		
+		//clear up old preferences
+		preferences.clear();
+		
 		JSONObject jsonPreference = json.getJSONObject("preferences");
 		String[] fields = JSONObject.getNames(jsonPreference);
 		
+		//no preferences case
 		if(fields == null) 
 			return;
-		
 		
 		for(int i = 0 ; i < fields.length; i++) {
 			String preferenceUri = fields[i];
@@ -109,8 +116,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			
 			preferences.put(preferenceUri, attributeHandler.handle(jsonPreference.get(preferenceUri)));
 		}
-		
-		
+			
 	}
 	
 	public JSONObject toJSON() {
@@ -195,6 +201,9 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		return 	operandsLiteral;
 	}
 	
+	/**
+	 * @return uris arrays
+	 */
 	public static String[] getUris(){
 		Collection<String> keys = preferencesAttributes.keySet();
 		String[] uris = new String[keys.size()];

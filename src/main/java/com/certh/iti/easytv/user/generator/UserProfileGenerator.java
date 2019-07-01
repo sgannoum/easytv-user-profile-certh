@@ -10,7 +10,6 @@ import java.util.Random;
 
 import com.certh.iti.easytv.user.UserPreferences;
 import com.certh.iti.easytv.user.UserProfile;
-import com.certh.iti.easytv.user.preference.ConditionalPreference;
 import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.BinaryAttribute;

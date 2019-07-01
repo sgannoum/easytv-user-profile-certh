@@ -135,7 +135,7 @@ public class ConditionTest {
 			Assert.assertEquals(actualExceptions.get(i).getMessage(), expectedExceptions.get(i).getMessage());
 	}
 	
-	@Test(expectedExceptions=IllegalStateException.class)
+	@Test(expectedExceptions=IllegalArgumentException.class)
 	public void test_unknown_condition() {
 
 		List<Object> operands_One = new ArrayList<Object>();

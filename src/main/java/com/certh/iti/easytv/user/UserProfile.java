@@ -2,11 +2,8 @@ package com.certh.iti.easytv.user;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
@@ -14,7 +11,8 @@ public class UserProfile implements Clusterable {
 	
 	private static long num_profiles = 0;
 	
-	private UserPreferences userPreferences = null;
+	private double[] points = null;
+	private UserPreferences userPreferences = new UserPreferences();
 	private JSONObject jsonObj = null;
 	
 	public UserProfile() {
@@ -68,12 +66,8 @@ public class UserProfile implements Clusterable {
 	
 	
 	public void setJSONObject(JSONObject json) {		
-		
-		if(userPreferences == null)
-			userPreferences = new UserPreferences(json.getJSONObject("user_preferences"));
-		else
-			userPreferences.setJSONObject(json.getJSONObject("user_preferences"));
-		
+		userPreferences.setJSONObject(json.getJSONObject("user_preferences"));
+		points = null;
 		jsonObj = json;
 	}
 	
@@ -100,35 +94,32 @@ public class UserProfile implements Clusterable {
 
 	public void setUserPreferences(UserPreferences userPreferences) {
 		this.userPreferences = userPreferences;
+		points = null;
+		jsonObj = null;
 	}
 	
+	/**
+	 * @return Total number of loaded profiles
+	 */
 	public static long getProfilesCounts() {
 		return num_profiles;
 	}
 	
+
+	/**
+	 * @return a vector of points that represent the user profile.
+	 */
 	public double[] getPoint() {
+
+		//return already calculated vector
+		if(points != null) return points;
+		
 		double[] defaultPreferencePoints = userPreferences.getPoint();
+				
+		points = new double[defaultPreferencePoints.length];		
+		for(int i = 0; i < defaultPreferencePoints.length; i++)
+			points[i] = defaultPreferencePoints[i];
 		
-		int size = defaultPreferencePoints.length;
-		double [] userProfilePoints = new double[size];
-		int index = 0;
-		
-		for(int i = 0; i < defaultPreferencePoints.length; i++, index++)
-			userProfilePoints[index] = defaultPreferencePoints[i];
-		
-		return userProfilePoints;
-	}
-	
-	private void ReadProfileJSON(File file) throws IOException {
-		System.out.println("Reading profile: " + file.getAbsolutePath() + "");
-		
-		String line;
-		BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-		StringBuffer json = new StringBuffer();
-		while((line = reader.readLine()) != null) {
-			json.append(line);
-		}
-		
-		this.setJSONObject(new JSONObject(json.toString()));
+		return points;
 	}
 }
