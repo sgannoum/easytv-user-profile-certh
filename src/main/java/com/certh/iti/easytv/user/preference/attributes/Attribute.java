@@ -37,5 +37,9 @@ public abstract class Attribute {
 	public Object handle(Object value) {
 		return value;
 	}
+	
+	public int getDimensionsNumber() {
+		return 1;
+	}
 
 }

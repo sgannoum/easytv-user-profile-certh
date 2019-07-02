@@ -15,9 +15,7 @@ public class UserProfile implements Clusterable {
 	private UserPreferences userPreferences = new UserPreferences();
 	private JSONObject jsonObj = null;
 	
-	public UserProfile() {
-		userPreferences = null;
-		
+	public UserProfile() {		
 		num_profiles++;
 	}
 	

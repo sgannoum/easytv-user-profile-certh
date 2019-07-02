@@ -3,7 +3,6 @@ package com.certh.iti.easytv.user.preference;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -193,10 +192,9 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		Collection<Attribute> values = preferencesAttributes.values();
 		Attribute[] operandsLiteral = new Attribute[values.size()];
 		int index = 0;		
-		
-		Iterator<java.util.Map.Entry<String, Attribute>> interator = preferencesAttributes.entrySet().iterator();
-		while(interator.hasNext()) 
-			operandsLiteral[index++] = interator.next().getValue();
+			
+		for(Entry<String, Attribute> entry: preferencesAttributes.entrySet()) 
+			operandsLiteral[index++] = entry.getValue();
 		
 		return 	operandsLiteral;
 	}
@@ -209,9 +207,8 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		String[] uris = new String[keys.size()];
 		int index = 0;		
 		
-		Iterator<java.util.Map.Entry<String, Attribute>> interator = preferencesAttributes.entrySet().iterator();
-		while(interator.hasNext()) 
-			uris[index++] = interator.next().getKey();
+		for(Entry<String, Attribute> entry: preferencesAttributes.entrySet()) 
+			uris[index++] = entry.getKey();
 		
 		return 	uris;
 	}

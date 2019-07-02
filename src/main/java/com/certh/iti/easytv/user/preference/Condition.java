@@ -119,7 +119,6 @@ public class Condition {
 		if(!other.type.equalsIgnoreCase(type)) return false;
 		if(other.operands.size() != operands.size()) return false;
 		
-
 		int i = 0;
 		for(i = 0 ; i < operands.size() && other.operands.contains(operands.get(i)); i++);
 
