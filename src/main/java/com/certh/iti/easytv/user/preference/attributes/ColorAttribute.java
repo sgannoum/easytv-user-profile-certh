@@ -4,14 +4,13 @@ import java.awt.Color;
 
 public class ColorAttribute extends NumericAttribute {
 
-	private NumericAttribute alpha = new IntegerAttribute(new double[] {0.0, 255.});
-	private NumericAttribute red_MinMax = new IntegerAttribute(new double[] {0.0, 255.});
-	private NumericAttribute green_MinMax = new IntegerAttribute(new double[] {0.0, 255.});
-	private NumericAttribute blue_MinMax =  new IntegerAttribute(new double[] {0.0, 255.});
+	private NumericAttribute red = new IntegerAttribute(new double[] {0.0, 255.0});
+	private NumericAttribute green = new IntegerAttribute(new double[] {0.0, 255.0});
+	private NumericAttribute blue =  new IntegerAttribute(new double[] {0.0, 255.0});
 	
 	
 	public ColorAttribute() {
-		super(new double[] {0.0, 12777215.0});
+		super(new double[] {0.0, 16777215.0});
 	}
 
 	public ColorAttribute(double[] range) {
@@ -30,16 +29,16 @@ public class ColorAttribute extends NumericAttribute {
 		}
 		
 		Color color = Color.decode((String) literal);
-		return new double[] {color.getAlpha(), color.getRed(), color.getGreen(), color.getBlue()};
+		return new double[] {color.getRed(), color.getGreen(), color.getBlue()};
 	}
 	
 	@Override
 	public int getDimensionsNumber() {
-		return 4;
+		return 3;
 	}
 	
 	public NumericAttribute[] getDimensions() {
-		return new NumericAttribute[] {alpha, red_MinMax, green_MinMax, blue_MinMax};
+		return new NumericAttribute[] {red, green, blue};
 	}
 	
 	@Override
@@ -56,18 +55,15 @@ public class ColorAttribute extends NumericAttribute {
 		} else {
 			frequencyHistogram.put((double) numericValue, tmp + 1);
 		}
-
-		//handle alpha dimension
-		alpha.handle(color.getAlpha());
 		
 		//handle red dimension
-		red_MinMax.handle(color.getRed());
+		red.handle(color.getRed());
 
 		//handle alpha dimension
-		green_MinMax.handle(color.getGreen());
+		green.handle(color.getGreen());
 		
 		//handle blue dimension
-		blue_MinMax.handle(color.getBlue());
+		blue.handle(color.getBlue());
 
 		// Set Min Max vlaue
 		setMinMaxValue(numericValue);

@@ -7,7 +7,7 @@ public class IntegerAttribute extends NumericAttribute {
 	}
 
 	public IntegerAttribute(double[] range, double operandMissingValue) {
-		super(range);
+		super(range, operandMissingValue);
 	}
 
 	@Override
