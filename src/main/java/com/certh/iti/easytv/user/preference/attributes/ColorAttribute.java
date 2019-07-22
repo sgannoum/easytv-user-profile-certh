@@ -29,12 +29,7 @@ public class ColorAttribute extends NumericAttribute {
 		}
 		
 		Color color = Color.decode((String) literal);
-		return new double[] {color.getRed(), color.getGreen(), color.getBlue()};
-	}
-	
-	@Override
-	public int getDimensionsNumber() {
-		return 3;
+		return new double[] {color.getRGB()};
 	}
 	
 	public NumericAttribute[] getDimensions() {
