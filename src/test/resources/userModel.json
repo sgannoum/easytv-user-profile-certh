@@ -1,28 +1,53 @@
 {
     "user_preferences": {"default": {"preferences": {
-        "http://registry.easytv.eu/application/cs/cc/audioSubtitles": false,
-        "http://registry.easytv.eu/application/cs/audio/track": "en",
-        "http://registry.easytv.eu/application/tts/speed": 92,
-        "http://registry.easytv.eu/application/cs/accessibility/textDetection": false,
-        "http://registry.easytv.eu/application/cs/cc/subtitles/backgroundColor": "#cf34d7",
-        "http://registry.easytv.eu/common/subtitles": "ca",
-        "http://registry.easytv.eu/common/display/screen/enhancement/font/color": "#de587d",
-        "http://registry.easytv.eu/application/cs/accessibility/imageMagnification/scale": 11,
-        "http://registry.easytv.eu/application/cs/cc/subtitles/language": "gr",
-        "http://registry.easytv.eu/common/signLanguage": "gr",
-        "http://registry.easytv.eu/common/content/audio/language": "gr",
-        "http://registry.easytv.eu/application/cs/cc/subtitles/fontColor": "#887932",
-        "http://registry.easytv.eu/common/display/screen/enhancement/font/type": "cursive",
-        "http://registry.easytv.eu/common/display/screen/enhancement/background": "#3f5265",
-        "http://registry.easytv.eu/application/tts/language": "gr",
-        "http://registry.easytv.eu/common/displayContrast": 90,
-        "http://registry.easytv.eu/application/tts/volume": 41,
-        "http://registry.easytv.eu/common/content/audio/volume": 77,
-        "http://registry.easytv.eu/application/cs/audio/volume": 78,
-        "http://registry.easytv.eu/application/cs/cc/subtitles/fontSize": 10,
-        "http://registry.easytv.eu/common/display/screen/enhancement/font/size": 27,
-        "http://registry.easytv.eu/application/tts/audioQuality": 1,
-        "http://registry.easytv.eu/application/cs/accessibility/faceDetection": false,
-        "http://registry.easytv.eu/application/cs/audio/audioDescription": false
-    }}}
+		"http://registry.easytv.eu/common/subtitles": "EN",
+		"http://registry.easytv.eu/common/signLanguage": "EN",
+		"http://registry.easytv.eu/common/content/audio/language": "GR",
+		"http://registry.easytv.eu/common/display/screen/enhancement/font/type": "serif",
+		"http://registry.easytv.eu/common/display/screen/enhancement/font/size": 23,
+		"http://registry.easytv.eu/common/display/screen/enhancement/font/color": "#b23b41",					
+		"http://registry.easytv.eu/common/display/screen/enhancement/background": "#18d4dc",
+		"http://registry.easytv.eu/application/tts/language": "ES",
+		"http://registry.easytv.eu/application/tts/volume": 24,
+		"http://registry.easytv.eu/application/tts/audioQuality": 90,
+		"http://registry.easytv.eu/application/cs/accessibility/faceDetection": false,
+		"http://registry.easytv.eu/application/cs/accessibility/textDetection": false,
+		"http://registry.easytv.eu/application/cs/accessibility/imageMagnification/scale": 94,
+		"http://registry.easytv.eu/application/cs/cc/subtitles/fontColor": "#39dc2",
+		"http://registry.easytv.eu/application/cs/cc/subtitles/fontSize": 58,
+		"http://registry.easytv.eu/application/cs/cc/subtitles/backgroundColor": "#ee6243",
+		"http://registry.easytv.eu/application/cs/cc/subtitles/language": "EN",
+		"http://registry.easytv.eu/application/cs/cc/audioSubtitles": false,
+		"http://registry.easytv.eu/application/cs/audio/audioDescription": false,
+		"http://registry.easytv.eu/application/cs/audio/track": "CA",
+		"http://registry.easytv.eu/application/cs/audio/volume": 39
+			}		
+        },
+        "conditional": [{
+            "name": "Morning subtitles color contrast",
+            "preferences": {				 	
+            	"http://registry.easytv.eu/common/display/screen/enhancement/font/color": "#FFFFFF",
+				"http://registry.easytv.eu/common/display/screen/enhancement/background": "#000000"
+			},	
+            "conditions": [{
+                "operands": [
+                    {
+                        "operands": [
+                            "http://registry.easytv.eu/context/time",
+                            "08:00:00"
+                        ],
+                        "type": "gt"
+                    },
+                    {
+                        "operands": [
+                            "http://registry.easytv.eu/context/time",
+                            "15:00:00"
+                        ],
+                        "type": "lt"
+                    }
+                ],
+                "type": "and"
+            }]
+        }]
+    }
 }

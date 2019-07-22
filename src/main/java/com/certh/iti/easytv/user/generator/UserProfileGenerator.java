@@ -52,8 +52,9 @@ public class UserProfileGenerator {
 				double[] range = oprand.getRange();
 				Object literal = null;
 				
+
 				if (ColorAttribute.class.isInstance(oprand)) {
-					literal ="#"+Integer.toHexString(rand.nextInt(255))+Integer.toHexString(rand.nextInt(255))+Integer.toHexString(rand.nextInt(255));		
+					literal ="#" + String.format("%02X", rand.nextInt(255)) +String.format("%02X", rand.nextInt(255)) + String.format("%02X", rand.nextInt(255));		
 				}
 				else if (BinaryAttribute.class.isInstance(oprand)) {
 					literal = rand.nextInt(1) == 0 ? false : true;	
