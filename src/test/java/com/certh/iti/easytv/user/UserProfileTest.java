@@ -33,118 +33,12 @@ public class UserProfileTest {
 	@Test
 	public void test_constructor() throws IOException {
 		UserProfile userProfile1 = new UserProfile(json);
-		UserProfile userProfile2 = new UserProfile( userProfile1.getUserPreferences(), false);
+		UserProfile userProfile2 = new UserProfile( userProfile1.getUserPreferences());
 	
 		Assert.assertTrue(userProfile2.getJSONObject().similar(json), "Expected: " + json.toString(4)+" \n but found: \n"+userProfile2.getJSONObject().toString(4));
 	}
 	
-	@Test
-	public void test_identifcal_profiles() throws IOException {
-		
-		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"user_preferences\": {\r\n" + 
-				"    \"default\": {\r\n" + 
-				"      \"preferences\": {\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/volume\": 100,\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 20,\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/language\": \"es\",\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#000000\"\r\n" + 
-				"      }\r\n" + 
-				"    }\r\n" + 
-				"  }\r\n" + 
-				"}");
-		
-		JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-				"  \"user_preferences\": {\r\n" + 
-				"    \"default\": {\r\n" + 
-				"      \"preferences\": {\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/volume\": 100,\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 20,\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/language\": \"es\",\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#000000\"\r\n" + 
-				"      }\r\n" + 
-				"    }\r\n" + 
-				"  }\r\n" + 
-				"}");
-		
-		UserProfile userProfile1 = new UserProfile(jsonProfile1);
-		UserProfile userProfile2 = new UserProfile(jsonProfile2);
-	
-		Assert.assertEquals(userProfile1.distanceTo(userProfile2), 0.0);
-	}
-	
-	@Test
-	public void test_profiles_similarety_color_difference() throws IOException {
-		
-		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"user_preferences\": {\r\n" + 
-				"    \"default\": {\r\n" + 
-				"      \"preferences\": {\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/volume\": 100,\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 20,\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/language\": \"es\",\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#000000\"\r\n" + 
-				"      }\r\n" + 
-				"    }\r\n" + 
-				"  }\r\n" + 
-				"}");
-		
-		JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-				"  \"user_preferences\": {\r\n" + 
-				"    \"default\": {\r\n" + 
-				"      \"preferences\": {\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/volume\": 100,\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 20,\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/language\": \"es\",\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#080000\"\r\n" + 
-				"      }\r\n" + 
-				"    }\r\n" + 
-				"  }\r\n" + 
-				"}");
-		
-		UserProfile userProfile1 = new UserProfile(jsonProfile1);
-		UserProfile userProfile2 = new UserProfile(jsonProfile2);
-	
-		Assert.assertEquals(userProfile1.distanceTo(userProfile2), 0.0);
-	}
-	
-	@Test
-	public void test_profiles_similarety_language_difference() throws IOException {
-		
-		JSONObject jsonProfile1 = new JSONObject("{\r\n" + 
-				"  \"user_preferences\": {\r\n" + 
-				"    \"default\": {\r\n" + 
-				"      \"preferences\": {\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/volume\": 100,\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 20,\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/language\": \"es\",\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#000000\"\r\n" + 
-				"      }\r\n" + 
-				"    }\r\n" + 
-				"  }\r\n" + 
-				"}");
-		
-		JSONObject jsonProfile2 = new JSONObject("{\r\n" + 
-				"  \"user_preferences\": {\r\n" + 
-				"    \"default\": {\r\n" + 
-				"      \"preferences\": {\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/volume\": 100,\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 20,\r\n" + 
-				"        \"http://registry.easytv.eu/common/content/audio/language\": \"gr\",\r\n" + 
-				"        \"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#000000\"\r\n" + 
-				"      }\r\n" + 
-				"    }\r\n" + 
-				"  }\r\n" + 
-				"}");
-		
-		UserProfile userProfile1 = new UserProfile(jsonProfile1);
-		UserProfile userProfile2 = new UserProfile(jsonProfile2);
-	
-		Assert.assertEquals(userProfile1.distanceTo(userProfile2), 0.0);
-	}
-	
-	
-	@Test
+	//@Test
 	public void test_getPoints() throws IOException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" +  

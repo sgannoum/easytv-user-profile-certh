@@ -64,6 +64,5 @@ public class PreferenceTests {
 		Assert.assertTrue(jsonFound.similar(jsonExpected), "\nExpected: "+jsonExpected.toString(4)+"\n Found: "+jsonFound.toString(4)+"\n");
 	}
 	
-	
 
 }

@@ -12,9 +12,13 @@ import com.certh.iti.easytv.user.preference.Preference;
 
 public class UserPreferences implements Clusterable {
 	
-	private Preference defaultPreference;
-	private List<Preference> conditionalPreferences;
-	private JSONObject jsonObj;
+	private Preference defaultPreference = new Preference();
+	private List<Preference> conditionalPreferences = new ArrayList<Preference>();
+	private JSONObject jsonObj = null;
+	
+	public UserPreferences() {
+		
+	}
 	
 	public UserPreferences(JSONObject json) {
 		this.setJSONObject(json);
@@ -36,10 +40,12 @@ public class UserPreferences implements Clusterable {
 
 	public void setDefaultPreferences(Preference preferences) {
 		defaultPreference = preferences;
+		jsonObj = null;
 	}
 	
 	public void setConditionalPreferences(List<Preference> preferences) {
 		this.conditionalPreferences = preferences;
+		jsonObj = null;
 	}
 
 	public JSONObject getJSONObject() {
@@ -51,15 +57,15 @@ public class UserPreferences implements Clusterable {
 
 	public void setJSONObject(JSONObject json) {
 			
-		defaultPreference = new Preference("default", json.getJSONObject("default"));
-		conditionalPreferences = new ArrayList<Preference>();
-
+		//set default preferences
+		defaultPreference.setName("default");
+		defaultPreference.setJSONObject(json.getJSONObject("default"));
+		
+		//set conditional preferences
+		conditionalPreferences.clear();
 		if(json.has("conditional")) {
 			
-			//Get conditional preferences
 			JSONArray conditional = json.getJSONArray("conditional");
-			
-			//Add conditional preferences
 			for(int i = 0 ; i < conditional.length(); i++) {
 				JSONObject condition =  conditional.getJSONObject(i);
 				conditionalPreferences.add(new ConditionalPreference(condition.getString("name"), condition));
@@ -77,30 +83,17 @@ public class UserPreferences implements Clusterable {
 			//add default preferences
 			jsonObj.put("default", defaultPreference.toJSON());
 			
-			
+			//add conditional preferences
 			if(!conditionalPreferences.isEmpty()) {
-				//prepare the conditional preference array
 				JSONArray conditional = new JSONArray();
 				
 				for (int i = 0; i < conditionalPreferences.size(); i++) 
 					conditional.put(conditionalPreferences.get(i).getJSONObject());
 				
-				//add conditional preferences
 				jsonObj.put("conditional", conditional);
 			}
 		}
 		return jsonObj;
-	}
-	
-	public double distanceTo(UserPreferences other) {
-		//TO-DO include the conditional preferences
-		Preference  pref1 = this.getDefaultPreference();
-		Preference  pref2 = other.getDefaultPreference();
-		return pref1.distanceTo(pref2);
-	}
-	
-	public double distanceTo(UserProfile other) {
-		return distanceTo(other.getUserPreferences());
 	}
 
 	public double[] getPoint() {

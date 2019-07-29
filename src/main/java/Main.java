@@ -45,7 +45,6 @@ public class Main {
 		if(_OutputDirectory == null) {
 			for(i = 0; i < actualProfiles.size(); i++) 
 					System.out.println(actualProfiles.get(i).getJSONObject().toString(4));
-
 		} else {
 			for(i = 0; i < actualProfiles.size(); i++) {
 				String fileName = _OutputDirectory.getPath() + File.separatorChar + "userProfile_" + i + ".json";
