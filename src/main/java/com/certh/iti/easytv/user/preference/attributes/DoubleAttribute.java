@@ -23,7 +23,12 @@ public class DoubleAttribute extends NumericAttribute {
 	@Override
 	public Object handle(Object value) {
 
-		double numericValue = Double.class.cast(value);
+		double numericValue;
+		
+		if(Integer.class.isInstance(value)) {
+			numericValue = Integer.class.cast(value);
+		} else 
+			numericValue = Double.class.cast(value);
 
 		// Increate histogram counts
 		Long tmp = frequencyHistogram.get(numericValue);
@@ -39,7 +44,7 @@ public class DoubleAttribute extends NumericAttribute {
 		sum += numericValue;
 
 		n++;
-		return value;
+		return numericValue;
 
 	}
 

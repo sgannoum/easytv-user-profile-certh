@@ -25,6 +25,7 @@ public class ColorAttribute extends NumericAttribute {
 	@Override
 	public double[] getPoints(Object literal) {
 		if(literal == null) {
+			//TODO: handle the missing value of a color, as one value
 			return new double[] {missingValue, missingValue, missingValue};
 		}
 		
