@@ -34,11 +34,11 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	}
 	
 	public double getMaxValue() {
-		return Maxvalue;
+		return Maxvalue != Minvalue ? Maxvalue : range[1];
 	}
 	
 	public double getMinValue() {
-		return Minvalue;
+		return Maxvalue != Minvalue ? Minvalue : range[0];
 	}
 	
 	public long getCounts() {
