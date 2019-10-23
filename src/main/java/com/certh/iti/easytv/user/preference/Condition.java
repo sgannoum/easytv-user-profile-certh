@@ -24,15 +24,15 @@ public class Condition {
 	protected List<Object> operands = new ArrayList<Object>();;
 	protected JSONObject jsonObj = null;
 	
-	protected static final String CONTEXT_PREFIX = "http://registry.easytv.eu/context/";
-
 	public static final LinkedHashMap<String, Attribute> contextToOperand  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
 
 	{
+		put("http://registry.easytv.eu/context/device", new NominalAttribute( new String[] {"pc", "mobile", "tablet"}));
+		put("http://registry.easytv.eu/context/light", new IntegerAttribute(new double[] {0.0, 100.0}, -1));
+		put("http://registry.easytv.eu/context/proximity", new IntegerAttribute(new double[] {0.0, 500.0}, -1));
 		put("http://registry.easytv.eu/context/time",  new TimeAttribute());
-		put("http://registry.easytv.eu/context/location", new NominalAttribute( new String[] {"gr", "fr", "sp", "it"}));
-		put("http://registry.easytv.eu/context/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, -1));
+		put("http://registry.easytv.eu/context/location", new NominalAttribute( new String[] {"gr", "es", "ca", "it"}));
 
     }};
 	
