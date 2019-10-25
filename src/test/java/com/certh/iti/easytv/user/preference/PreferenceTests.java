@@ -4,6 +4,8 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.certh.iti.easytv.user.UserProfileParsingException;
+
 public class PreferenceTests {
 	
 	private JSONObject json = new JSONObject("{  \"user_preferences\": {\r\n" + 
@@ -49,7 +51,7 @@ public class PreferenceTests {
 	 
 	
 	@Test
-	public void test_preference() {
+	public void test_preference() throws UserProfileParsingException {
 		JSONObject jsonExpected = json.getJSONObject("user_preferences").getJSONObject("default");
 
 		//convert JSON preference to map

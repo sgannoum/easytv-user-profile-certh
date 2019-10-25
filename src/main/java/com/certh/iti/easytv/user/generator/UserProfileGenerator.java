@@ -10,6 +10,7 @@ import java.util.Random;
 
 import com.certh.iti.easytv.user.UserPreferences;
 import com.certh.iti.easytv.user.UserProfile;
+import com.certh.iti.easytv.user.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.BinaryAttribute;
@@ -39,8 +40,9 @@ public class UserProfileGenerator {
 	 * @throws InvocationTargetException
 	 * @throws NoSuchMethodException
 	 * @throws SecurityException
+	 * @throws UserProfileParsingException 
 	 */
-	public List<UserProfile> generate(int num) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException{
+	public List<UserProfile> generate(int num) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, UserProfileParsingException{
 		
 		List<UserProfile> profiles =  new ArrayList<UserProfile>(num);	
 		for(int i = 0; i < num; i++) {

@@ -20,7 +20,7 @@ public class UserPreferences implements Clusterable {
 		
 	}
 	
-	public UserPreferences(JSONObject json) {
+	public UserPreferences(JSONObject json) throws UserProfileParsingException {
 		this.setJSONObject(json);
 	}
 	
@@ -55,7 +55,10 @@ public class UserPreferences implements Clusterable {
 		return jsonObj;
 	}
 
-	public void setJSONObject(JSONObject json) {
+	public void setJSONObject(JSONObject json) throws UserProfileParsingException {
+		
+		if(!json.has("default")) 
+			throw new UserProfileParsingException("Wrong JSON: Missing 'default' element.");
 			
 		//set default preferences
 		defaultPreference.setName("default");

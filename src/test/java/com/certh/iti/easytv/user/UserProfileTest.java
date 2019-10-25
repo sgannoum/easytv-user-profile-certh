@@ -31,7 +31,7 @@ public class UserProfileTest {
 	}
 	
 	@Test
-	public void test_constructor() throws IOException {
+	public void test_constructor() throws IOException, UserProfileParsingException {
 		UserProfile userProfile1 = new UserProfile(json);
 		UserProfile userProfile2 = new UserProfile( userProfile1.getUserPreferences());
 	
@@ -39,7 +39,7 @@ public class UserProfileTest {
 	}
 	
 	//@Test
-	public void test_getPoints() throws IOException {
+	public void test_getPoints() throws IOException, UserProfileParsingException {
 		
 		JSONObject jsonProfile1 = new JSONObject("{\r\n" +  
 				"  \"user_preferences\": {\r\n" + 

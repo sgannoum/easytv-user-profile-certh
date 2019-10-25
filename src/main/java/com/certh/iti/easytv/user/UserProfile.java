@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import org.apache.commons.math3.ml.clustering.Clusterable;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class UserProfile implements Clusterable {
@@ -19,14 +20,14 @@ public class UserProfile implements Clusterable {
 		num_profiles++;
 	}
 	
-	public UserProfile(UserProfile other) throws IOException {
+	public UserProfile(UserProfile other) throws IOException, UserProfileParsingException {
 		jsonObj = null;
 		setJSONObject(other.getJSONObject());
 		
 		num_profiles++;
 	}
 	
-	public UserProfile(File file) throws IOException {
+	public UserProfile(File file) throws IOException, JSONException, UserProfileParsingException {
 		jsonObj = null;
 		
 		String line;
@@ -41,7 +42,7 @@ public class UserProfile implements Clusterable {
 		num_profiles++;
 	}
 	
-	public UserProfile(JSONObject json) throws IOException {
+	public UserProfile(JSONObject json) throws IOException, UserProfileParsingException {
 		jsonObj = null;
 		setJSONObject(json);
 		
@@ -63,7 +64,12 @@ public class UserProfile implements Clusterable {
 	}
 	
 	
-	public void setJSONObject(JSONObject json) {		
+	public void setJSONObject(JSONObject json) throws UserProfileParsingException {	
+		
+		if(!json.has("user_preferences")) {
+			throw new UserProfileParsingException("Wrong JSON: Missing 'user_preferences' element.");
+		}
+		
 		userPreferences.setJSONObject(json.getJSONObject("user_preferences"));
 		points = null;
 		jsonObj = json;

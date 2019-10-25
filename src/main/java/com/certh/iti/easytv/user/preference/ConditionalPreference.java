@@ -8,6 +8,8 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.user.UserProfileParsingException;
+
 
 
 public class ConditionalPreference extends Preference {
@@ -18,13 +20,13 @@ public class ConditionalPreference extends Preference {
 		super();
 	}
 	
-	public ConditionalPreference(String name, Map<String, Object> entries, List<Condition> conditions) {
+	public ConditionalPreference(String name, Map<String, Object> entries, List<Condition> conditions) throws UserProfileParsingException {
 		super(name, entries);
 		this.conditions.addAll(conditions);
 		this.jsonObj = null;
 	}
 	
-	public ConditionalPreference(String name, JSONObject json) {
+	public ConditionalPreference(String name, JSONObject json) throws UserProfileParsingException {
 		super();
 		this.setName(name);
 		this.setJSONObject(json);
@@ -40,7 +42,7 @@ public class ConditionalPreference extends Preference {
 	}
 
 	@Override
-	public void setJSONObject(JSONObject json) {
+	public void setJSONObject(JSONObject json) throws UserProfileParsingException {
 		//clear up old ones
 		conditions.clear();
 		

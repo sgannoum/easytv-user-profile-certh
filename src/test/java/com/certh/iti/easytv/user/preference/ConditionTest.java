@@ -2,46 +2,50 @@ package com.certh.iti.easytv.user.preference;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import com.certh.iti.easytv.user.UserProfileParsingException;
 
 public class ConditionTest {
 	
 	
 	@Test
-	public void test_condition_construction() {
+	public void test_condition_construction() throws UserProfileParsingException {
 
 		List<Object> operands_One = new ArrayList<Object>();
 		List<Object> operands_Two = new ArrayList<Object>();
 		List<Object> operands_MoreThanTwo= new ArrayList<Object>();
 		
-		JSONObject jsonCondition1 = new JSONObject("{\r\n" + 
-				"              \"type\": \"ge\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
-				"              ]\r\n" + 
+		JSONObject jsonCondition1 = new JSONObject("{" + 
+				"              \"type\": \"ge\"," + 
+				"              \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/time\"," + 
+				"                \"2019-11-30T09:47:47.619Z\"," + 
+				"              ]" + 
 				"            }");
 		
 		
-		JSONObject jsonCondition2 = new JSONObject("{\r\n" + 
-				"              \"type\": \"le\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
-				"              ]\r\n" + 
+		JSONObject jsonCondition2 = new JSONObject("{" + 
+				"              \"type\": \"le\"," + 
+				"              \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/time\"," + 
+				"                \"2019-11-30T09:47:47.619Z\"," + 
+				"              ]" + 
 				"            }");
 		
-		JSONObject jsonCondition3 = new JSONObject("{\r\n" + 
-				"          \"type\": \"ne\",\r\n" + 
-				"          \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/location\",\r\n" + 
-				"            \"sp\"\r\n" + 
-				"          ]\r\n" + 
+		JSONObject jsonCondition3 = new JSONObject("{" + 
+				"          \"type\": \"ne\"," + 
+				"          \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/location\"," + 
+				"            \"es\"" + 
+				"          ]" + 
 				"        }");
 		
 		
@@ -64,7 +68,7 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void test_incompatibility_type_condition() {
+	public void test_incompatibility_type_condition() throws UserProfileParsingException {
 
 		List<IllegalStateException> expectedExceptions = new ArrayList<IllegalStateException>();
 		List<IllegalStateException> actualExceptions = new ArrayList<IllegalStateException>();
@@ -73,29 +77,29 @@ public class ConditionTest {
 		List<Object> operands_Two = new ArrayList<Object>();
 		List<Object> operands_MoreThanTwo= new ArrayList<Object>();
 		
-		JSONObject jsonCondition1 = new JSONObject("{\r\n" + 
-				"              \"type\": \"ge\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
-				"              ]\r\n" + 
+		JSONObject jsonCondition1 = new JSONObject("{" + 
+				"              \"type\": \"ge\"," + 
+				"              \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/time\"," + 
+				"                \"2019-11-30T09:47:47.619Z\"," + 
+				"              ]" + 
 				"            }");
 		
 		
-		JSONObject jsonCondition2 = new JSONObject("{\r\n" + 
-				"              \"type\": \"le\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
-				"              ]\r\n" + 
+		JSONObject jsonCondition2 = new JSONObject("{" + 
+				"              \"type\": \"le\"," + 
+				"              \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/time\"," + 
+				"                \"2019-11-30T09:47:47.619Z\"," + 
+				"              ]" + 
 				"            }");
 		
-		JSONObject jsonCondition3 = new JSONObject("{\r\n" + 
-				"          \"type\": \"ne\",\r\n" + 
-				"          \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/location\",\r\n" + 
-				"            \"sp\"\r\n" + 
-				"          ]\r\n" + 
+		JSONObject jsonCondition3 = new JSONObject("{" + 
+				"          \"type\": \"ne\"," + 
+				"          \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/location\"," + 
+				"            \"es\"" + 
+				"          ]" + 
 				"        }");
 		
 		
@@ -136,16 +140,16 @@ public class ConditionTest {
 	}
 	
 	@Test(expectedExceptions=IllegalArgumentException.class)
-	public void test_unknown_condition() {
+	public void test_unknown_condition() throws UserProfileParsingException {
 
 		List<Object> operands_One = new ArrayList<Object>();
 		
-		JSONObject jsonCondition1 = new JSONObject("{\r\n" + 
-				"              \"type\": \"ge\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-				"                \"2019-11-30T09:47:47.619Z\"\r\n" + 
-				"              ]\r\n" + 
+		JSONObject jsonCondition1 = new JSONObject("{" + 
+				"              \"type\": \"ge\"," + 
+				"              \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/time\"," + 
+				"                \"2019-11-30T09:47:47.619Z\"" + 
+				"              ]" + 
 				"            }");
 		
 		operands_One.add(new Condition(jsonCondition1));
@@ -159,22 +163,22 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void test_condition_equality_without_inner_conditions() {
+	public void test_condition_equality_without_inner_conditions() throws JSONException, UserProfileParsingException {
 
 		List<Condition> actualConditions= new ArrayList<Condition>();
 		List<Condition> expectedConditions= new ArrayList<Condition>();
 		List<Object> expectedOperands = new ArrayList<Object>();
 		
-		JSONObject jsonCondition1 = new JSONObject("{\"conditions\": [\r\n" + 
-				"        {\r\n" + 
-				"          \"type\": \"and\",\r\n" + 
-				"          \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
-				"                \"http://registry.easytv.eu/context/location\",\r\n" + 
-				"                \"fr\"\r\n" + 
-				"          ]\r\n" + 
-				"        }\r\n" + 
+		JSONObject jsonCondition1 = new JSONObject("{\"conditions\": [" + 
+				"        {" + 
+				"          \"type\": \"and\"," + 
+				"          \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/time\"," + 
+				"                \"09:47:47\"," + 
+				"                \"http://registry.easytv.eu/context/location\"," + 
+				"                \"gr\"" + 
+				"          ]" + 
+				"        }" + 
 				"      ]}");
 		
 		
@@ -182,54 +186,54 @@ public class ConditionTest {
 		for(int i = 0 ; i < jsonConditions.length(); i++) 
 			actualConditions.add(new Condition(jsonConditions.getJSONObject(i)));
 		
-		expectedConditions.add(new Condition("AND", Arrays.asList("http://registry.easytv.eu/context/time", "2019-11-30T09:47:47.619Z", 
-																	"http://registry.easytv.eu/context/location", "fr")
+		expectedConditions.add(new Condition("AND", Arrays.asList("http://registry.easytv.eu/context/time", "09:47:47", 
+																	"http://registry.easytv.eu/context/location", "gr")
 																								  ));
 
 		Assert.assertEquals(actualConditions, expectedConditions);
 	}
 	
 	@Test
-	public void test_condition_proper_construction() {
+	public void test_condition_proper_construction() throws JSONException, UserProfileParsingException {
 
 		List<Condition> actualConditions= new ArrayList<Condition>();
 		List<Condition> expectedConditions= new ArrayList<Condition>();
 		List<Object> expectedOperands = new ArrayList<Object>();
 		
-		JSONObject jsonCondition1 = new JSONObject("{\"conditions\": [\r\n" + 
-													"        {\r\n" + 
-													"          \"type\": \"and\",\r\n" + 
-													"          \"operands\": [\r\n" + 
-													"            {\r\n" + 
-													"              \"type\": \"ge\",\r\n" + 
-													"              \"operands\": [\r\n" + 
-													"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-													"                \"2019-01-30T09:47:47.619Z\",\r\n" + 
-													"              ]\r\n" + 
-													"            },\r\n" + 
-													"            {\r\n" + 
-													"              \"type\": \"le\",\r\n" + 
-													"              \"operands\": [\r\n" + 
-													"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-													"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
-													"              ]\r\n" + 
-													"            },\r\n" + 
-													"            {\r\n" + 
-													"              \"type\": \"ge\",\r\n" + 
-													"              \"operands\": [\r\n" + 
-													"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
-													"                10,\r\n" + 
-													"              ]\r\n" + 
-													"            },\r\n" + 
-													"            {\r\n" + 
-													"              \"type\": \"le\",\r\n" + 
-													"              \"operands\": [\r\n" + 
-													"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
-													"                90,\r\n" + 
-													"              ]\r\n" + 
-													"            }\r\n" + 
-													"          ]\r\n" + 
-													"        }\r\n" + 
+		JSONObject jsonCondition1 = new JSONObject("{\"conditions\": [" + 
+													"        {" + 
+													"          \"type\": \"and\"," + 
+													"          \"operands\": [" + 
+													"            {" + 
+													"              \"type\": \"ge\"," + 
+													"              \"operands\": [" + 
+													"                \"http://registry.easytv.eu/context/time\"," + 
+													"                \"2019-01-30T09:47:47.619Z\"," + 
+													"              ]" + 
+													"            }," + 
+													"            {" + 
+													"              \"type\": \"le\"," + 
+													"              \"operands\": [" + 
+													"                \"http://registry.easytv.eu/context/time\"," + 
+													"                \"2019-11-30T09:47:47.619Z\"," + 
+													"              ]" + 
+													"            }," + 
+													"            {" + 
+													"              \"type\": \"ge\"," + 
+													"              \"operands\": [" + 
+													"                \"http://registry.easytv.eu/context/contrast\"," + 
+													"                10," + 
+													"              ]" + 
+													"            }," + 
+													"            {" + 
+													"              \"type\": \"le\"," + 
+													"              \"operands\": [" + 
+													"                \"http://registry.easytv.eu/context/contrast\"," + 
+													"                90," + 
+													"              ]" + 
+													"            }" + 
+													"          ]" + 
+													"        }" + 
 													"      ]"
 													+ "}");
 		
@@ -248,46 +252,95 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void test_toJSON() {
+	public void test_toJSON() throws UserProfileParsingException {
 		
-		JSONObject jsonCondition1 = new JSONObject(" {\r\n" + 
-				"          \"type\": \"and\",\r\n" + 
-				"          \"operands\": [\r\n" + 
-				"            {\r\n" + 
-				"              \"type\": \"ge\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-				"                \"2019-01-30T09:47:47.619Z\",\r\n" + 
-				"              ]\r\n" + 
-				"            },\r\n" + 
-				"            {\r\n" + 
-				"              \"type\": \"le\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/time\",\r\n" + 
-				"                \"2019-11-30T09:47:47.619Z\",\r\n" + 
-				"              ]\r\n" + 
-				"            },\r\n" + 
-				"            {\r\n" + 
-				"              \"type\": \"ge\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
-				"                10,\r\n" + 
-				"              ]\r\n" + 
-				"            },\r\n" + 
-				"            {\r\n" + 
-				"              \"type\": \"le\",\r\n" + 
-				"              \"operands\": [\r\n" + 
-				"                \"http://registry.easytv.eu/context/contrast\",\r\n" + 
-				"                90,\r\n" + 
-				"              ]\r\n" + 
-				"            }\r\n" + 
-				"          ]\r\n" + 
-				"        }\r\n");
+		JSONObject jsonCondition1 = new JSONObject(" {" + 
+				"          \"type\": \"and\"," + 
+				"          \"operands\": [" + 
+				"            {" + 
+				"              \"type\": \"ge\"," + 
+				"              \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/time\"," + 
+				"                \"12:00:00\"," + 
+				"              ]" + 
+				"            }," + 
+				"            {" + 
+				"              \"type\": \"le\"," + 
+				"              \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/time\"," + 
+				"                \"12:00:00\"," + 
+				"              ]" + 
+				"            }," + 
+				"            {" + 
+				"              \"type\": \"ge\"," + 
+				"              \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/contrast\"," + 
+				"                10," + 
+				"              ]" + 
+				"            }," + 
+				"            {" + 
+				"              \"type\": \"le\"," + 
+				"              \"operands\": [" + 
+				"                \"http://registry.easytv.eu/context/contrast\"," + 
+				"                90," + 
+				"              ]" + 
+				"            }" + 
+				"          ]" + 
+				"        }");
 		
 		Condition condition1 = new Condition(jsonCondition1);
 		Condition condition2 = new Condition(condition1.getType(), condition1.getOperands());
 		
+		System.out.println(condition2.toJSON().toString(4));
+		
 		Assert.assertTrue(condition2.toJSON().similar(jsonCondition1));
+	}
+	
+	@Test
+	public void test_to() throws UserProfileParsingException {
+		
+		
+		JSONObject jsonCondition1 = new JSONObject("{\"conditions\": [" + 
+													"        {" + 
+													"          \"type\": \"and\"," + 
+													"          \"operands\": [" + 
+													"            {" + 
+													"              \"type\": \"ge\"," + 
+													"              \"operands\": [" + 
+													"                \"http://registry.easytv.eu/context/time\"," + 
+													"                \"2019-01-30T09:47:47.619Z\"," + 
+													"              ]" + 
+													"            }," + 
+													"            {" + 
+													"              \"type\": \"le\"," + 
+													"              \"operands\": [" + 
+													"                \"http://registry.easytv.eu/context/time\"," + 
+													"                \"2019-11-30T09:47:47.619Z\"," + 
+													"              ]" + 
+													"            }," + 
+													"            {" + 
+													"              \"type\": \"ge\"," + 
+													"              \"operands\": [" + 
+													"                \"http://registry.easytv.eu/context/contrast\"," + 
+													"                10," + 
+													"              ]" + 
+													"            }," + 
+													"            {" + 
+													"              \"type\": \"le\"," + 
+													"              \"operands\": [" + 
+													"                \"http://registry.easytv.eu/context/contrast\"," + 
+													"                90," + 
+													"              ]" + 
+													"            }" + 
+													"          ]" + 
+													"        }" + 
+													"      ]"
+													+ "}");
+		
+		List<Object> list = jsonCondition1.getJSONArray("conditions").toList();
+		System.out.println(list.toString());
+		HashMap<String, Object> map = (HashMap<String, Object>) list.get(0);
+		System.out.println(map.get("operands"));
 	}
 
 }

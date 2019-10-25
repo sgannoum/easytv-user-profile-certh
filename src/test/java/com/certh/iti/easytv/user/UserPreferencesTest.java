@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -31,7 +33,7 @@ public class UserPreferencesTest {
 	}
 	
 	@Test
-	public void test_constructor() {
+	public void test_constructor() throws JSONException, UserProfileParsingException {
 		UserPreferences userPreferences = new UserPreferences(json.getJSONObject("user_preferences"));
 		UserPreferences userPreferences2 = new UserPreferences(userPreferences.getDefaultPreference(), userPreferences.getConditionalPreferences());
 			

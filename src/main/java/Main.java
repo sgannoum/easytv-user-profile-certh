@@ -6,6 +6,7 @@ import java.util.List;
 
 
 import com.certh.iti.easytv.user.UserProfile;
+import com.certh.iti.easytv.user.UserProfileParsingException;
 import com.certh.iti.easytv.user.generator.UserProfileGenerator;
 
 public class Main {
@@ -19,7 +20,7 @@ public class Main {
 	private static File _OutputDirectory = null;
 	private static int profiles = 1;
 
-	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, UserProfileParsingException {
 		
 		List<UserProfile> actualProfiles;
 		UserProfileGenerator userProfileGenerator = new UserProfileGenerator();

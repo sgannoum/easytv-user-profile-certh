@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.user.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.ColorAttribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
@@ -81,13 +82,13 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		
 	}
 	
-	public Preference(String name, Map<String, Object> entries) {
+	public Preference(String name, Map<String, Object> entries) throws UserProfileParsingException {
 		this.name = name;
 		this.setPreferences(entries);
 		jsonObj = null;
 	}
 	
-	public Preference(String name, JSONObject json) {
+	public Preference(String name, JSONObject json) throws UserProfileParsingException {
 		this.name = name;
 		this.setJSONObject(json);
 	}
@@ -105,8 +106,41 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		return preferences;
 	}
 
-	public void setPreferences(Map<String, Object> entries) {
-		this.preferences.putAll(entries);
+	public void setPreferences(Map<String, Object> preferences) throws UserProfileParsingException {
+		
+		//clear up old preferences
+		this.preferences.clear();
+		
+		for (Entry<String, Object> entries : preferences.entrySet()) {
+			String key = entries.getKey();
+			Object value = entries.getValue();
+			Object handled_value;
+			
+			//Get preference attribute handler
+			Attribute handler = preferencesAttributes.get(key);
+			
+			//Unknown preference throw an exception
+			if(handler == null) {
+				throw new UserProfileParsingException("Wrong JSON: Unknown preference: '"+ key+"'");
+			} 
+
+			//Handle preference value
+			try {
+				handled_value = handler.handle(value);
+			} catch(ClassCastException e) {
+				
+				throw new UserProfileParsingException("Wrong JSON: Non compatible data value: '"+value+"' for preference '"+ key+"'");
+
+/*				System.out.println( "non compatible data type for preference:" +preferenceUri);
+				e.printStackTrace();
+				preferences.put(preferenceUri, value);
+*/
+			}
+			
+			//Add
+			this.preferences.put(key, handled_value);
+		}
+		
 		jsonObj = null;
 	}
 
@@ -114,40 +148,32 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		return toJSON();
 	}
 
-	public void setJSONObject(JSONObject json) {
+	public void setJSONObject(JSONObject json) throws UserProfileParsingException {
+		
+		//set to this json
 		this.jsonObj = json;
 		
-		//clear up old preferences
-		preferences.clear();
+		if(!json.has("preferences")) 
+			throw new UserProfileParsingException("Wrong JSON: Missing 'preferences' element.");
+		
 		
 		JSONObject jsonPreference = json.getJSONObject("preferences");
 		String[] fields = JSONObject.getNames(jsonPreference);
 		
-		//no preferences case
+		//No default preferences case
 		if(fields == null) 
-			return;
+			throw new UserProfileParsingException("Wrong JSON: Empty default preferences element.");
 		
+		//Convert to a map
+		Map<String, Object> entries = new HashMap<String, Object>();
 		for(int i = 0 ; i < fields.length; i++) {
-			String preferenceUri = fields[i];
-			Object value = jsonPreference.get(preferenceUri);
-			
-			Attribute attributeHandler = preferencesAttributes.get(preferenceUri);
-			
-			if(attributeHandler == null) {
-				//throw new IllegalStateException("Unknown preference type");
-				System.out.println("Unknow preference:" + preferenceUri);
-				preferences.put(preferenceUri, value);
-			} else {
-				//Unknown preference: dont use it for clustering
-				try {
-					preferences.put(preferenceUri, attributeHandler.handle(value));
-				} catch(ClassCastException e) {
-					System.out.println( "non compatible type for preference:" +preferenceUri);
-					e.printStackTrace();
-					preferences.put(preferenceUri, value);
-				}
-			}
+			String key = fields[i];
+			Object value = jsonPreference.get(key);
+			entries.put(key, value);
 		}
+		
+		//Set preferences
+		this.setPreferences(entries);
 	}
 	
 	public JSONObject toJSON() {
@@ -167,11 +193,16 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		List<Double> pointsList = new ArrayList<Double>();
 		
 		for(Entry<String, Attribute> entry : preferencesAttributes.entrySet()) {
-			Attribute attributeHandler = entry.getValue();
+			String prefKey = entry.getKey();
+			Attribute handler = entry.getValue();
 			
-			//get the corresponding points
-			double[] d = attributeHandler.getPoints(preferences.get(entry.getKey()));
+			//get preference value
+			Object prefValue = preferences.get(prefKey);
 			
+			//get preference points
+			double[] d = handler.getPoints(prefValue);
+			
+			//add points
 			for(int i = 0; i < d.length && pointsList.add(new Double(d[i])); i++);
 		}
 		

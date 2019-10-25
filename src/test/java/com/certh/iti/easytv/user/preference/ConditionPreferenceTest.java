@@ -1,8 +1,11 @@
 package com.certh.iti.easytv.user.preference;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import com.certh.iti.easytv.user.UserProfileParsingException;
 
 public class ConditionPreferenceTest {
 	
@@ -26,21 +29,21 @@ public class ConditionPreferenceTest {
 			"					\"type\": \"eq\",\r\n" + 
 			"					\"operands\": [\r\n" + 
 			"						\"http://registry.easytv.eu/context/location\",\r\n" + 
-			"						\"fr\"\r\n" + 
+			"						\"gr\"\r\n" + 
 			"					]\r\n" + 
 			"				  },\r\n" + 
 			"				  {\r\n" + 
 			"					\"type\": \"eq\",\r\n" + 
 			"					\"operands\": [\r\n" + 
 			"						\"http://registry.easytv.eu/context/location\",\r\n" + 
-			"						\"fr\"\r\n" + 
+			"						\"gr\"\r\n" + 
 			"					]\r\n" + 
 			"				  }\r\n" + 
 			"			]\r\n" + 
 			"		   }\r\n" + 
 			"		  ],\r\n" + 
 			"					  \"preferences\": {\r\n" + 
-			"		  \"http://registry.easytv.eu/common/content/audio/volume\": 21\r\n" + 
+			"		  \"http://registry.easytv.eu/common/volume\": 21\r\n" + 
 			"		}\r\n" + 
 			"		}\r\n" + 
 			"	  ]\r\n" + 
@@ -48,7 +51,7 @@ public class ConditionPreferenceTest {
 			" }");
 	
 	@Test
-	public void test_conditions() {
+	public void test_conditions() throws JSONException, UserProfileParsingException {
 		JSONObject jsonExpected = (JSONObject) json.getJSONObject("user_preferences").getJSONArray("conditional").get(0);
 		
 		//convert JSON preference to map
