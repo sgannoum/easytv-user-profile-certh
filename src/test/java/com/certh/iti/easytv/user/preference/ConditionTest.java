@@ -11,7 +11,7 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.certh.iti.easytv.user.UserProfileParsingException;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 
 public class ConditionTest {
 	
@@ -291,9 +291,9 @@ public class ConditionTest {
 		Condition condition1 = new Condition(jsonCondition1);
 		Condition condition2 = new Condition(condition1.getType(), condition1.getOperands());
 		
-		System.out.println(condition2.toJSON().toString(4));
+		System.out.println(condition2.geJSONObject().toString(4));
 		
-		Assert.assertTrue(condition2.toJSON().similar(jsonCondition1));
+		Assert.assertTrue(condition2.geJSONObject().similar(jsonCondition1));
 	}
 	
 	@Test

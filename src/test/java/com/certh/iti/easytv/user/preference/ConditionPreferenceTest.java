@@ -5,48 +5,46 @@ import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.certh.iti.easytv.user.UserProfileParsingException;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 
 public class ConditionPreferenceTest {
 	
-	private JSONObject json = new JSONObject("{  \"user_preferences\": {\r\n" + 
-			"	\"default\": {\r\n" + 
-			"	  \"preferences\": {\r\n" +  
-			"		\"http://registry.easytv.eu/common/display/screen/enhancement/font/size\": 13,\r\n" + 
-			"		\"http://registry.easytv.eu/common/display/screen/enhancement/font/type\": \"sans-serif\",\r\n" + 
-			"		\"http://registry.easytv.eu/common/display/screen/enhancement/background\": \"#ffffff\",\r\n" + 
-			"		\"http://registry.easytv.eu/common/display/screen/enhancement/font/color\": \"#000000\"\r\n" + 
-			"	  }\r\n" + 
-			"	},\r\n" + 
-			"	\"conditional\": [\r\n" + 
-			"	  {\r\n" + 
-			"		\"name\": \"condition_1\",\r\n" + 
-			"		\"conditions\": [\r\n" + 
-			"		 {\r\n" + 
-			"			\"type\": \"and\",\r\n" + 
-			"			\"operands\": [\r\n" + 
-			"				  {\r\n" + 
-			"					\"type\": \"eq\",\r\n" + 
-			"					\"operands\": [\r\n" + 
-			"						\"http://registry.easytv.eu/context/location\",\r\n" + 
-			"						\"gr\"\r\n" + 
-			"					]\r\n" + 
-			"				  },\r\n" + 
-			"				  {\r\n" + 
-			"					\"type\": \"eq\",\r\n" + 
-			"					\"operands\": [\r\n" + 
-			"						\"http://registry.easytv.eu/context/location\",\r\n" + 
-			"						\"gr\"\r\n" + 
-			"					]\r\n" + 
-			"				  }\r\n" + 
-			"			]\r\n" + 
-			"		   }\r\n" + 
-			"		  ],\r\n" + 
-			"					  \"preferences\": {\r\n" + 
-			"		  \"http://registry.easytv.eu/common/volume\": 21\r\n" + 
-			"		}\r\n" + 
-			"		}\r\n" + 
-			"	  ]\r\n" + 
+	private JSONObject json = new JSONObject("{  \"user_preferences\": {" + 
+			"	\"default\": {" + 
+			"	  \"preferences\": {" +  
+			"        \"http://registry.easytv.eu/common/volume\": 100," + 
+			"        \"http://registry.easytv.eu/common/content/audio/language\": \"es\"" +
+			"	  }" + 
+			"	}," + 
+			"	\"conditional\": [" + 
+			"	  {" + 
+			"		\"name\": \"condition_1\"," + 
+			"		\"conditions\": [" + 
+			"		 {" + 
+			"			\"type\": \"and\"," + 
+			"			\"operands\": [" + 
+			"				  {" + 
+			"					\"type\": \"eq\"," + 
+			"					\"operands\": [" + 
+			"						\"http://registry.easytv.eu/context/location\"," + 
+			"						\"gr\"" + 
+			"					]" + 
+			"				  }," + 
+			"				  {" + 
+			"					\"type\": \"eq\"," + 
+			"					\"operands\": [" + 
+			"						\"http://registry.easytv.eu/context/location\"," + 
+			"						\"gr\"" + 
+			"					]" + 
+			"				  }" + 
+			"			]" + 
+			"		   }" + 
+			"		  ]," + 
+			"					  \"preferences\": {" + 
+			"		  \"http://registry.easytv.eu/common/volume\": 21" + 
+			"		}" + 
+			"		}" + 
+			"	  ]" + 
 			"	}" +
 			" }");
 	
@@ -65,7 +63,7 @@ public class ConditionPreferenceTest {
 		
 		//use it to create a new preference object
 		ConditionalPreference preference2 = new ConditionalPreference("condition_1", preference1.getPreferences(), preference1.getConditions());
-		JSONObject jsonFound = preference2.toJSON();
+		JSONObject jsonFound = preference2.getJSONObject();
 		
 		Assert.assertTrue(jsonFound.similar(jsonExpected), "\nExpected: "+jsonExpected.toString(4)+"\n Found: "+jsonFound.toString(4)+"\n");
 	}

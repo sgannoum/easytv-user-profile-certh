@@ -7,6 +7,7 @@ import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.ConditionalPreference;
 import com.certh.iti.easytv.user.preference.Preference;
 
@@ -50,7 +51,21 @@ public class UserPreferences implements Clusterable {
 
 	public JSONObject getJSONObject() {
 		if(jsonObj == null) {
-			toJSON();
+
+			jsonObj = new JSONObject();
+			
+			//add default preferences
+			jsonObj.put("default", defaultPreference.getJSONObject());
+			
+			//add conditional preferences
+			if(!conditionalPreferences.isEmpty()) {
+				JSONArray conditional = new JSONArray();
+				
+				for (int i = 0; i < conditionalPreferences.size(); i++) 
+					conditional.put(conditionalPreferences.get(i).getJSONObject());
+				
+				jsonObj.put("conditional", conditional);
+			}
 		}
 		return jsonObj;
 	}
@@ -77,32 +92,12 @@ public class UserPreferences implements Clusterable {
 		
 		this.jsonObj = json;
 	}
-	
-	public JSONObject toJSON() {
-		if(jsonObj == null) {
 
-			jsonObj = new JSONObject();
-			
-			//add default preferences
-			jsonObj.put("default", defaultPreference.toJSON());
-			
-			//add conditional preferences
-			if(!conditionalPreferences.isEmpty()) {
-				JSONArray conditional = new JSONArray();
-				
-				for (int i = 0; i < conditionalPreferences.size(); i++) 
-					conditional.put(conditionalPreferences.get(i).getJSONObject());
-				
-				jsonObj.put("conditional", conditional);
-			}
-		}
-		return jsonObj;
-	}
-
+	@Override
 	public double[] getPoint() {
 		return this.getDefaultPreference().getPoint();
 		
-		//TO-DO include the conditional preferences
+		//TODO include the conditional preferences
 	}
 
 }

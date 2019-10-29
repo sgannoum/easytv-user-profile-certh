@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.certh.iti.easytv.user.config.Config;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 
 public class UserProfileTest {
 	

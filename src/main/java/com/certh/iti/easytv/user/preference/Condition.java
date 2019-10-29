@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.UserProfileParsingException;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
@@ -51,6 +51,7 @@ public class Condition {
 		this.type = type;
 		this.setOperands(operands);
 		
+		//Initialize json
 		jsonObj =  null;
 	}
 	
@@ -68,6 +69,18 @@ public class Condition {
 	}
 	
 	public JSONObject geJSONObject() {
+		if(jsonObj == null) {
+			jsonObj = new JSONObject();
+			JSONArray jsonOperands = new JSONArray();
+
+			for(Object operand : operands) 
+				if(Condition.class.isInstance(operand)) 
+					jsonOperands.put(((Condition) operand).geJSONObject());
+				else jsonOperands.put(operand);
+					
+			jsonObj.put("type", type.toLowerCase());
+			jsonObj.put("operands", jsonOperands);
+		}
 		return jsonObj;
 	}
 
@@ -94,27 +107,6 @@ public class Condition {
 		checkTypeOperandCompatibility(type, operands);
 
 		this.jsonObj = jsonObj;
-	}
-	
-	/**
-	 * Convert to JSON
-	 * 
-	 * @return
-	 */
-	public JSONObject toJSON() {
-		if(jsonObj == null) {
-			jsonObj = new JSONObject();
-			JSONArray jsonOperands = new JSONArray();
-
-			for(Object operand : operands) 
-				if(Condition.class.isInstance(operand)) 
-					jsonOperands.put(((Condition) operand).toJSON());
-				else jsonOperands.put(operand);
-					
-			jsonObj.put("type", type.toLowerCase());
-			jsonObj.put("operands", jsonOperands);
-		}
-		return jsonObj;
 	}
 	
 	@Override

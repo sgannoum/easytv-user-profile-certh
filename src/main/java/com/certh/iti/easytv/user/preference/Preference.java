@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.UserProfileParsingException;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.ColorAttribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
@@ -74,6 +74,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		
     }};
 	
+    protected double[] points;
 	protected String name = new String();
 	protected Map<String, Object> preferences = new HashMap<String, Object>();
 	protected JSONObject jsonObj = null;
@@ -100,6 +101,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	public void setName(String name) {
 		this.name = name;
 		jsonObj = null;
+	}
+	
+	@Override
+	public double[] getPoint() {	
+		return points;
 	}
 
 	public Map<String, Object> getPreferences() {
@@ -141,11 +147,24 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			this.preferences.put(key, handled_value);
 		}
 		
+		//Update points
+		this.setPoint();
+		
+		//Update json
 		jsonObj = null;
 	}
 
 	public JSONObject getJSONObject() {
-		return toJSON();
+		if(jsonObj == null) {
+			jsonObj = new JSONObject();
+			JSONObject jsonPreferences = new JSONObject();
+			
+			for(Entry<String, Object> entry : preferences.entrySet()) 
+				jsonPreferences.put(entry.getKey(), entry.getValue());
+			
+			jsonObj.put("preferences", jsonPreferences);
+		}
+		return jsonObj;
 	}
 
 	public void setJSONObject(JSONObject json) throws UserProfileParsingException {
@@ -172,24 +191,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			entries.put(key, value);
 		}
 		
-		//Set preferences
+		//Update preferences
 		this.setPreferences(entries);
 	}
 	
-	public JSONObject toJSON() {
-		if(jsonObj == null) {
-			jsonObj = new JSONObject();
-			JSONObject jsonPreferences = new JSONObject();
-			
-			for(Entry<String, Object> entry : preferences.entrySet()) 
-				jsonPreferences.put(entry.getKey(), entry.getValue());
-			
-			jsonObj.put("preferences", jsonPreferences);
-		}
-		return jsonObj;
-	}
-	
-	public double[] getPoint() {
+	private void setPoint() {
 		List<Double> pointsList = new ArrayList<Double>();
 		
 		for(Entry<String, Attribute> entry : preferencesAttributes.entrySet()) {
@@ -207,12 +213,10 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		}
 		
 		//convert to double[]
-		double[] points = new double[pointsList.size()];
+		points = new double[pointsList.size()];
 		for(int i = 0; i < pointsList.size(); i++) {
 			points[i] = pointsList.get(i).doubleValue();
 		}
-		
-		return points;
 	}
 
 	/**
@@ -243,7 +247,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	
 	@Override
 	public String toString() {
-		return this.toJSON().toString(4);
+		return this.getJSONObject().toString(4);
 	}
 	
 	/**

@@ -8,7 +8,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.UserProfileParsingException;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 
 
 
@@ -59,11 +59,11 @@ public class ConditionalPreference extends Preference {
 	}
 	
 	@Override
-	public JSONObject toJSON() {
+	public JSONObject getJSONObject() {
 		if(jsonObj == null) {
 			
-			//Convert the preference section
-			super.toJSON();
+			//Convert the condition preference section first
+			super.getJSONObject();
 			
 			//Add condition name
 			jsonObj.put("name", name);
@@ -71,7 +71,7 @@ public class ConditionalPreference extends Preference {
 			//Add condition section
 			JSONArray jsonConditions = new JSONArray();
 			for(int i = 0; i < conditions.size(); i++) 
-				jsonConditions.put(conditions.get(i).toJSON());
+				jsonConditions.put(conditions.get(i).geJSONObject());
 			
 			//Add condition section to the JSON file
 			jsonObj.put("conditions", jsonConditions);
@@ -82,7 +82,7 @@ public class ConditionalPreference extends Preference {
 	
 	@Override
 	public String toString() {
-		return this.toJSON().toString(4);
+		return this.getJSONObject().toString(4);
 	}
 	
 }

@@ -1,4 +1,4 @@
-package com.certh.iti.easytv.user;
+package com.certh.iti.easytv.user.exceptions;
 
 public class UserProfileParsingException extends java.lang.Exception{
 
