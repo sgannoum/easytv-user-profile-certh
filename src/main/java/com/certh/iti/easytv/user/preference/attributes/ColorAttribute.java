@@ -1,6 +1,7 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
 import java.awt.Color;
+import java.util.Random;
 
 public class ColorAttribute extends NumericAttribute {
 
@@ -20,6 +21,11 @@ public class ColorAttribute extends NumericAttribute {
 	@Override
 	public double[] getMissingPoint() {
 		return new double[] {missingValue, missingValue, missingValue};
+	}
+	
+	@Override
+	public Object getRandomValue(Random rand) {
+		return "#" + String.format("%02X", rand.nextInt(255)) +String.format("%02X", rand.nextInt(255)) + String.format("%02X", rand.nextInt(255));	
 	}
 	
 	@Override

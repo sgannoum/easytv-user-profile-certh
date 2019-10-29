@@ -1,6 +1,8 @@
 package com.certh.iti.easytv.user.generator;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,12 +12,9 @@ import java.util.Random;
 
 import com.certh.iti.easytv.user.UserPreferences;
 import com.certh.iti.easytv.user.UserProfile;
-import com.certh.iti.easytv.user.UserProfileParsingException;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
-import com.certh.iti.easytv.user.preference.attributes.BinaryAttribute;
-import com.certh.iti.easytv.user.preference.attributes.ColorAttribute;
-import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
 
 public class UserProfileGenerator {
 	
@@ -29,20 +28,64 @@ public class UserProfileGenerator {
 		rand = new Random(seed);
 	}
 	
+	public void setSeed(long seed) {
+		rand.setSeed(seed);
+	}
+	
+	public UserProfile getNextProfile() throws UserProfileParsingException, IOException{
+		
+			Map<String, Object> map = new HashMap<String, Object>();
+
+			for(final Entry<String, Attribute> e : Preference.preferencesAttributes.entrySet()) {
+				Attribute oprand = e.getValue();
+				map.put(e.getKey(), oprand.getRandomValue(rand));
+			}
+			
+			Preference defaultPreference = new Preference("default", map);
+			List<Preference> preferences = new ArrayList<Preference>();
+			UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
+		
+		return new UserProfile(userPreferences);
+	}
+	
+	/**
+	 * Generate profiles to output directory
+	 * 	
+	 * @param num
+	 * @param outDir
+	 * @throws UserProfileParsingException
+	 * @throws IOException
+	 */
+	public void generateProfiles(int num, File outDir) throws UserProfileParsingException, IOException{
+		
+		for(int i = 0; i < num; i++) {
+			
+			UserProfile userProfile = getNextProfile();
+			
+			String fileName = outDir.getPath() + File.separatorChar + "userProfile_" + i + ".json";
+			File file = new File(fileName);
+			
+			if(!file.exists())
+				file.createNewFile();
+			
+			PrintWriter writer = new PrintWriter(file);
+			userProfile.getJSONObject().write(writer, 4, 0);
+			writer.close();
+			
+			System.out.println("User profile: "+ fileName +" has been created");
+		}
+	}
+	
+	
 	/**
 	 * Generate randomly initiated set of user profiles. 
 	 * 
 	 * @param num
 	 * @return
-	 * @throws InstantiationException
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws NoSuchMethodException
-	 * @throws SecurityException
 	 * @throws UserProfileParsingException 
+	 * @throws IOException 
 	 */
-	public List<UserProfile> generate(int num) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException, UserProfileParsingException{
+	public List<UserProfile> getProfiles(int num) throws UserProfileParsingException, IOException{
 		
 		List<UserProfile> profiles =  new ArrayList<UserProfile>(num);	
 		for(int i = 0; i < num; i++) {
@@ -51,42 +94,18 @@ public class UserProfileGenerator {
 
 			for(final Entry<String, Attribute> e : Preference.preferencesAttributes.entrySet()) {
 				Attribute oprand = e.getValue();
-				double[] range = oprand.getRange();
-				Object literal = null;
-				
-
-				if (ColorAttribute.class.isInstance(oprand)) {
-					literal ="#" + String.format("%02X", rand.nextInt(255)) +String.format("%02X", rand.nextInt(255)) + String.format("%02X", rand.nextInt(255));		
-				}
-				else if (BinaryAttribute.class.isInstance(oprand)) {
-					literal = rand.nextInt(1) == 0 ? false : true;	
-				}
-				else if (NominalAttribute.class.isInstance(oprand)) {
-					NominalAttribute nominal = NominalAttribute.class.cast(oprand);
-					int state = rand.nextInt((int) nominal.getRange()[1]);
-					literal = nominal.getStates()[state];	
-				}
-				else {
-					int root = (int) (range[1] - range[0]);
-					literal = (root / Math.abs(root)) * rand.nextInt(Math.abs(root)) + range[0];
-					
-					double res = (double) literal;
-					if(res < range[0] || res > range[1]) {
-						throw new IllegalArgumentException("Value "+res+" out of range ["+range[0]+", "+range[1]+"]");
-					}
-				}
-				
-				map.put(e.getKey(), literal);
+				map.put(e.getKey(), oprand.getRandomValue(rand));
 			}
 			
 			Preference defaultPreference = new Preference("default", map);
 			List<Preference> preferences = new ArrayList<Preference>();
 			UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
 			
-			try {
-				profiles.add(new UserProfile(userPreferences));
-			} catch(Exception e) {}
+			
+			profiles.add(new UserProfile(userPreferences));
+
 		}
+		
 		return profiles;
 	}
 

@@ -1,5 +1,7 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import java.util.Random;
+
 public abstract class Attribute {
 
 	protected double missingValue = -1.0;
@@ -27,6 +29,24 @@ public abstract class Attribute {
 	}
 	
 	public abstract double[] getPoints(Object literal);
+	
+	/**
+	 * Generate a random value 
+	 * 
+	 * @param rand
+	 * @return
+	 */
+	public Object getRandomValue(Random rand) {
+		int root = (int) (range[1] - range[0]);
+		Object literal = (root / Math.abs(root)) * rand.nextInt(Math.abs(root)) + range[0];
+		
+		double res = (double) literal;
+		if(res < range[0] || res > range[1]) {
+			throw new IllegalArgumentException("Value "+res+" out of range ["+range[0]+", "+range[1]+"]");
+		}
+		
+		return literal;
+	}
 	
 	/**
 	 * Create on operand instance from the given value

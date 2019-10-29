@@ -1,5 +1,7 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import java.util.Random;
+
 public class IntegerAttribute extends NumericAttribute {
 
 	public IntegerAttribute(double[] range) {
@@ -8,6 +10,12 @@ public class IntegerAttribute extends NumericAttribute {
 
 	public IntegerAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
+	}
+	
+	@Override
+	public Object getRandomValue(Random rand) {
+		Double value = (Double) super.getRandomValue(rand);
+		return value.intValue();
 	}
 
 	@Override

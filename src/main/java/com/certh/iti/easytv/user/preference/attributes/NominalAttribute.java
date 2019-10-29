@@ -1,5 +1,7 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import java.util.Random;
+
 public class NominalAttribute extends Attribute implements INominal {
 
 	protected int state;
@@ -42,6 +44,12 @@ public class NominalAttribute extends Attribute implements INominal {
 	@Override
 	public String toString() {
 		return states[state];
+	}
+	
+	@Override
+	public Object getRandomValue(Random rand) {
+		int state = rand.nextInt((int) this.range[1]);
+		return this.states[state];	
 	}
 
 	@Override
