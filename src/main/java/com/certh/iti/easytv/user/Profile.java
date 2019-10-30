@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 
-public class ContextualUserProfile implements Clusterable {
+public class Profile implements Clusterable {
 	
 	private static long num_profiles = 0;
 	
@@ -22,18 +22,18 @@ public class ContextualUserProfile implements Clusterable {
 	private UserProfile userProfile = new UserProfile();
 	private JSONObject jsonObj = null;
 	
-	public ContextualUserProfile() {		
+	public Profile() {		
 		num_profiles++;
 	}
 	
-	public ContextualUserProfile(ContextualUserProfile other) throws IOException, UserProfileParsingException {
+	public Profile(Profile other) throws IOException, UserProfileParsingException {
 		jsonObj = null;
 		setJSONObject(other.getJSONObject());
 		
 		num_profiles++;
 	}
 	
-	public ContextualUserProfile(File file) throws IOException, JSONException, UserProfileParsingException {
+	public Profile(File file) throws IOException, JSONException, UserProfileParsingException {
 		jsonObj = null;
 		
 		String line;
@@ -51,14 +51,14 @@ public class ContextualUserProfile implements Clusterable {
 		num_profiles++;
 	}
 	
-	public ContextualUserProfile(JSONObject json) throws IOException, UserProfileParsingException {
+	public Profile(JSONObject json) throws IOException, UserProfileParsingException {
 		jsonObj = null;
 		setJSONObject(json);
 		
 		num_profiles++;
 	}
 	
-	public ContextualUserProfile(UserProfile userProfile, UserContext userContext, UserContent userContent) throws IOException, UserProfileParsingException {
+	public Profile(UserProfile userProfile, UserContext userContext, UserContent userContent) throws IOException, UserProfileParsingException {
 		
 		this.userProfile = userProfile;
 		this.userContext = userContext == null ? this.userContext : userContext;
@@ -71,6 +71,18 @@ public class ContextualUserProfile implements Clusterable {
 		jsonObj = this.getJSONObject();
 		
 		num_profiles++;
+	}
+	
+	public UserProfile getUserProfile() {
+		return this.userProfile;
+	}
+	
+	public UserContext getUserContext() {
+		return this.userContext;
+	}
+	
+	public UserContent getUserContent() {
+		return this.userContent;
 	}
 	
 	/**
@@ -97,11 +109,11 @@ public class ContextualUserProfile implements Clusterable {
 	public void setJSONObject(JSONObject json) throws UserProfileParsingException {	
 		
 		if(!json.has("user_id")) {
-			throw new UserProfileParsingException("Wrong JSON: Missing 'user_id' element.");
+			throw new UserProfileParsingException("Missing 'user_id' element.");
 		}
 		
 		if(!json.has("user_profile")) {
-			throw new UserProfileParsingException("Wrong JSON: Missing 'user_profile' element.");
+			throw new UserProfileParsingException("Missing 'user_profile' element.");
 		}
 		
 		userId = json.getInt("user_id");
@@ -126,8 +138,8 @@ public class ContextualUserProfile implements Clusterable {
 	public boolean equals(Object obj) {
 		if(obj == null) return false;
 		if(obj == this) return true;
-		if(!ContextualUserProfile.class.isInstance(obj)) return false;
-		ContextualUserProfile other = (ContextualUserProfile) obj;
+		if(!Profile.class.isInstance(obj)) return false;
+		Profile other = (Profile) obj;
 		return getJSONObject().similar(other.getJSONObject());
 	}
 	

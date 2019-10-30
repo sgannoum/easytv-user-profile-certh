@@ -15,13 +15,11 @@ public class UserProfile implements Clusterable {
 	private UserPreferences userPreferences = new UserPreferences();
 	private JSONObject jsonObj = null;
 	
-	public UserProfile() {		
-	}
+	public UserProfile() {		}
 	
 	public UserProfile(UserProfile other) throws IOException, UserProfileParsingException {
 		jsonObj = null;
 		setJSONObject(other.getJSONObject());
-		
 	}
 	
 	public UserProfile(File file) throws IOException, JSONException, UserProfileParsingException {
@@ -85,7 +83,7 @@ public class UserProfile implements Clusterable {
 	public void setJSONObject(JSONObject json) throws UserProfileParsingException {	
 		
 		if(!json.has("user_preferences")) 
-			throw new UserProfileParsingException("Wrong JSON: Missing 'user_preferences' element.");
+			throw new UserProfileParsingException("Missing 'user_preferences' element.");
 		
 		//Update preferences
 		userPreferences.setJSONObject(json.getJSONObject("user_preferences"));

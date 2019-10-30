@@ -93,10 +93,10 @@ public class Condition {
 	public void setJSONObject(JSONObject jsonObj) throws UserProfileParsingException {
 		
 		if(!jsonObj.has("type"))
-			throw new UserProfileParsingException("Wrong JSON: Missing condition 'type' element."+ jsonObj.toString());
+			throw new UserProfileParsingException("Missing condition 'type' element."+ jsonObj.toString());
 		
 		if(!jsonObj.has("operands"))
-			throw new UserProfileParsingException("Wrong JSON: Missing condition 'operands' element: "+ jsonObj.toString());
+			throw new UserProfileParsingException("Missing condition 'operands' element: "+ jsonObj.toString());
 		
 		type = jsonObj.getString("type");
 		
@@ -204,10 +204,10 @@ public class Condition {
 					HashMap<String, Object> conditionOperands = (HashMap<String, Object>) operand;
 					
 					if(!conditionOperands.containsKey("type"))
-						throw new UserProfileParsingException("Wrong JSON: Missing condition 'type' element.");
+						throw new UserProfileParsingException("Missing condition 'type' element.");
 					
 					if(!conditionOperands.containsKey("operands"))
-						throw new UserProfileParsingException("Wrong JSON: Missing condition 'operands' element.");
+						throw new UserProfileParsingException("Missing condition 'operands' element.");
 					
 					String entry_type = (String) conditionOperands.get("type");
 					List<Object> entry_operands = (List<Object>) conditionOperands.get("operands");

@@ -33,8 +33,7 @@ public class UserContext implements Clusterable{
     }};
 	
 	
-	public UserContext() {
-	}
+	public UserContext() {}
     
 	public UserContext(JSONObject json) throws UserContextParsingException {
 		setJSONObject(json);
@@ -44,8 +43,11 @@ public class UserContext implements Clusterable{
 	public double[] getPoint() {
 		return points;
 	}
-
 	
+	public Map<String, Object> getContext(){
+		return context;
+	}
+
 	public JSONObject getJSONObject() {
 		if(jsonObj == null) {
 			jsonObj = new JSONObject();
@@ -82,7 +84,7 @@ public class UserContext implements Clusterable{
 				TimeAttribute.convertDate(timeStr);
 			} catch (ParseException e) {
 				// TODO Add context exceptions
-				throw new UserContextParsingException("Wrong JSON: Wrong context time format "+ timeStr);
+				throw new UserContextParsingException("Wrong context time format "+ timeStr);
 			}
 			
 			context.put("http://registry.easytv.eu/context/time", timeStr);

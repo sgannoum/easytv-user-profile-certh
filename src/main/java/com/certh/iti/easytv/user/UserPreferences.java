@@ -17,9 +17,7 @@ public class UserPreferences implements Clusterable {
 	private List<Preference> conditionalPreferences = new ArrayList<Preference>();
 	private JSONObject jsonObj = null;
 	
-	public UserPreferences() {
-		
-	}
+	public UserPreferences() {}
 	
 	public UserPreferences(JSONObject json) throws UserProfileParsingException {
 		this.setJSONObject(json);
@@ -73,7 +71,7 @@ public class UserPreferences implements Clusterable {
 	public void setJSONObject(JSONObject json) throws UserProfileParsingException {
 		
 		if(!json.has("default")) 
-			throw new UserProfileParsingException("Wrong JSON: Missing 'default' element.");
+			throw new UserProfileParsingException("Missing 'default' element.");
 			
 		//set default preferences
 		defaultPreference.setName("default");
@@ -97,7 +95,8 @@ public class UserPreferences implements Clusterable {
 	public double[] getPoint() {
 		return this.getDefaultPreference().getPoint();
 		
-		//TODO include the conditional preferences
+		//TODO 
+		//include the conditional preferences
 	}
 
 }

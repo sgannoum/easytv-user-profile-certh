@@ -79,9 +79,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	protected Map<String, Object> preferences = new HashMap<String, Object>();
 	protected JSONObject jsonObj = null;
 	
-	public Preference() {
-		
-	}
+	public Preference() {}
 	
 	public Preference(String name, Map<String, Object> entries) throws UserProfileParsingException {
 		this.name = name;
@@ -127,20 +125,14 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			
 			//Unknown preference throw an exception
 			if(handler == null) {
-				throw new UserProfileParsingException("Wrong JSON: Unknown preference: '"+ key+"'");
+				throw new UserProfileParsingException("Unknown preference: '"+ key+"'");
 			} 
 
 			//Handle preference value
 			try {
 				handled_value = handler.handle(value);
-			} catch(ClassCastException e) {
-				
-				throw new UserProfileParsingException("Wrong JSON: Non compatible data value: '"+value+"' for preference '"+ key+"'");
-
-/*				System.out.println( "non compatible data type for preference:" +preferenceUri);
-				e.printStackTrace();
-				preferences.put(preferenceUri, value);
-*/
+			} catch(ClassCastException e) {	
+				throw new UserProfileParsingException("Non compatible data value: '"+value+"' for preference '"+ key+"' "+e.getMessage());
 			}
 			
 			//Add
@@ -173,7 +165,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		this.jsonObj = json;
 		
 		if(!json.has("preferences")) 
-			throw new UserProfileParsingException("Wrong JSON: Missing 'preferences' element.");
+			throw new UserProfileParsingException("Missing 'preferences' element.");
 		
 		
 		JSONObject jsonPreference = json.getJSONObject("preferences");
@@ -181,7 +173,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		
 		//No default preferences case
 		if(fields == null) 
-			throw new UserProfileParsingException("Wrong JSON: Empty default preferences element.");
+			throw new UserProfileParsingException("Empty default preferences element.");
 		
 		//Convert to a map
 		Map<String, Object> entries = new HashMap<String, Object>();
