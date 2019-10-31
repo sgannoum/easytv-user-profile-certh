@@ -64,18 +64,20 @@ public class UserContext implements Clusterable{
 		//clean up
 		context.clear();
 		
-		if(json.has("http://registry.easytv.eu/context/device")) {
+		if(json.has("http://registry.easytv.eu/context/device")) 
 			context.put("http://registry.easytv.eu/context/device", json.getString("http://registry.easytv.eu/context/device"));
-		}
 		
-		if(json.has("http://registry.easytv.eu/context/light")) {
+		
+		if(json.has("http://registry.easytv.eu/context/light")) 
 			context.put("http://registry.easytv.eu/context/light", json.getInt("http://registry.easytv.eu/context/light"));
-		}
 		
-		if(json.has("http://registry.easytv.eu/context/proximity")) {
+		
+		if(json.has("http://registry.easytv.eu/context/proximity")) 
 			context.put("http://registry.easytv.eu/context/proximity", json.getInt("http://registry.easytv.eu/context/proximity"));
-		}
-
+		
+		if(json.has("http://registry.easytv.eu/context/location")) 
+			context.put("http://registry.easytv.eu/context/location", json.getString("http://registry.easytv.eu/context/location"));
+		
 		if(json.has("http://registry.easytv.eu/context/time")) {
 			String timeStr = json.getString("http://registry.easytv.eu/context/time");
 			
@@ -90,9 +92,6 @@ public class UserContext implements Clusterable{
 			context.put("http://registry.easytv.eu/context/time", timeStr);
 		}
 		
-		if(json.has("http://registry.easytv.eu/context/location")) {
-			context.put("http://registry.easytv.eu/context/location", json.getString("http://registry.easytv.eu/context/location"));
-		}
 		
 		//Update points 
 		this.setPoints();

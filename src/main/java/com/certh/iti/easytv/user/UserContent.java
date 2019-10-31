@@ -25,6 +25,8 @@ public class UserContent implements Clusterable {
 		put("http://registry.easytv.eu/application/cs/accessibility/detection/text",  new SymmetricBinaryAttribute());
 		put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/character",  new SymmetricBinaryAttribute());
+	  
+	 // TODO convert audio and subtitles languages to multiple dimensions
 	//  put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new NominalAttribute(new String[] {"ca", "gr", "it", "es"}));
    //   put("http://registry.easytv.eu/application/cs/audio/track", new NominalAttribute(new String[] {"ca", "gr", "it", "es"}));
     }};

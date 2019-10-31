@@ -17,8 +17,8 @@ public class Profile implements Clusterable {
 	
 	private double[] points = null;
 	private int userId = -1;
-	private UserContext userContext = new UserContext();
-	private UserContent userContent = new UserContent();
+	private UserContext userContext = null;
+	private UserContent userContent = null;
 	private UserProfile userProfile = new UserProfile();
 	private JSONObject jsonObj = null;
 	
@@ -58,19 +58,21 @@ public class Profile implements Clusterable {
 		num_profiles++;
 	}
 	
-	public Profile(UserProfile userProfile, UserContext userContext, UserContent userContent) throws IOException, UserProfileParsingException {
+	public Profile(int userId, UserProfile userProfile, UserContext userContext, UserContent userContent) throws IOException, UserProfileParsingException {
 		
+		this.userId = userId;
 		this.userProfile = userProfile;
-		this.userContext = userContext == null ? this.userContext : userContext;
-		this.userContent = userContent == null ? this.userContent : userContent;
+		this.userContext = userContext;
+		this.userContent = userContent;
 
-		//initialize points
-		this.setPoints();
-		
 		//initialize json
 		jsonObj = this.getJSONObject();
-		
+
 		num_profiles++;
+	}
+	
+	public int getUserId() {
+		return this.userId;
 	}
 	
 	public UserProfile getUserProfile() {
@@ -96,11 +98,11 @@ public class Profile implements Clusterable {
 	public JSONObject getJSONObject() {
 		if(jsonObj == null) {
 			jsonObj = new JSONObject();
-			
+
 			jsonObj.put("user_id", userId);
 			jsonObj.put("user_profile", userProfile.getJSONObject());
-			jsonObj.put("user_Context", userContext.getJSONObject());
-			jsonObj.put("user_Content", userContent.getJSONObject());
+			if(userContext != null) jsonObj.put("user_Context", userContext.getJSONObject());
+			if(userContent != null) jsonObj.put("user_Content", userContent.getJSONObject());
 		}
 		
 		return jsonObj;
@@ -108,24 +110,22 @@ public class Profile implements Clusterable {
 	
 	public void setJSONObject(JSONObject json) throws UserProfileParsingException {	
 		
-		if(!json.has("user_id")) {
+		if(!json.has("user_id")) 
 			throw new UserProfileParsingException("Missing 'user_id' element.");
-		}
 		
-		if(!json.has("user_profile")) {
+		
+		if(!json.has("user_profile")) 
 			throw new UserProfileParsingException("Missing 'user_profile' element.");
-		}
+		
 		
 		userId = json.getInt("user_id");
 		userProfile.setJSONObject(json.getJSONObject("user_profile"));
 		
 		if(json.has("user_context")) 
-			userContext.setJSONObject(json.getJSONObject("user_context"));
-		
+			userContext = new UserContext(json.getJSONObject("user_context")); 		
 		
 		if(json.has("user_content")) 
-			userContent.setJSONObject(json.getJSONObject("user_content"));
-		
+			userContent = new UserContent(json.getJSONObject("user_content"));		
 
 		//Update points
 		this.setPoints();
@@ -146,20 +146,21 @@ public class Profile implements Clusterable {
 
 	private void setPoints() {
 
+		int index = 0;
 		double[] profile_points, context_points, content_points;
 		
 		//user profile points
 		profile_points = userProfile.getPoint();	
-		context_points = userContext.getPoint();
-		content_points = userContext.getPoint();
+		context_points = userContext == null ? new UserContext().getPoint() : userContext.getPoint();
+		content_points = userContent == null ? new UserContent().getPoint() : userContent.getPoint();
 		
+		 
 		//initialize points
-		if(points == null)
-			points = new double[profile_points.length + context_points.length + content_points.length];		
+		points = new double[profile_points.length + context_points.length + content_points.length];		
 
-		for(int i = 0; i < profile_points.length; points[i] = profile_points[i], i++ );
-		for(int i = 0; i < context_points.length; points[i] = context_points[i], i++  );
-		for(int i = 0; i < content_points.length; points[i] = content_points[i], i++  );
+		for(int i = 0; i < profile_points.length; points[index] = profile_points[i], i++, index++ );
+		for(int i = 0; i < context_points.length; points[index] = context_points[i], i++, index++ );
+		for(int i = 0; i < content_points.length; points[index] = content_points[i], i++, index++ );
 	}
 	
 	/**

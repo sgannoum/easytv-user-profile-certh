@@ -4,6 +4,7 @@
   <test name="Test user profile">
     <classes>
  
+ 	  <class name="com.certh.iti.easytv.user.ProfileTest"/>
       <class name="com.certh.iti.easytv.user.UserPreferencesTest"/>
       <class name="com.certh.iti.easytv.user.UserProfileTest"/>
             
