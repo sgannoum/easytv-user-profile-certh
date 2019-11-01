@@ -25,7 +25,7 @@ public class ColorAttribute extends NumericAttribute {
 	
 	@Override
 	public Object getRandomValue(Random rand) {
-		return "#" + String.format("%02X", rand.nextInt(255)) +String.format("%02X", rand.nextInt(255)) + String.format("%02X", rand.nextInt(255));	
+		return String.format("#%02X%02X%02X", rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
 	}
 	
 	@Override

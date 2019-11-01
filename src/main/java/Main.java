@@ -64,7 +64,7 @@ public class Main {
 				userProfileGenerator.getNextProfile().getJSONObject().write(writer, 4, 0);
 				writer.close();
 				
-				System.out.println("User profile: "+ fileName +" has been created");
+				System.out.println("Profile: "+ fileName +" has been created");
 			}
 		}
 		

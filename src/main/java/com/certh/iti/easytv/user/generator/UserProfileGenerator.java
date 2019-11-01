@@ -10,6 +10,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import com.certh.iti.easytv.user.Profile;
+import com.certh.iti.easytv.user.UserContent;
+import com.certh.iti.easytv.user.UserContext;
 import com.certh.iti.easytv.user.UserPreferences;
 import com.certh.iti.easytv.user.UserProfile;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
@@ -18,6 +21,7 @@ import com.certh.iti.easytv.user.preference.attributes.Attribute;
 
 public class UserProfileGenerator {
 	
+	private int userId = 0;
 	private Random rand;
 	
 	public UserProfileGenerator() {
@@ -32,20 +36,39 @@ public class UserProfileGenerator {
 		rand.setSeed(seed);
 	}
 	
-	public UserProfile getNextProfile() throws UserProfileParsingException, IOException{
+	public Profile getNextProfile() throws UserProfileParsingException, IOException{
 		
-			Map<String, Object> map = new HashMap<String, Object>();
-
-			for(final Entry<String, Attribute> e : Preference.preferencesAttributes.entrySet()) {
-				Attribute oprand = e.getValue();
-				map.put(e.getKey(), oprand.getRandomValue(rand));
-			}
-			
-			Preference defaultPreference = new Preference("default", map);
-			List<Preference> preferences = new ArrayList<Preference>();
-			UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
+		Map<String, Object> userPrefs = new HashMap<String, Object>();
+		for(final Entry<String, Attribute> e : Preference.preferencesAttributes.entrySet()) {
+			Attribute oprand = e.getValue();
+			userPrefs.put(e.getKey(), oprand.getRandomValue(rand));
+		}
 		
-		return new UserProfile(userPreferences);
+		Preference defaultPreference = new Preference("default", userPrefs);
+		List<Preference> preferences = new ArrayList<Preference>();
+		UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
+		
+		
+		//user profile
+		UserProfile userProfile = new UserProfile(userPreferences);
+		
+		
+		//Create user context
+		Map<String, Object> context = new HashMap<String, Object>();
+		for(final Entry<String, Attribute> e : UserContext.contextAttributes.entrySet()) {
+			Attribute oprand = e.getValue();
+			context.put(e.getKey(), oprand.getRandomValue(rand));
+		}
+		
+		//user context
+		UserContext userContext = new UserContext(context);
+		
+		
+		//TODO user content
+		//UserContent userContent = new UserContent();
+		UserContent userContent = null;
+		
+		return new Profile(userId++, userProfile, userContext, userContent);
 	}
 	
 	/**
@@ -60,7 +83,7 @@ public class UserProfileGenerator {
 		
 		for(int i = 0; i < num; i++) {
 			
-			UserProfile userProfile = getNextProfile();
+			Profile userProfile = getNextProfile();
 			
 			String fileName = outDir.getPath() + File.separatorChar + "userProfile_" + i + ".json";
 			File file = new File(fileName);
@@ -85,24 +108,15 @@ public class UserProfileGenerator {
 	 * @throws UserProfileParsingException 
 	 * @throws IOException 
 	 */
-	public List<UserProfile> getProfiles(int num) throws UserProfileParsingException, IOException{
+	public List<Profile> getProfiles(int num) throws UserProfileParsingException, IOException{
 		
-		List<UserProfile> profiles =  new ArrayList<UserProfile>(num);	
+		List<Profile> profiles =  new ArrayList<Profile>(num);	
 		for(int i = 0; i < num; i++) {
 				
-			Map<String, Object> map = new HashMap<String, Object>();
-
-			for(final Entry<String, Attribute> e : Preference.preferencesAttributes.entrySet()) {
-				Attribute oprand = e.getValue();
-				map.put(e.getKey(), oprand.getRandomValue(rand));
-			}
+			//Create profile
+			Profile profile = getNextProfile();
 			
-			Preference defaultPreference = new Preference("default", map);
-			List<Preference> preferences = new ArrayList<Preference>();
-			UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
-			
-			
-			profiles.add(new UserProfile(userPreferences));
+			profiles.add(profile);
 
 		}
 		

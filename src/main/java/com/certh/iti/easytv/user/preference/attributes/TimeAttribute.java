@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Random;
 import java.util.regex.Pattern;
 
 public class TimeAttribute extends Attribute{
@@ -24,6 +25,11 @@ public class TimeAttribute extends Attribute{
 	
 	public TimeAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
+	}
+	
+	@Override
+	public Object getRandomValue(Random rand) {
+		return String.format("%02d:%02d:%02d", rand.nextInt(12), rand.nextInt(60), rand.nextInt(60));	
 	}
 	
 	public static Date convertDate(String timeStr) throws ParseException {
