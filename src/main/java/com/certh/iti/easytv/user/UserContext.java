@@ -10,6 +10,7 @@ import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
@@ -39,6 +40,46 @@ public class UserContext implements Clusterable{
 		setJSONObject(json);
 	}
 	
+	public UserContext(Map<String, Object> context) throws UserContextParsingException {
+		setContext(context);
+	}
+	
+	public void setContext(Map<String, Object> context) throws UserContextParsingException {
+		
+		//clear up old preferences
+		this.context.clear();
+		
+		for (Entry<String, Object> entries : context.entrySet()) {
+			String key = entries.getKey();
+			Object value = entries.getValue();
+			Object handled_value;
+			
+			//Get preference attribute handler
+			Attribute handler = contextAttributes.get(key);
+			
+			//Unknown preference throw an exception
+			if(handler == null) {
+				throw new UserContextParsingException("Unknown context: '"+ key+"'");
+			} 
+
+			//Handle preference value
+			try {
+				handled_value = handler.handle(value);
+			} catch(ClassCastException e) {	
+				throw new UserContextParsingException("Non compatible data value: '"+value+"' for preference '"+ key+"' "+e.getMessage());
+			}
+			
+			//Add
+			this.context.put(key, handled_value);
+		}
+		
+		//Update points
+		this.setPoint();
+		
+		//Update json
+		jsonObj = null;
+	}
+	
 	@Override
 	public double[] getPoint() {
 		return points;
@@ -64,46 +105,25 @@ public class UserContext implements Clusterable{
 		//clean up
 		context.clear();
 		
-		if(json.has("http://registry.easytv.eu/context/device")) 
-			context.put("http://registry.easytv.eu/context/device", json.getString("http://registry.easytv.eu/context/device"));
+		//convert to map
+		String[] fields = JSONObject.getNames(json);
 		
-		
-		if(json.has("http://registry.easytv.eu/context/light")) 
-			context.put("http://registry.easytv.eu/context/light", json.getInt("http://registry.easytv.eu/context/light"));
-		
-		
-		if(json.has("http://registry.easytv.eu/context/proximity")) 
-			context.put("http://registry.easytv.eu/context/proximity", json.getInt("http://registry.easytv.eu/context/proximity"));
-		
-		if(json.has("http://registry.easytv.eu/context/location")) 
-			context.put("http://registry.easytv.eu/context/location", json.getString("http://registry.easytv.eu/context/location"));
-		
-		if(json.has("http://registry.easytv.eu/context/time")) {
-			String timeStr = json.getString("http://registry.easytv.eu/context/time");
-			
-			//convert time
-			try {
-				TimeAttribute.convertDate(timeStr);
-			} catch (ParseException e) {
-				// TODO Add context exceptions
-				throw new UserContextParsingException("Wrong context time format "+ timeStr);
-			}
-			
-			context.put("http://registry.easytv.eu/context/time", timeStr);
+		//Convert to a map
+		Map<String, Object> entries = new HashMap<String, Object>();
+		for(int i = 0 ; i < fields.length; i++) {
+			String key = fields[i];
+			Object value = json.get(key);
+			entries.put(key, value);
 		}
 		
-		
-		//Update points 
-		this.setPoints();
-		
-		//Update json
-		jsonObj = json;
+		//Update context
+		this.setContext(entries);
 	}
 	
 	/**
 	 * Initialize Points vector
 	 */
-	private void setPoints() {
+	private void setPoint() {
 		int index = 0;
 		for(Entry<String, Attribute> entry : contextAttributes.entrySet()) {
 			String prefKey = entry.getKey();
