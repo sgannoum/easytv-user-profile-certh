@@ -101,8 +101,8 @@ public class Profile implements Clusterable {
 
 			jsonObj.put("user_id", userId);
 			jsonObj.put("user_profile", userProfile.getJSONObject());
-			if(userContext != null) jsonObj.put("user_Context", userContext.getJSONObject());
-			if(userContent != null) jsonObj.put("user_Content", userContent.getJSONObject());
+			if(userContext != null) jsonObj.put("user_context", userContext.getJSONObject());
+			if(userContent != null) jsonObj.put("user_content", userContent.getJSONObject());
 		}
 		
 		return jsonObj;
