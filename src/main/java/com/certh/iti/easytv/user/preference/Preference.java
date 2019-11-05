@@ -129,9 +129,14 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			} 
 
 			//Handle preference value
-			try {
+			try 
+			{
 				handled_value = handler.handle(value);
-			} catch(ClassCastException e) {	
+			}
+			catch(IllegalStateException e) {	
+				throw new UserProfileParsingException( key+ " "+e.getMessage());
+			}
+			catch(ClassCastException e) {	
 				throw new UserProfileParsingException("Non compatible data value: '"+value+"' for preference '"+ key+"' "+e.getMessage());
 			}
 			
