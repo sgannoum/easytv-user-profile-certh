@@ -42,7 +42,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/background/color", new ColorAttribute());
 	    put("http://registry.easytv.eu/application/cs/cc/audio/subtitle",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS",  new SymmetricBinaryAttribute());	
-	    put("http://registry.easytv.eu/application/cs/ui/text/size", new NominalAttribute(new String[] {"16", "20", "24"}));				
+	    put("http://registry.easytv.eu/application/cs/ui/text/size", new NominalAttribute(new String[] {"15", "20", "23"}));					
 	    put("http://registry.easytv.eu/application/cs/ui/language", new LanguageAttribute());	
 	    put("http://registry.easytv.eu/application/cs/ui/vibration/touch", new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/ui/text/magnification/scale",  new SymmetricBinaryAttribute()); 					
