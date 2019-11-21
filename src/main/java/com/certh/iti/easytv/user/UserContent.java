@@ -1,5 +1,6 @@
 package com.certh.iti.easytv.user;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -8,12 +9,14 @@ import java.util.Map.Entry;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.MultiNominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
 
 public class UserContent implements Clusterable {
 
-	private double[] points = new double[] { -1, -1, -1, -1}; 
+	private double[] points = new double[] { -1, -1, -1, -1, -1, -1}; 
 	protected Map<String, Object> content  =  new HashMap<String, Object>();
     private JSONObject jsonObj = null;
     
@@ -25,24 +28,62 @@ public class UserContent implements Clusterable {
 		put("http://registry.easytv.eu/application/cs/accessibility/detection/text",  new SymmetricBinaryAttribute());
 		put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/character",  new SymmetricBinaryAttribute());
-	  
-	 // TODO convert audio and subtitles languages to multiple dimensions
-	//  put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new NominalAttribute(new String[] {"ca", "gr", "it", "es"}));
-   //   put("http://registry.easytv.eu/application/cs/audio/track", new NominalAttribute(new String[] {"ca", "gr", "it", "es"}));
+	    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
+	    put("http://registry.easytv.eu/application/cs/audio/track", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
     }};
 	
 	public UserContent() {
+		this.setPoint();
 	}
     
 	public UserContent(JSONObject json) {
 		setJSONObject(json);
 	}
 	
+	public UserContent(Map<String, Object> content) throws UserContextParsingException {
+		setContent(content);
+	}
+	
+	public void setContent(Map<String, Object> content) throws UserContextParsingException {
+		
+		//clear up old preferences
+		this.content.clear();
+		
+		for (Entry<String, Object> entries : content.entrySet()) {
+			String key = entries.getKey();
+			Object value = entries.getValue();
+			Object handled_value;
+			
+			//Get preference attribute handler
+			Attribute handler = content_attributes.get(key);
+			
+			//Unknown preference throw an exception
+			if(handler == null) {
+				throw new UserContextParsingException("Unknown context: '"+ key+"'");
+			} 
+
+			//Handle preference value
+			try {
+				handled_value = handler.handle(value);
+			} catch(ClassCastException e) {	
+				throw new UserContextParsingException("Non compatible data value: '"+value+"' for preference '"+ key+"' "+e.getMessage());
+			}
+			
+			//Add
+			this.content.put(key, handled_value);
+		}
+		
+		//Update points
+		this.setPoint();
+		
+		//Update json
+		jsonObj = null;
+	}
+	
 	@Override
 	public double[] getPoint() {
 		return points;
 	}
-
 	
 	public JSONObject getJSONObject() {
 		if(jsonObj == null) {
@@ -85,17 +126,17 @@ public class UserContent implements Clusterable {
 		}
 		
 		//Update points 
-		this.setPoints();
+		this.setPoint();
 		
 		//Update json
-		jsonObj = json;
+		jsonObj = null;
 		
 	}
 
 	/**
 	 * Initialize Points vector
 	 */
-	private void setPoints() {
+	private void setPoint() {
 		int index = 0;		
 		for(Entry<String, Attribute> entry : content_attributes.entrySet()) {
 			String prefKey = entry.getKey();
@@ -109,5 +150,35 @@ public class UserContent implements Clusterable {
 			
 			points[index++] = d[0];
 		}
+	}
+	
+	/**
+	 * Get users profiles dimensional operands
+	 * 
+	 * @return 
+	 */
+	public static final Attribute[] getOperands() {
+		Collection<Entry<String, Attribute>> entries = content_attributes.entrySet();
+		Attribute[] operandsLiteral = new Attribute[entries.size()];
+		int index = 0;		
+			
+		for(Entry<String, Attribute> entry: entries) 
+			operandsLiteral[index++] = entry.getValue();
+		
+		return 	operandsLiteral;
+	}
+	
+	/**
+	 * @return uris arrays
+	 */
+	public static String[] getUris(){
+		Collection<Entry<String, Attribute>> entries = content_attributes.entrySet();
+		String[] uris = new String[entries.size()];
+		int index = 0;		
+		
+		for(Entry<String, Attribute> entry: entries) 
+			uris[index++] = entry.getKey();
+		
+		return 	uris;
 	}
 }

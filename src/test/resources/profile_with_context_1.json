@@ -37,7 +37,18 @@
         "http://registry.easytv.eu/common/volume": 36
     }}}},
     "user_context": {
-        "http://registry.easytv.eu/context/location": "ca",
-        "http://registry.easytv.eu/context/time": "2019-05-30T09:47:47.619Z"
+	    "http://registry.easytv.eu/context/device": "pc",
+	    "http://registry.easytv.eu/context/light": 10,
+	    "http://registry.easytv.eu/context/proximity": 20,
+        "http://registry.easytv.eu/context/location": "es",
+        "http://registry.easytv.eu/context/time": "09:47:00"
+    },
+    "user_content": {
+        "http://registry.easytv.eu/application/cs/accessibility/detection/text": true,
+        "http://registry.easytv.eu/application/cs/accessibility/detection/face": true,
+        "http://registry.easytv.eu/application/cs/accessibility/detection/sound": true,
+        "http://registry.easytv.eu/application/cs/accessibility/detection/character": true,
+        "http://registry.easytv.eu/application/cs/cc/subtitles/language": ["ca", "gr", "it"],
+        "http://registry.easytv.eu/application/cs/audio/track": ["ca"]
     }
 }

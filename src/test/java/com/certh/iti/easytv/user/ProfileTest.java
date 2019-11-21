@@ -25,7 +25,7 @@ public class ProfileTest {
 		profile1 = new Profile(json);
 	}
 	
-	//@Test
+	@Test
 	public void test_constructor() throws IOException, UserProfileParsingException {
 				
 		Profile profile2 = new Profile(profile1.getUserId(), profile1.getUserProfile(), profile1.getUserContext(), profile1.getUserContent());
@@ -64,7 +64,7 @@ public class ProfileTest {
 		double[] actualPoints = profile1.getPoint();
 		Map<String, Object> pref = profile1.getUserProfile().getUserPreferences().getDefaultPreference().getPreferences();
 		
-		//compare profile preferences with returened points
+		//compare profile preferences with returned points
 		for(Entry<String, Attribute> entry :  Preference.preferencesAttributes.entrySet()) {
 			Object value = pref.get(entry.getKey());
 			

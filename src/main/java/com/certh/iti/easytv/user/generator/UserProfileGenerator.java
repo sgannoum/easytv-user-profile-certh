@@ -47,9 +47,6 @@ public class UserProfileGenerator {
 		Preference defaultPreference = new Preference("default", userPrefs);
 		List<Preference> preferences = new ArrayList<Preference>();
 		UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
-		
-		
-		//user profile
 		UserProfile userProfile = new UserProfile(userPreferences);
 		
 		
@@ -60,13 +57,18 @@ public class UserProfileGenerator {
 			context.put(e.getKey(), oprand.getRandomValue(rand));
 		}
 		
-		//user context
 		UserContext userContext = new UserContext(context);
 		
 		
-		//TODO user content
-		//UserContent userContent = new UserContent();
-		UserContent userContent = null;
+		//UserContent userContent = new UserContent();				
+		Map<String, Object> content = new HashMap<String, Object>();
+		for(final Entry<String, Attribute> e : UserContent.content_attributes.entrySet()) {
+			Attribute oprand = e.getValue();
+			content.put(e.getKey(), oprand.getRandomValue(rand));
+		}
+		
+		UserContent userContent = new UserContent(content);
+				
 		
 		return new Profile(userId++, userProfile, userContext, userContent);
 	}

@@ -1,6 +1,6 @@
 package com.certh.iti.easytv.user;
 
-import java.text.ParseException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -10,7 +10,6 @@ import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
-import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
@@ -29,8 +28,8 @@ public class UserContext implements Clusterable{
 	    put("http://registry.easytv.eu/context/device", new NominalAttribute(new String[] {"pc", "modile", "tablet"}));
 		put("http://registry.easytv.eu/context/light", new IntegerAttribute(new double[] {0.0, 100.0}, -1));
 		put("http://registry.easytv.eu/context/proximity", new IntegerAttribute(new double[] {0.0, 100.0}, -1));
-	    put("http://registry.easytv.eu/context/time", new TimeAttribute());
 	    put("http://registry.easytv.eu/context/location", new NominalAttribute(new String[] {"ca", "gr", "it", "es"}));
+	    put("http://registry.easytv.eu/context/time", new TimeAttribute());
     }};
 	
 	
@@ -137,6 +136,36 @@ public class UserContext implements Clusterable{
 			
 			points[index++] = d[0];
 		}
+	}
+	
+	/**
+	 * Get users profiles dimensional operands
+	 * 
+	 * @return 
+	 */
+	public static final Attribute[] getOperands() {
+		Collection<Entry<String, Attribute>> entries = contextAttributes.entrySet();
+		Attribute[] operandsLiteral = new Attribute[entries.size()];
+		int index = 0;		
+			
+		for(Entry<String, Attribute> entry: entries) 
+			operandsLiteral[index++] = entry.getValue();
+		
+		return 	operandsLiteral;
+	}
+	
+	/**
+	 * @return uris arrays
+	 */
+	public static String[] getUris(){
+		Collection<Entry<String, Attribute>> entries = contextAttributes.entrySet();
+		String[] uris = new String[entries.size()];
+		int index = 0;		
+		
+		for(Entry<String, Attribute> entry: entries) 
+			uris[index++] = entry.getKey();
+		
+		return 	uris;
 	}
 
 

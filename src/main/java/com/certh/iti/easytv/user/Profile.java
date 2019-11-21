@@ -4,16 +4,22 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
+import com.certh.iti.easytv.user.preference.Preference;
+import com.certh.iti.easytv.user.preference.attributes.Attribute;
 
 public class Profile implements Clusterable {
 	
 	private static long num_profiles = 0;
+	private static Attribute[] operandsLiteral = null;
+	private static String[] uris = null;
 	
 	private double[] points = null;
 	private int userId = -1;
@@ -169,4 +175,91 @@ public class Profile implements Clusterable {
 	public static long getProfilesCounts() {
 		return num_profiles;
 	}
+	
+	/**
+	 * Get users profiles dimensional operands
+	 * 
+	 * @return 
+	 */
+	public static final Attribute[] getOperands() {
+		
+		if(operandsLiteral == null) {
+		
+			Set<Entry<String, Attribute>> preferenceEntrySet = Preference.preferencesAttributes.entrySet();
+			Set<Entry<String, Attribute>> contexteEntrySet = UserContext.contextAttributes.entrySet();
+			Set<Entry<String, Attribute>> contenteEntrySet = UserContent.content_attributes.entrySet();
+			
+			int length = preferenceEntrySet.size() + contexteEntrySet.size() + contenteEntrySet.size();
+			operandsLiteral = new Attribute[length];
+			uris = new String[length];
+			int index = 0;		
+				
+			//add preferences
+			for(Entry<String, Attribute> entry: preferenceEntrySet) {
+				uris[index] = entry.getKey();
+				operandsLiteral[index] = entry.getValue();
+				index++;
+			}
+			
+			//add context
+			for(Entry<String, Attribute> entry: contexteEntrySet) {
+				uris[index] = entry.getKey();
+				operandsLiteral[index] = entry.getValue();
+				index++;
+			}
+			
+			//add content
+			for(Entry<String, Attribute> entry: contenteEntrySet) {
+				uris[index] = entry.getKey();
+				operandsLiteral[index] = entry.getValue();
+				index++;
+			}
+			
+		}
+		
+		return 	operandsLiteral;
+	}
+	
+	/**
+	 * @return uris arrays
+	 */
+	public static String[] getUris(){
+		
+		if(uris == null) {
+
+			Set<Entry<String, Attribute>> preferenceEntrySet = Preference.preferencesAttributes.entrySet();
+			Set<Entry<String, Attribute>> contexteEntrySet = UserContext.contextAttributes.entrySet();
+			Set<Entry<String, Attribute>> contenteEntrySet = UserContent.content_attributes.entrySet();
+			
+			int length = preferenceEntrySet.size() + contexteEntrySet.size() + contenteEntrySet.size();
+			operandsLiteral = new Attribute[length];
+			uris = new String[length];
+			int index = 0;		
+				
+			//add preferences
+			for(Entry<String, Attribute> entry: preferenceEntrySet) {
+				uris[index] = entry.getKey();
+				operandsLiteral[index] = entry.getValue();
+				index++;
+			}
+			
+			//add context
+			for(Entry<String, Attribute> entry: contexteEntrySet) {
+				uris[index] = entry.getKey();
+				operandsLiteral[index] = entry.getValue();
+				index++;
+			}
+			
+			//add content
+			for(Entry<String, Attribute> entry: contenteEntrySet) {
+				uris[index] = entry.getKey();
+				operandsLiteral[index] = entry.getValue();
+				index++;
+			}
+		
+		}
+		
+		return 	uris;
+	}
+	
 }
