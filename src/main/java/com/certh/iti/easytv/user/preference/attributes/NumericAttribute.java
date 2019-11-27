@@ -12,14 +12,49 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	protected double standard_deviation = -1.0;
 	protected double Maxvalue = Double.MIN_VALUE;
 	protected double Minvalue = Double.MAX_VALUE;
+	
+	protected double step = 1.0;
+	protected int binSize = 1;
+	protected int binsNum = IncrCodeStep;
+	
 	protected Map<Double, Long> frequencyHistogram = new HashMap<Double, Long>();
 
 	public NumericAttribute(double[] range) {
 		super(range);
+		
+		double valueRange = ((range[1] - range[0]) / step) + 1;
+		binsNum = (int) (valueRange < IncrCodeStep ? valueRange : IncrCodeStep);
+		if(valueRange > binsNum) 
+			 binSize = (int) Math.ceil(valueRange/binsNum);
 	}
 	
 	public NumericAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
+		
+		double valueRange = ((range[1] - range[0]) / step) + 1;
+		binsNum = (int) (valueRange < IncrCodeStep ? valueRange : IncrCodeStep);
+		if(valueRange > binsNum) 
+			 binSize = (int) Math.ceil(valueRange/binsNum);
+	}
+	
+	public NumericAttribute(double[] range, double step, double operandMissingValue) {
+		super(range, operandMissingValue);
+		this.step = step;
+		
+		double valueRange = ((range[1] - range[0]) / step) + 1;
+		binsNum = (int) (valueRange < IncrCodeStep ? valueRange : IncrCodeStep);
+		if(valueRange > binsNum) 
+			 binSize = (int) Math.ceil(valueRange/binsNum);
+	}
+	
+	public NumericAttribute(double[] range, double step, int binsNum, double operandMissingValue) {
+		super(range, operandMissingValue);
+		this.step = step;
+		this.binsNum = binsNum;
+		
+		double valueRange = ((range[1] - range[0]) / step) + 1;
+		if(valueRange > binsNum) 
+			binSize = (int) Math.ceil(valueRange/binsNum);
 	}
 	
 	protected void setMinMaxValue(double value) {
@@ -34,11 +69,11 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	}
 	
 	public double getMaxValue() {
-		return Maxvalue != Minvalue ? Maxvalue : range[1];
+		return Maxvalue != Minvalue && Maxvalue != Double.MIN_VALUE ? Maxvalue : range[1];
 	}
 	
 	public double getMinValue() {
-		return Maxvalue != Minvalue ? Minvalue : range[0];
+		return Maxvalue != Minvalue && Minvalue != Double.MAX_VALUE ? Minvalue : range[0];
 	}
 	
 	public long getCounts() {
@@ -50,7 +85,15 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	}
 	
 	public double getMean() {
-		return sum/n;
+		return n!= 0 ? sum/n : 0;
+	}
+	
+	public double getStep() {
+		return step;
+	}
+	
+	public double getBinSize() {
+		return binSize;
 	}
 	
 	public double[][] getEntriesCounts() {
@@ -70,6 +113,9 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	}
 	
 	public double getStandardDeviation() {
+		if(n == 0)
+			return 0.0;
+		
 		if(standard_deviation == -1.0) {
 			
 			double var = 0.0;
@@ -80,11 +126,76 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 				Entry<Double, Long> entry = iter.next();
 				var += entry.getValue() * Math.pow(entry.getKey() - mean, 2);
 			}
-			
 			standard_deviation = Math.sqrt(var/n);
 		}
 		
 		return standard_deviation; 
+	}
+	
+	@Override
+	public String toString() {
+		
+		String histogram = "";
+		double[][] entriesCounts = getEntriesCounts();
+		for(int i = 0 ; i < entriesCounts.length; i++)
+			histogram += String.format("|%-11.1f|%-11d|\n", entriesCounts[i][0], (int) entriesCounts[i][1]);
+		
+
+		String separtingLine1 = String.format("%76s", " ").replaceAll(" ", "+");
+		String separtingLine2 = String.format("%25s", " ").replaceAll(" ", "+");
+		String separtingLine3 = String.format("%35s", " ").replaceAll(" ", "+");
+		
+		String attributeProperties = super.toString();
+		String StatisticalData = String.format("%s\n"+
+												 "|%-74s|\n"+
+												 "%s\n"+
+										 		 "|%-10s|%-10s|%-19s|%-10s|%-10s|%-10s|\n"+
+										 		 "%s\n"+
+												 "|%-10d|%-10.1f|%-19.1f|%-10.1f|%-10.1f|%-10.1f|\n"+
+												 "%s\n\n"
+												 
+											 	, separtingLine1
+											 	, String.format("%26s", " ") + "Statistical data"
+											 	, separtingLine1
+												, "   Total", "   sum", "Standard deviation", "    Mean",     "    Min",   "    Max"
+												, separtingLine1
+											    , n,       sum, getStandardDeviation(), getMean(), getMinValue(), getMaxValue() 
+											    , separtingLine1);
+		
+		String histogramValues = String.format("%s\n"+
+												 "|%-23s|\n"+
+												 "%s\n"+
+												 "|%-11s|%-11s| \n"+
+												 "%s\n"+
+												 "%s" + 
+												 "%s\n\n"
+												
+											    , separtingLine2
+											    , "  Values histogram"
+											    , separtingLine2
+											    , " Value", " Frequency"
+											    , separtingLine2
+											    , histogram
+											    , separtingLine2);
+		
+		String discretizationProperties = String.format( "%s\n" + 
+														 "|%-33s|\n"+
+														 "%s\n" + 
+														 "|%-10s|%-10s|%-10s|\n"+
+														 "%s\n"+
+														 "|%-11d|%-10d|%-10.1f|\n"+
+														 "%s\n\n"
+													    
+													    , separtingLine3
+													    , "    Discretization properties"
+													    , separtingLine3
+													    , "Bins number", " Bin Size", "   Step"
+													    , separtingLine3
+													    , binsNum, binSize, step
+													    , separtingLine3);
+
+		
+		return attributeProperties + StatisticalData + discretizationProperties + histogramValues;
 	}
 
 }

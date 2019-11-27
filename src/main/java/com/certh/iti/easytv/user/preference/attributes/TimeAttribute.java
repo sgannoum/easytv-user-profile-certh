@@ -68,4 +68,17 @@ public class TimeAttribute extends Attribute{
 		return new double[] {time.getTime()};
 	}
 
+	@Override
+	public int code(Object literal) {		
+		//TODO handle to item for time attribute
+		return 0;
+	}
+
+	@Override
+	public Object decode(int itemId) {
+		//TODO handle to value for time attribute
+		return null;
+	}
+
+	
 }

@@ -262,4 +262,18 @@ public class Profile implements Clusterable {
 		return 	uris;
 	}
 	
+	/**
+	 * Print the collected statistical data
+	 */
+	public static String getStatistics() {
+		String output = "";
+		Set<Entry<String, Attribute>> preferenceEntrySet = Preference.preferencesAttributes.entrySet();
+		
+		for(Entry<String, Attribute> entry : preferenceEntrySet) {
+			output += String.format("%s\n%s\n" , entry.getKey(), entry.getValue().toString());
+		}
+		
+		return output;
+	}
+	
 }

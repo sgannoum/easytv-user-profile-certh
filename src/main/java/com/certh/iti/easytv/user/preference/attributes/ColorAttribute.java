@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Random;
 
 public class ColorAttribute extends NumericAttribute {
+	
 
 	private NumericAttribute red = new IntegerAttribute(new double[] {0.0, 255.0});
 	private NumericAttribute green = new IntegerAttribute(new double[] {0.0, 255.0});
@@ -74,6 +75,44 @@ public class ColorAttribute extends NumericAttribute {
 
 		n++;
 		return value;
+	}
+	
+	@Override
+	public int code(Object literal) {		
+		Color color = Color.decode((String) literal);
+		
+		int value = Math.abs(color.getRGB());
+		
+		//the value position in the sequence of value ranges
+		int position = (int) ((value - range[0]) / step);
+		
+		//specify the itemId
+		int binId = attributeCodeBase + (int) (position / binSize);
+
+		return binId;
+	}
+
+	@Override 
+	public Object decode(int itemId) {
+		int binId = itemId - attributeCodeBase;
+		int attributeId = itemId - binId;
+		
+		if (attributeId != attributeCodeBase)
+			throw new IllegalArgumentException("Wrong attribute id: " + attributeCodeBase + " " + attributeId);
+		
+		if (binId >= IncrCodeStep)
+			throw new IllegalArgumentException("Out of range bin id: " + binId);
+		
+		int binMidValue =  (int) ((binId * binSize * step) + range[0]);
+
+		//take the middle value
+		if(binSize % 2 == 0) {
+			binMidValue += binSize / 2;
+		} else {
+			binMidValue += (binSize - 1) / 2;
+		}
+		
+		return Color.decode(String.format("#%06X",binMidValue));
 	}
 
 
