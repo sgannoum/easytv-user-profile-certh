@@ -98,5 +98,14 @@ public class UserPreferences implements Clusterable {
 		//TODO 
 		//include the conditional preferences
 	}
+	
+	/**
+	 * Get an item set representation of the usre profile 
+	 * 
+	 * @return
+	 */
+	public int[] getPreferencesAsItemSet() {
+		return this.getDefaultPreference().getPreferencesAsItemSet();
+	}
 
 }

@@ -101,6 +101,15 @@ public class Profile implements Clusterable {
 		return points;
 	}
 	
+	/**
+	 * Get an item set representation of the usre profile 
+	 * 
+	 * @return
+	 */
+	public int[] getPreferencesAsItemSet() {
+		return userProfile.getPreferencesAsItemSet();
+	}
+	
 	public JSONObject getJSONObject() {
 		if(jsonObj == null) {
 			jsonObj = new JSONObject();

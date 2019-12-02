@@ -6,9 +6,9 @@ import java.util.Random;
 public class ColorAttribute extends NumericAttribute {
 	
 
-	private NumericAttribute red = new IntegerAttribute(new double[] {0.0, 255.0});
-	private NumericAttribute green = new IntegerAttribute(new double[] {0.0, 255.0});
-	private NumericAttribute blue =  new IntegerAttribute(new double[] {0.0, 255.0});
+	private NumericAttribute red = new IntegerAttribute(new double[] {0.0, 255.0}, 1.0, 25, -1);
+	private NumericAttribute green = new IntegerAttribute(new double[] {0.0, 255.0}, 1.0, 25, -1);
+	private NumericAttribute blue =  new IntegerAttribute(new double[] {0.0, 255.0}, 1.0, 25, -1);
 	
 	
 	public ColorAttribute() {
@@ -52,12 +52,9 @@ public class ColorAttribute extends NumericAttribute {
 		int numericValue = Math.abs(color.getRGB());
 
 		// Increate histogram counts
-		Long tmp = frequencyHistogram.get(numericValue);
-		if (tmp == null) {
-			frequencyHistogram.put((double) numericValue, 1L);
-		} else {
-			frequencyHistogram.put((double) numericValue, tmp + 1);
-		}
+		Double key = new Double(numericValue);
+		Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
+		frequencyHistogram.put(key, tmp);
 		
 		//handle red dimension
 		red.handle(color.getRed());
@@ -115,5 +112,10 @@ public class ColorAttribute extends NumericAttribute {
 		return Color.decode(String.format("#%06X",binMidValue));
 	}
 
+	@Override
+	protected void init() {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

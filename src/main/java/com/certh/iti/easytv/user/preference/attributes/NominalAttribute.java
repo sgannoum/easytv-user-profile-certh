@@ -137,21 +137,6 @@ public class NominalAttribute extends Attribute implements INominal {
 
 		return itemId;
 	}
-
-	@Override
-	public Object decode(int itemId) {
-
-		int binId = itemId - attributeCodeBase;
-		int attributeId = itemId - binId;
-		
-		if (attributeId != attributeCodeBase)
-			throw new IllegalArgumentException("Wrong attribute id: " + attributeCodeBase + " " + attributeId);
-		
-		if (binId >= states.length)
-			throw new IllegalArgumentException("Out of range bin index: " + binId);
-
-		return states[binId];
-	}
 	
 	
 	@Override
@@ -187,6 +172,11 @@ public class NominalAttribute extends Attribute implements INominal {
 				upperLine);
 	}
 	
-
+	/**
+	 * Fill out the bin label with the proper labels
+	 */
+	protected void init() {	
+		binsLable = states;	
+	}
 
 }

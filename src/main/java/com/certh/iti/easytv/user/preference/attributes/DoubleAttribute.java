@@ -1,36 +1,25 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
-public class DoubleAttribute extends NumericAttribute {
+import org.apache.commons.math3.exception.OutOfRangeException;
+import org.apache.commons.math3.exception.util.DummyLocalizable;
+import org.apache.commons.math3.exception.util.Localizable;
 
-	private double[] binsLable;
-	private int[] binsCounter;
+public class DoubleAttribute extends NumericAttribute {
 	
 	public DoubleAttribute(double[] range) {
 		super(range);
-		binsCounter = new int[binsNum];
-		binsLable = new double[binsNum]; 
-		setBinsLables();
 	}
 
 	public DoubleAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
-		binsCounter = new int[binsNum];
-		binsLable = new double[binsNum]; 
-		setBinsLables();
 	}
 	
 	public DoubleAttribute(double[] range, double step, double operandMissingValue) {
 		super(range, step, operandMissingValue);
-		binsCounter = new int[binsNum];
-		binsLable = new double[binsNum]; 
-		setBinsLables();
 	}
 	
 	public DoubleAttribute(double[] range, double step, int binsNum, double operandMissingValue) {
 		super(range, step, binsNum, operandMissingValue);
-		binsCounter = new int[binsNum];
-		binsLable = new double[binsNum]; 
-		setBinsLables();
 	}
 
 	@Override
@@ -52,15 +41,22 @@ public class DoubleAttribute extends NumericAttribute {
 			numericValue = Integer.class.cast(value);
 		} else 
 			numericValue = Double.class.cast(value);
-
+		
+		if(numericValue < range[0] || numericValue > range[1])
+			throw new OutOfRangeException(numericValue, range[0], range[1]);
+		
+		if(numericValue % step != 0) 
+			throw new OutOfRangeException(new DummyLocalizable("Non compatible with step: " + step), numericValue, range[0], range[1]);
+		
 		// Increate histogram counts
-		Long tmp = frequencyHistogram.get(numericValue);
-		if (tmp == null) {
-			frequencyHistogram.put(numericValue, 1L);
-		} else {
-			frequencyHistogram.put(numericValue, tmp + 1);
-		}
-
+		Double key = new Double(numericValue);
+		Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
+		frequencyHistogram.put(key, tmp);
+		
+		//Increment the number of occurrences 
+		int bindId = getBinId(numericValue);
+		binsCounter[bindId]++;
+		
 		// Set Min Max vlaue
 		setMinMaxValue(numericValue);
 
@@ -71,36 +67,6 @@ public class DoubleAttribute extends NumericAttribute {
 		return numericValue;
 	}
 	
-	
-	@Override
-	public int code(Object literal) {		
-		double value = (double) literal;
-		
-		//the value position in the sequence of value ranges
-		int position = (int) ((value - range[0]) / step);
-		
-		//specify the itemId
-		int binId = (int) (position / binSize);
-
-		//Increment the number of occurrences 
-		binsCounter[binId]++;
-		
-		return attributeCodeBase + binId;
-	}
-
-	@Override 
-	public Object decode(int itemId) {
-		int binId = itemId - attributeCodeBase;
-		int attributeId = itemId - binId;
-		
-		if (attributeId != attributeCodeBase)
-			throw new IllegalArgumentException("Wrong attribute id: " + attributeCodeBase + " " + attributeId);
-		
-		if (binId >= binsNum)
-			throw new IllegalArgumentException("Out of range bin id: " + binId);
-		
-		return binsLable[binId];
-	}
 	
 	@Override
 	public String toString() {
@@ -138,8 +104,11 @@ public class DoubleAttribute extends NumericAttribute {
 	/**
 	 * Fill out the bin label with the proper labels
 	 */
-	private void setBinsLables() {
+	protected void init() {
 				
+		binsCounter = new int[binsNum];
+		binsLable = new Object[binsNum];
+		
 		for(int i = 0; i < binsNum; i++) {
 
 			//the bin midell value

@@ -13,48 +13,22 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	protected double Maxvalue = Double.MIN_VALUE;
 	protected double Minvalue = Double.MAX_VALUE;
 	
-	protected double step = 1.0;
-	protected int binSize = 1;
-	protected int binsNum = IncrCodeStep;
-	
 	protected Map<Double, Long> frequencyHistogram = new HashMap<Double, Long>();
 
 	public NumericAttribute(double[] range) {
 		super(range);
-		
-		double valueRange = ((range[1] - range[0]) / step) + 1;
-		binsNum = (int) (valueRange < IncrCodeStep ? valueRange : IncrCodeStep);
-		if(valueRange > binsNum) 
-			 binSize = (int) Math.ceil(valueRange/binsNum);
 	}
 	
 	public NumericAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
-		
-		double valueRange = ((range[1] - range[0]) / step) + 1;
-		binsNum = (int) (valueRange < IncrCodeStep ? valueRange : IncrCodeStep);
-		if(valueRange > binsNum) 
-			 binSize = (int) Math.ceil(valueRange/binsNum);
 	}
 	
 	public NumericAttribute(double[] range, double step, double operandMissingValue) {
-		super(range, operandMissingValue);
-		this.step = step;
-		
-		double valueRange = ((range[1] - range[0]) / step) + 1;
-		binsNum = (int) (valueRange < IncrCodeStep ? valueRange : IncrCodeStep);
-		if(valueRange > binsNum) 
-			 binSize = (int) Math.ceil(valueRange/binsNum);
+		super(range, step, operandMissingValue);
 	}
 	
 	public NumericAttribute(double[] range, double step, int binsNum, double operandMissingValue) {
-		super(range, operandMissingValue);
-		this.step = step;
-		this.binsNum = binsNum;
-		
-		double valueRange = ((range[1] - range[0]) / step) + 1;
-		if(valueRange > binsNum) 
-			binSize = (int) Math.ceil(valueRange/binsNum);
+		super(range, step, binsNum, operandMissingValue);
 	}
 	
 	protected void setMinMaxValue(double value) {
@@ -146,7 +120,7 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		String separtingLine3 = String.format("%35s", " ").replaceAll(" ", "+");
 		
 		String attributeProperties = super.toString();
-		String StatisticalData = String.format("%s\n"+
+		String statisticalData = String.format("%s\n"+
 												 "|%-74s|\n"+
 												 "%s\n"+
 										 		 "|%-10s|%-10s|%-19s|%-10s|%-10s|%-10s|\n"+
@@ -195,7 +169,7 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 													    , separtingLine3);
 
 		
-		return attributeProperties + StatisticalData + discretizationProperties + histogramValues;
+		return attributeProperties + statisticalData + discretizationProperties + histogramValues;
 	}
 
 }

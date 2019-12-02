@@ -79,6 +79,12 @@ public class TimeAttribute extends Attribute{
 		//TODO handle to value for time attribute
 		return null;
 	}
+	
+	@Override
+	protected void init() {
+		// TODO Auto-generated method stub
+		
+	}
 
 	
 }

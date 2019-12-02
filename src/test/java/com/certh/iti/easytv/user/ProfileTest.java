@@ -47,7 +47,6 @@ public class ProfileTest {
 							"Expected: " + json.getJSONObject("user_profile").getJSONObject("user_preferences").getJSONObject("default").toString(4)+" \n but found: \n"+profile1.getUserProfile().getUserPreferences().getDefaultPreference().getJSONObject().toString(4));
 		
 		
-		
 		//compare user_context
 		Assert.assertTrue(profile2.getUserContext().getJSONObject().similar(json.getJSONObject("user_context")), 
 							"Expected: " + json.getJSONObject("user_context").toString(4)+" \n but found: \n"+profile2.getUserContext().getJSONObject().toString(4));

@@ -4,7 +4,7 @@ import java.util.Random;
 
 import org.json.JSONArray;
 
-public class MultiNominalAttribute extends NominalAttribute{
+public class MultiNominalAttribute extends NominalAttribute {
 
 	public MultiNominalAttribute(String[] states) {
 		super(states);

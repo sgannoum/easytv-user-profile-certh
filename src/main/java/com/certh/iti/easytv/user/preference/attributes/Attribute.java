@@ -11,19 +11,77 @@ public abstract class Attribute {
 	protected double missingValue = -1.0;
 	protected double[] range;
 	
+	protected Object[] binsLable;
+	protected int[] binsCounter;
+	protected double step = 1.0;
+	protected int binSize = 1;
+	protected int binsNum = IncrCodeStep;
+	
 	public Attribute(double[] range) {
 		this.range = range;
 		this.attributeCodeBase = attributeCodeIndex;
-		
 		attributeCodeIndex += IncrCodeStep;
+
+		double valueRange = ((range[1] - range[0]) / step) + 1;
+		int initBinNum = (int) (valueRange < IncrCodeStep ? valueRange : IncrCodeStep);
+		
+		if(valueRange > initBinNum) 
+			 binSize = (int) Math.ceil(valueRange/initBinNum);
+		
+		this.binsNum = (int) (valueRange < IncrCodeStep ? valueRange : valueRange / binSize);
+
+		init();
 	}
 	
 	public Attribute(double[] range, double operandMissingValue) {
 		this.range = range;
 		this.missingValue = operandMissingValue;
 		this.attributeCodeBase = attributeCodeIndex;
-		
 		attributeCodeIndex += IncrCodeStep;
+
+		double valueRange = ((range[1] - range[0]) / step) + 1;
+		int initBinNum = (int) (valueRange < IncrCodeStep ? valueRange : IncrCodeStep);
+		
+		if(valueRange > initBinNum) 
+			 binSize = (int) Math.ceil(valueRange/initBinNum);
+		
+		this.binsNum = (int) (valueRange < IncrCodeStep ? valueRange : valueRange / binSize);
+
+		init();
+	}
+	
+	public Attribute(double[] range, double step, double operandMissingValue) {
+		this.range = range;
+		this.missingValue = operandMissingValue;
+		this.attributeCodeBase = attributeCodeIndex;
+		this.step = step;
+		attributeCodeIndex += IncrCodeStep;
+
+		double valueRange = ((range[1] - range[0]) / step) + 1;
+		int initBinNum = (int) (valueRange < IncrCodeStep ? valueRange : IncrCodeStep);
+		
+		if(valueRange > initBinNum) 
+			 binSize = (int) Math.ceil(valueRange/initBinNum);
+		
+		this.binsNum = (int) (valueRange < IncrCodeStep ? valueRange : valueRange / binSize);
+
+		init();
+	}
+	
+	public Attribute(double[] range, double step, int binsNum, double operandMissingValue) {
+		this.range = range;
+		this.missingValue = operandMissingValue;
+		this.attributeCodeBase = attributeCodeIndex;
+		this.step = step;
+		this.binsNum = binsNum;
+		attributeCodeIndex += IncrCodeStep;
+
+		double valueRange = ((range[1] - range[0]) / step) + 1;
+		if(valueRange > binsNum) 
+			binSize = (int) Math.ceil(valueRange/binsNum);
+		
+
+		init();
 	}
 		
 	public double[] getRange() {
@@ -42,6 +100,18 @@ public abstract class Attribute {
 		return attributeCodeBase;
 	}
 	
+	public double getStep() {
+		return step;
+	}
+	
+	public double getBinSize() {
+		return binSize;
+	}
+	
+	public double getBinNumber() {
+		return binsNum;
+	}
+	
 	/**
 	 * Get a vector point representation of the given value
 	 * @param literal
@@ -49,17 +119,56 @@ public abstract class Attribute {
 	 */
 	public abstract double[] getPoints(Object literal);
 	
+	
+	/**
+	 * Enforce implementation in subclasses, 
+	 * Fill out the bin labels table
+	 */
+	protected abstract void init(); 
+	
 	/**
 	 * Get an integer representation of the given value
 	 * @return
 	 */
-	public abstract int code(Object literal);
+	public int code(Object literal) {		
+		double value = (double) literal;
+		
+		//specify the itemId
+		return attributeCodeBase + getBinId(value);
+	}
+	
+	/**
+	 * Get the binId that the given number belongs to 
+	 * 
+	 * @param value
+	 * @return
+	 */
+	protected int getBinId(double value) {
+		//the value position in the sequence of value ranges
+		int position = (int) ((value - range[0]) / step);
+		
+		int binId = (int) (position / binSize);
+		
+		//specify the itemId
+		return binId;
+	}
 	
 	/**
 	 * Get the corresponding dimension value
 	 * @return
 	 */
-	public abstract Object decode(int literal);
+	public Object decode(int itemId) {
+		int binId = itemId - attributeCodeBase;
+		int attributeId = itemId - binId;
+		
+		if (attributeId != attributeCodeBase)
+			throw new IllegalArgumentException("Wrong attribute id: " + attributeCodeBase + " " + attributeId);
+		
+		if (binId >= binsNum)
+			throw new IllegalArgumentException("Out of range bin id: " + binId);
+						
+		return binsLable[binId];
+	}
 
 	/**
 	 * Generate a random value 

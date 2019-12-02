@@ -26,18 +26,18 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		private static final long serialVersionUID = 1L;
  
 	{
-		put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
-		put("http://registry.easytv.eu/common/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+		put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
+		put("http://registry.easytv.eu/common/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
 	    put("http://registry.easytv.eu/common/content/audio/language", new LanguageAttribute());
-	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size", new DoubleAttribute(new double[] {1.0, 2.0}, 0));
+	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, 0));
 	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color", new ColorAttribute());
 	    put("http://registry.easytv.eu/application/tts/audio/language", new LanguageAttribute());
-	    put("http://registry.easytv.eu/application/tts/audio/speed", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
-	    put("http://registry.easytv.eu/application/tts/audio/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+	    put("http://registry.easytv.eu/application/tts/audio/speed", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
+	    put("http://registry.easytv.eu/application/tts/audio/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
 	    put("http://registry.easytv.eu/application/tts/audio/voice", new NominalAttribute(new String[] {"male", "female"}));
 		put("http://registry.easytv.eu/application/tts/audio/quality", new IntegerAttribute(new double[] {1.0, 8.0}, 0)); 
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new LanguageAttribute());
-	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/size", new IntegerAttribute(new double[] {0.0, 100.0}, 0));
+	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/size", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/color", new ColorAttribute());
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/background/color", new ColorAttribute());
 	    put("http://registry.easytv.eu/application/cs/cc/audio/subtitle",  new SymmetricBinaryAttribute());
@@ -104,6 +104,24 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	@Override
 	public double[] getPoint() {	
 		return points;
+	}
+	
+	/**
+	 * Get an item set representation of the usre profile 
+	 * 
+	 * @return
+	 */
+	public int[] getPreferencesAsItemSet() {
+		Collection<Entry<String, Object>> entries = preferences.entrySet();
+		int[] itemSet = new int[entries.size()];
+		int index = 0;
+		
+		for(Entry<String, Object> entry : entries) {
+			Attribute attributHandler = preferencesAttributes.get(entry.getKey());
+			itemSet[index++] = attributHandler.code(entry.getValue());
+		}
+		
+		return itemSet;
 	}
 
 	public Map<String, Object> getPreferences() {
