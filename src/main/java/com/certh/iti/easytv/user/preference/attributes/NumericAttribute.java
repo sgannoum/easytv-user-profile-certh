@@ -171,7 +171,7 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	 * 
 	 * @return
 	 */
-	private String getBinsHistogram() {
+	protected String getBinsHistogram() {
 		
 		String binCenter =  "|Center ", binsCounts = "|Counts ", emplyLine = "",upperLine = "", middleLine = "", binId = "|Id     ", binLabel = "|Range  ";
 		String type = Double.class.isInstance(binsCenter[0]) ? ".1f" : "d";

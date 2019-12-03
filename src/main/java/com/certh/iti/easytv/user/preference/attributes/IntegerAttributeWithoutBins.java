@@ -100,4 +100,11 @@ public class IntegerAttributeWithoutBins extends NumericAttribute {
 	}
 	
 	
+	@Override
+	protected String getBinsHistogram() {
+		//OVerride super implementation
+		return "";
+	}
+	
+	
 }
