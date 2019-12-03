@@ -12,7 +12,7 @@ public class ColorAttribute extends NumericAttribute {
 	
 	
 	public ColorAttribute() {
-		super(new double[] {0.0, 16777215.0});
+		super(new double[] {0.0, 16777216.0});
 	}
 
 	public ColorAttribute(double[] range) {

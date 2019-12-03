@@ -168,11 +168,13 @@ public abstract class Attribute {
 	 * 
 	 * @return
 	 */
-	public int code(Object literal) {		
-		double value = (double) literal;
+	public int code(Object literal) {
+		
+		if(!Double.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Double");
 		
 		//specify the itemId
-		return codeBase + getBinId(value);
+		return codeBase + getBinId((double) literal);
 	}
 	
 	/**
@@ -215,7 +217,7 @@ public abstract class Attribute {
 		if (attributeId != codeBase)
 			throw new IllegalArgumentException("Wrong attribute id: " + codeBase + " " + attributeId);
 		
-		if (binId >= binsNum)
+		if (binId >= binsNum || binId < 0)
 			throw new IllegalArgumentException("Out of range bin id: " + binId);
 						
 		return binsCenter[binId];

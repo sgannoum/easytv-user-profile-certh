@@ -8,63 +8,47 @@ public class NominalAttribute extends Attribute implements INominal {
 	protected long n = 0;
 	protected String[] states;
 	protected long[] counts;
-	
-	protected double step = 1.0;
-	protected int binNum = 1;
-	protected int binsNum = MAX_BINS_NUMS;
 
 	public NominalAttribute(String[] states) {
 		super(new double[] { 0.0, states.length - 1 });
 		this.states = states;
 		this.counts = new long[states.length];
-		
-		double valueRange = (range[1] - range[0]) / step;
-		if(valueRange > binsNum) 
-			 binNum = (int) Math.ceil(valueRange/binsNum);
+		this.binsCenter = states;	
 	}
 
 	public NominalAttribute(double[] range, String[] states) {
 		super(range);
 		this.states = states;
 		this.counts = new long[states.length];
-		
-		double valueRange = (range[1] - range[0]) / step;
-		if(valueRange > binsNum) 
-			 binNum = (int) Math.ceil(valueRange/binsNum);
+		this.binsCenter = states;	
 	}
 
 	public NominalAttribute(double operandMissingValue, String[] states) {
 		super(new double[] { 0.0, states.length - 1 }, operandMissingValue);
 		this.states = states;
 		this.counts = new long[states.length];
-		
-		double valueRange = (range[1] - range[0]) / step;
-		if(valueRange > binsNum) 
-			 binNum = (int) Math.ceil(valueRange/binsNum);
+		this.binsCenter = states;	
 	}
 
 	public NominalAttribute(double[] range, double operandMissingValue, String[] states) {
 		super(range, operandMissingValue);
 		this.states = states;
 		this.counts = new long[states.length];
-		
-		double valueRange = (range[1] - range[0]) / step;
-		if(valueRange > binsNum) 
-			 binNum = (int) Math.ceil(valueRange/binsNum);
+		this.binsCenter = states;	
 	}
 	
-	public NominalAttribute(double[] range, double operandMissingValue, int binNum, String[] states) {
-		super(range, operandMissingValue);
+	public NominalAttribute(double[] range, double operandMissingValue, double step, int binNum, String[] states) {
+		super(range, step, binNum, operandMissingValue);
 		this.states = states;
-		this.binNum = binNum;
 		this.counts = new long[states.length];
-
-		if(binNum > states.length)
-			throw new IllegalArgumentException("Bin number "+binNum+" can't be bigger than available states"+states.length);
-		
-		double valueRange = (range[1] - range[0]) / step;
-		if(valueRange > binsNum) 
-			 binNum = (int) Math.ceil(valueRange/binsNum);
+		this.binsCenter = states;	
+	}
+	
+	/**
+	 * Fill out the bin label with the proper labels
+	 */
+	@Override
+	protected void init() {	
 	}
 
 	public final long[] getStateCounts() {
@@ -96,6 +80,10 @@ public class NominalAttribute extends Attribute implements INominal {
 
 	@Override
 	public Object handle(Object value) {
+		
+		if(!String.class.isInstance(value))
+			throw new IllegalArgumentException("Value of type " + value.getClass().getName() + " can't not be converted into String");
+		
 		String str = String.valueOf(value);
 
 		int state = orderOf(str);
@@ -127,15 +115,17 @@ public class NominalAttribute extends Attribute implements INominal {
 
 	@Override
 	public int code(Object literal) {		
+		
+		if(!String.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into String");
+		
 		String str = String.valueOf(literal);
 
 		int state = orderOf(str);
 		if (state == -1)
 			throw new IllegalStateException("Unknown state " + literal);
 		
-		int itemId = this.codeBase + state;
-
-		return itemId;
+		return this.codeBase + state;
 	}
 	
 	
@@ -170,13 +160,6 @@ public class NominalAttribute extends Attribute implements INominal {
 				middleLine, 
 				binsCounts, 
 				upperLine);
-	}
-	
-	/**
-	 * Fill out the bin label with the proper labels
-	 */
-	protected void init() {	
-		binsCenter = states;	
 	}
 
 }

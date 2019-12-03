@@ -79,8 +79,14 @@ public class IntegerAttribute extends NumericAttribute {
 
 	@Override
 	public Object handle(Object value) {
-
-		int numericValue = Integer.class.cast(value);
+		
+		int numericValue ;
+		
+		if(Integer.class.isInstance(value)) {
+			numericValue = Integer.class.cast(value);
+		} else
+			throw new IllegalArgumentException("Value of type " + value.getClass().getName() + " can't not be converted into Integer");
+			
 		
 		if(numericValue < range[0] || numericValue > range[1])
 			throw new OutOfRangeException(numericValue, range[0], range[1]);
@@ -108,11 +114,15 @@ public class IntegerAttribute extends NumericAttribute {
 	}
 	
 	@Override
-	public int code(Object literal) {		
+	public int code(Object literal) {
+		
+		if(!Integer.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into integer");
+		
 		//convert int to double
 		double value = ((int) literal) * 1.0;
 
-		return super.code(value);
+		return codeBase + getBinId(value);
 	}
 
 }

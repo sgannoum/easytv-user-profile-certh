@@ -20,7 +20,11 @@ public abstract class BinaryAttribute extends Attribute {
 	}
 
 	@Override
-	public int code(Object literal) {		
+	public int code(Object literal) {	
+		
+		if(!Boolean.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Boolean");
+		
 		//convert int to double
 		double value = (boolean )literal == true ? 1.0 : 0.0;
 
@@ -29,6 +33,10 @@ public abstract class BinaryAttribute extends Attribute {
 	
 	@Override
 	public Object handle(Object value) {
+		
+		if(!Boolean.class.isInstance(value))
+			throw new IllegalArgumentException("Value of type " + value.getClass().getName() + " can't not be converted into Boolean");
+		
 
 		Boolean literal = (Boolean) value;
 		

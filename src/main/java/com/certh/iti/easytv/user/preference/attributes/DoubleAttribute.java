@@ -2,7 +2,6 @@ package com.certh.iti.easytv.user.preference.attributes;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
-import org.apache.commons.math3.exception.util.Localizable;
 
 public class DoubleAttribute extends NumericAttribute {
 	
@@ -78,8 +77,11 @@ public class DoubleAttribute extends NumericAttribute {
 		
 		if(Integer.class.isInstance(value)) {
 			numericValue = Integer.class.cast(value);
-		} else 
+		} else if(Double.class.isInstance(value)) { 
 			numericValue = Double.class.cast(value);
+		} else
+			throw new IllegalArgumentException("Value of type " + value.getClass().getName() + " can't not be converted into Double");
+			
 		
 		if(numericValue < range[0] || numericValue > range[1])
 			throw new OutOfRangeException(numericValue, range[0], range[1]);
