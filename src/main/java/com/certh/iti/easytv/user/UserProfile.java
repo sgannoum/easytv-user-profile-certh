@@ -122,4 +122,12 @@ public class UserProfile implements Clusterable {
 		return UserPreferences.getPreferencesDistinctItemsFrequency();
 	}
 	
+	/**
+	 * Get bins labels
+	 * @return
+	 */
+	public static final Object[] getPreferencesDistinctItemsLabels() {
+		return UserPreferences.getPreferencesDistinctItemsLabels();
+	}
+	
 }

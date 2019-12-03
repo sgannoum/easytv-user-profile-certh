@@ -123,4 +123,12 @@ public class UserPreferences implements Clusterable {
 	public static final int[] getPreferencesDistinctItemsFrequency() {
 		return Preference.getPreferencesDistinctItemsFrequency();
 	}
+	
+	/**
+	 * Get the frequency counts of the occurred items
+	 * @return
+	 */
+	public static final Object[] getPreferencesDistinctItemsLabels() {
+		return Preference.getPreferencesDistinctItemsLabels();
+	}
 }

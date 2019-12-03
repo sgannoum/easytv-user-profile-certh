@@ -29,22 +29,28 @@ public class IntegerAttribute extends NumericAttribute {
 	@Override
 	protected void init() {
 				
+		binslables = new String[binsNum];
 		binsCounter = new int[binsNum];
-		binsLable = new Object[binsNum];
+		binsCenter = new Object[binsNum];
 				
 		for(int i = 0; i < binsNum; i++) {
 
 			//the bin middle value
-			int binMidValue =  (int) ((i * binSize * step) + range[0]);
-
+			int firstValue =  (int) ((i * binSize * step) + range[0]);
+			int lastValue =  (int) ((((i + 1) * binSize * step) + range[0]) - step);
+			if(lastValue > range[1]) lastValue = (int) range[1];
+			
+			int midValue = 0;
+			
 			//take the middle value
 			if(binSize % 2 == 0) {
-				binMidValue += (binSize / 2) * step;
+				midValue += firstValue + (binSize / 2) * step;
 			} else {
-				binMidValue += ((binSize - 1) / 2) * step;
+				midValue += firstValue + ((binSize - 1) / 2) * step;
 			}
 			
-			binsLable[i] = binMidValue;
+			binsCenter[i] = midValue;
+			binslables[i] = String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
 		}
 	}
 	
@@ -100,44 +106,6 @@ public class IntegerAttribute extends NumericAttribute {
 		double value = ((int) literal) * 1.0;
 
 		return super.code(value);
-	}
-	
-	@Override
-	public String toString() {
-		
-		String binlables =  "", binsCounts = "", emplyLine = "",upperLine = "", middleLine = "", binId = "";
-		for(int i = 0 ; i < binsNum; i++) {
-			binId += String.format("|%-5d", i);
-			binlables += String.format("|%-5d", binsLable[i]);
-			binsCounts += String.format("|%-5d", binsCounter[i]);
-		}
-		
-		binId += "|";
-		binlables += "|";
-		binsCounts += "|";
-		
-		emplyLine = String.format("%"+binlables.length()+"s", " ");
-		upperLine = emplyLine.replaceAll(" ", "+");
-		middleLine = emplyLine.replaceAll(" ", "-");
-		
-		return super.toString() + String.format("%s\n"
-											+ "|%-"+(upperLine.length() - 2)+"s|\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n",
-											upperLine,
-											 "Bins histogram",
-											upperLine, 
-											binId, 
-											middleLine, 
-											binlables, 
-											middleLine, 
-											binsCounts, 
-											upperLine);
 	}
 
 }

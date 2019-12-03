@@ -22,7 +22,7 @@ public class ColorAttribute extends NumericAttribute {
 	@Override
 	protected void init() {
 		binsCounter = new int[binsNum];
-		binsLable = new Object[binsNum];
+		binsCenter = new Object[binsNum];
 	
 		//TODO fill binsLable table
 	}

@@ -46,7 +46,7 @@ public abstract class BinaryAttribute extends Attribute {
 		
 		String binlables =  "", binsCounts = "", emplyLine = "",upperLine = "", middleLine = "";
 		for(int i = 0 ; i < binsCounter.length; i++) {
-			binlables += String.format("|%-7s", (boolean) binsLable[i] ? "True" : "False");
+			binlables += String.format("|%-7s", (boolean) binsCenter[i] ? "True" : "False");
 			binsCounts += String.format("|%-7d", binsCounter[i]);
 		}
 		
@@ -78,10 +78,10 @@ public abstract class BinaryAttribute extends Attribute {
 	 */
 	protected void init() {
 		binsCounter = new int[binsNum];
-		binsLable = new Object[binsNum]; 
+		binsCenter = new Object[binsNum]; 
 		
-		binsLable[0] = false;	
-		binsLable[1] = true;
+		binsCenter[0] = false;	
+		binsCenter[1] = true;
 	}
 
 }

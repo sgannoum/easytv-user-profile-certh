@@ -176,7 +176,7 @@ public class NominalAttribute extends Attribute implements INominal {
 	 * Fill out the bin label with the proper labels
 	 */
 	protected void init() {	
-		binsLable = states;	
+		binsCenter = states;	
 	}
 
 }

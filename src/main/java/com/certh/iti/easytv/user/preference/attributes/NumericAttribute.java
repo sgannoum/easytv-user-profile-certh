@@ -112,7 +112,6 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		String separtingLine2 = String.format("%25s", " ").replaceAll(" ", "+");
 		String separtingLine3 = String.format("%35s", " ").replaceAll(" ", "+");
 		
-		String attributeProperties = super.toString();
 		String statisticalData = String.format("%s\n"+
 												 "|%-74s|\n"+
 												 "%s\n"+
@@ -160,9 +159,58 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 													    , separtingLine3
 													    , binsNum, binSize, step
 													    , separtingLine3);
-
 		
-		return attributeProperties + statisticalData + discretizationProperties + histogramValues;
+		
+		return super.toString() + statisticalData + discretizationProperties + histogramValues + getBinsHistogram();
 	}
 	
+	/**
+	 * Print in the form of table the bins histogram
+	 * 
+	 * @return
+	 */
+	private String getBinsHistogram() {
+		
+		String binCenter =  "|Center ", binsCounts = "|Counts ", emplyLine = "",upperLine = "", middleLine = "", binId = "|Id     ", binLabel = "|Range  ";
+		String type = Double.class.isInstance(binsCenter[0]) ? ".1f" : "d";
+		
+		for(int i = 0 ; i < binsNum; i++) {
+			binId += String.format("|%-10d", i);
+			binLabel += String.format("|%-10s", binslables[i]);
+			binCenter += String.format("|%-10" + type, binsCenter[i]);
+			binsCounts += String.format("|%-10d", binsCounter[i]);
+		}
+		
+		binId += "|";
+		binLabel += "|";
+		binCenter += "|";
+		binsCounts += "|";
+		
+		emplyLine = String.format("%"+binCenter.length()+"s", " ");
+		upperLine = emplyLine.replaceAll(" ", "+");
+		middleLine = emplyLine.replaceAll(" ", "-");
+		
+		return  String.format("%s\n"
+											+ "|%-"+(upperLine.length() - 2)+"s|\n"
+											+ "%s\n"
+											+ "%s\n"
+											+ "%s\n"
+											+ "%s\n"
+											+ "%s\n"
+											+ "%s\n"
+											+ "%s\n"
+											+ "%s\n"
+											+ "%s\n",
+											upperLine,
+											 "Bins histogram",
+											upperLine, 
+											binId, 
+											middleLine, 
+											binLabel, 
+											middleLine, 
+											binCenter, 
+											middleLine, 
+											binsCounts, 
+											upperLine);
+	}
 }

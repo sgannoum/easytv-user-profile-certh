@@ -11,7 +11,8 @@ public abstract class Attribute {
 	protected double missingValue = -1.0;
 	protected double[] range;
 	
-	protected Object[] binsLable = null;
+	protected String[] binslables = null;
+	protected Object[] binsCenter = null;
 	protected int[] binsCounter = null;
 	protected double step = 1.0;
 	protected int binSize = 1;
@@ -139,11 +140,12 @@ public abstract class Attribute {
 	}
 	
 	public Object[] getBinsLabel() {
-		return binsLable;
+		return binsCenter;
 	}
 	
 	/**
 	 * Get the number of distinct items
+	 * 
 	 * @return
 	 */
 	public static int getDistinctItemsNumber() {
@@ -152,6 +154,7 @@ public abstract class Attribute {
 	
 	/**
 	 * Get an integer representation of the given value
+	 * 
 	 * @return
 	 */
 	public int code(Object literal) {		
@@ -175,7 +178,7 @@ public abstract class Attribute {
 		//the value position in the sequence of value ranges
 		int position = (int) ((value - range[0]) / step);
 		
-		int binId = (int) (position / binSize);
+		int binId = (int) Math.floor(position / binSize);
 
 		//specify the itemId
 		return binId;
@@ -183,6 +186,7 @@ public abstract class Attribute {
 	
 	/**
 	 * Get the corresponding dimension value
+	 * 
 	 * @return
 	 */
 	public Object decode(int itemId) {
@@ -198,7 +202,7 @@ public abstract class Attribute {
 		if (binId % step != 0)
 			throw new IllegalArgumentException("ItemId: " + itemId + " is not compatible with step: " + step);
 						
-		return binsLable[binId];
+		return binsCenter[binId];
 	}
 
 	/**
@@ -231,22 +235,22 @@ public abstract class Attribute {
 	
 	@Override
 	public String toString() {
-		String separtingLine = String.format("%43s", " ").replaceAll(" ", "+");
+		String separtingLine = String.format("%64s", " ").replaceAll(" ", "+");
 		
 		return String.format("%s\n" +
-							 "|%-41s|\n" +
+							 "|%-62s|\n" +
 							 "%s\n" +
-							 "|%-20s|%-20s|\n"+
+							 "|%-20s|%-20s|%-20s|\n"+
 							 "%s\n" +
-							 "|[%-8.1f, %-8.1f]|%-20.1f|\n" +
+							 "|[%-8.1f, %-8.1f]|%-20.1f|%-20d|\n" +
 							 "%s\n\n" 
 							 , 
 							 separtingLine,
-							 String.format("%10s", " ") + "Atrribute properties", 
+							 String.format("%20s", " ") + "Atrribute properties", 
 							 separtingLine,
-							 String.format("%8s", " ") + "Range", String.format("%4s", " ") + "Missing Value", 
+							 String.format("%8s", " ") + "Range", String.format("%4s", " ") + "Missing Value", String.format("%4s", " ") + "Code base",
 							 separtingLine,
-							 range[0], range[1], missingValue,
+							 range[0], range[1], missingValue, codeBase,
 							 separtingLine);
 	}
 }

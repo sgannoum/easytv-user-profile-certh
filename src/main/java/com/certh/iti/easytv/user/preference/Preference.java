@@ -46,10 +46,10 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/cs/ui/language", new LanguageAttribute());	
 	    put("http://registry.easytv.eu/application/cs/ui/vibration/touch", new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/ui/text/magnification/scale",  new SymmetricBinaryAttribute()); 					
-	    put("http://registry.easytv.eu/application/cs/audio/eq/bass", new IntegerAttribute(new double[] {-15.0, 15.0}, 0));
-	    put("http://registry.easytv.eu/application/cs/audio/eq/mids", new IntegerAttribute(new double[] {-15.0, 15.0}, 0));
-	    put("http://registry.easytv.eu/application/cs/audio/eq/highs", new IntegerAttribute(new double[] {-15.0, 15.0}, 0));
-	  	put("http://registry.easytv.eu/application/cs/audio/volume", new IntegerAttribute(new double[] {-15.0, 15.0}, 0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/bass", new IntegerAttribute(new double[] {-15.0, 15.0}, 1.0, 10, 0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/mids", new IntegerAttribute(new double[] {-15.0, 15.0}, 1.0, 10, 0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/highs", new IntegerAttribute(new double[] {-15.0, 15.0}, 1.0, 10, 0));
+	  	put("http://registry.easytv.eu/application/cs/audio/volume", new IntegerAttribute(new double[] {-15.0, 15.0}, 1.0, 10, 0));
 	    put("http://registry.easytv.eu/application/cs/audio/track", new LanguageAttribute());
 	    put("http://registry.easytv.eu/application/control/voice", new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlType", new NominalAttribute(new String[] {"none", "gaze_control", "gesture_control"}));
@@ -328,5 +328,31 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		}
 		
 		return counts;
+	}
+	
+	/**
+	 * Get the bins corresponding labels 
+	 * @return
+	 */
+	public static final Object[] getPreferencesDistinctItemsLabels() {
+		int index = 0;
+		Collection<Attribute> entries = preferencesAttributes.values();
+		
+		//create a table to hold all counts
+		Object[] labels = new Object[Attribute.getDistinctItemsNumber()];
+
+		//get bin frequency counts
+		for(Object entry : entries) {
+			Attribute attributHandler = (Attribute) entry;
+			
+			Object[] binsLabels = attributHandler.getBinsLabel();
+			
+			if(binsLabels == null) continue;
+			
+			for(int j = 0; j < binsLabels.length; j++)
+				labels[index++] = binsLabels[j];
+		}
+		
+		return labels;
 	}
 }

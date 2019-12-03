@@ -20,7 +20,7 @@ public class IntegerAttributeWithoutBins extends NumericAttribute {
 	 */
 	@Override
 	protected void init() {
-		binsLable = null;
+		binsCenter = null;
 		binsCounter = null;
 		binSize = 0;
 		binsNum = 0;
