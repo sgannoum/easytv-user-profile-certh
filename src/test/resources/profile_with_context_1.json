@@ -26,7 +26,7 @@
         "http://registry.easytv.eu/application/cs/cc/subtitles/language": "ca",
         "http://registry.easytv.eu/application/control/csGazeAndGestureControlType": "gaze_control",
         "http://registry.easytv.eu/application/cs/ui/vibration/touch": true,
-        "http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize": 1.5,
+        "http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize": 2.0,
         "http://registry.easytv.eu/application/cs/audio/eq/highs": 5,
         "http://registry.easytv.eu/application/cs/cc/subtitles/background/color": "#000000",
         "http://registry.easytv.eu/application/cs/accessibility/sign/language": "es",

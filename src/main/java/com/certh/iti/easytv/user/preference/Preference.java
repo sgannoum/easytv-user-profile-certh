@@ -296,4 +296,37 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	}
 	
 	
+	/**
+	 * Get the number of distinct items in the given data
+	 * @return
+	 */
+	public static int getPreferencesDistinctItems() {
+		return Attribute.getDistinctItemsNumber();
+	}
+	
+	/**
+	 * Get the frequency counts of the occurred items
+	 * @return
+	 */
+	public static final int[] getPreferencesDistinctItemsFrequency() {
+		int index = 0;
+		Collection<Attribute> entries = preferencesAttributes.values();
+		
+		//create a table to hold all counts
+		int[] counts = new int[Attribute.getDistinctItemsNumber()];
+
+		//get bin frequency counts
+		for(Object entry : entries) {
+			Attribute attributHandler = (Attribute) entry;
+			
+			int[] binCounter = attributHandler.getBinsCounter();
+			
+			if(binCounter == null) continue;
+			
+			for(int j = 0; j < binCounter.length; j++)
+				counts[index++] = binCounter[j];
+		}
+		
+		return counts;
+	}
 }

@@ -11,7 +11,7 @@ public class NominalAttribute extends Attribute implements INominal {
 	
 	protected double step = 1.0;
 	protected int binNum = 1;
-	protected int binsNum = IncrCodeStep;
+	protected int binsNum = MAX_BINS_NUMS;
 
 	public NominalAttribute(String[] states) {
 		super(new double[] { 0.0, states.length - 1 });
@@ -133,7 +133,7 @@ public class NominalAttribute extends Attribute implements INominal {
 		if (state == -1)
 			throw new IllegalStateException("Unknown state " + literal);
 		
-		int itemId = this.attributeCodeBase + state;
+		int itemId = this.codeBase + state;
 
 		return itemId;
 	}

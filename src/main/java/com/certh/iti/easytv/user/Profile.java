@@ -265,7 +265,6 @@ public class Profile implements Clusterable {
 				operandsLiteral[index] = entry.getValue();
 				index++;
 			}
-		
 		}
 		
 		return 	uris;
@@ -285,4 +284,19 @@ public class Profile implements Clusterable {
 		return output;
 	}
 	
+	/**
+	 * Get the number of distinct items of the user preferences
+	 * @return
+	 */
+	public static int getPreferencesDistinctItems() {
+		return UserProfile.getPreferencesDistinctItems();
+	}
+	
+	/**
+	 * Get the frequency counts of the occurred items
+	 * @return
+	 */
+	public static final int[] getPreferencesDistinctItemsFrequency() {
+		return UserProfile.getPreferencesDistinctItemsFrequency();
+	}
 }

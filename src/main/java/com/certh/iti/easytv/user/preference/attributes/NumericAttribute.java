@@ -30,6 +30,7 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	public NumericAttribute(double[] range, double step, int binsNum, double operandMissingValue) {
 		super(range, step, binsNum, operandMissingValue);
 	}
+
 	
 	protected void setMinMaxValue(double value) {
 		
@@ -62,14 +63,6 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		return n!= 0 ? sum/n : 0;
 	}
 	
-	public double getStep() {
-		return step;
-	}
-	
-	public double getBinSize() {
-		return binSize;
-	}
-	
 	public double[][] getEntriesCounts() {
 		int size = frequencyHistogram.keySet().size();
 		int index = 0;
@@ -82,7 +75,6 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 			entriesCounts[index][1] = entry.getValue().doubleValue();
 			index++;
 		}
-
 		return entriesCounts;
 	}
 	
@@ -100,6 +92,7 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 				Entry<Double, Long> entry = iter.next();
 				var += entry.getValue() * Math.pow(entry.getKey() - mean, 2);
 			}
+			
 			standard_deviation = Math.sqrt(var/n);
 		}
 		
@@ -171,5 +164,5 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		
 		return attributeProperties + statisticalData + discretizationProperties + histogramValues;
 	}
-
+	
 }

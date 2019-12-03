@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
+import com.certh.iti.easytv.user.preference.Preference;
 
 public class UserProfile implements Clusterable {
 	
@@ -72,7 +73,7 @@ public class UserProfile implements Clusterable {
 	}
 	
 	public int[] getPreferencesAsItemSet() {
-		return this.getUserPreferences().getPreferencesAsItemSet();
+		return this.userPreferences.getPreferencesAsItemSet();
 	}
 
 	public JSONObject getJSONObject() {
@@ -103,6 +104,22 @@ public class UserProfile implements Clusterable {
 		if(!UserProfile.class.isInstance(obj)) return false;
 		UserProfile other = (UserProfile) obj;
 		return getJSONObject().similar(other.getJSONObject());
+	}
+	
+	/**
+	 * Get the number of distinct items of the user preferences
+	 * @return
+	 */
+	public static int getPreferencesDistinctItems() {
+		return UserPreferences.getPreferencesDistinctItems();
+	}
+	
+	/**
+	 * Get the frequency counts of the occurred items
+	 * @return
+	 */
+	public static final int[] getPreferencesDistinctItemsFrequency() {
+		return UserPreferences.getPreferencesDistinctItemsFrequency();
 	}
 	
 }

@@ -6,9 +6,9 @@ import java.util.Random;
 public class ColorAttribute extends NumericAttribute {
 	
 
-	private NumericAttribute red = new IntegerAttribute(new double[] {0.0, 255.0}, 1.0, 25, -1);
-	private NumericAttribute green = new IntegerAttribute(new double[] {0.0, 255.0}, 1.0, 25, -1);
-	private NumericAttribute blue =  new IntegerAttribute(new double[] {0.0, 255.0}, 1.0, 25, -1);
+	private NumericAttribute red = new IntegerAttributeWithoutBins(new double[] {0.0, 255.0}, -1);
+	private NumericAttribute green = new IntegerAttributeWithoutBins(new double[] {0.0, 255.0}, -1);
+	private NumericAttribute blue =  new IntegerAttributeWithoutBins(new double[] {0.0, 255.0}, -1);
 	
 	
 	public ColorAttribute() {
@@ -17,6 +17,14 @@ public class ColorAttribute extends NumericAttribute {
 
 	public ColorAttribute(double[] range) {
 		super(range);
+	}
+	
+	@Override
+	protected void init() {
+		binsCounter = new int[binsNum];
+		binsLable = new Object[binsNum];
+	
+		//TODO fill binsLable table
 	}
 	
 	@Override
@@ -67,10 +75,14 @@ public class ColorAttribute extends NumericAttribute {
 
 		// Set Min Max vlaue
 		setMinMaxValue(numericValue);
+		
+		//Increment the number of occurrences 
+		int bindId = getBinId(numericValue);
+		binsCounter[bindId]++;
 
 		//sum += numericValue;
-
 		n++;
+		
 		return value;
 	}
 	
@@ -84,20 +96,20 @@ public class ColorAttribute extends NumericAttribute {
 		int position = (int) ((value - range[0]) / step);
 		
 		//specify the itemId
-		int binId = attributeCodeBase + (int) (position / binSize);
+		int binId = codeBase + (int) (position / binSize);
 
 		return binId;
 	}
 
 	@Override 
 	public Object decode(int itemId) {
-		int binId = itemId - attributeCodeBase;
+		int binId = itemId - codeBase;
 		int attributeId = itemId - binId;
 		
-		if (attributeId != attributeCodeBase)
-			throw new IllegalArgumentException("Wrong attribute id: " + attributeCodeBase + " " + attributeId);
+		if (attributeId != codeBase)
+			throw new IllegalArgumentException("Wrong attribute id: " + codeBase + " " + attributeId);
 		
-		if (binId >= IncrCodeStep)
+		if (binId >= MAX_BINS_NUMS)
 			throw new IllegalArgumentException("Out of range bin id: " + binId);
 		
 		int binMidValue =  (int) ((binId * binSize * step) + range[0]);
@@ -111,11 +123,10 @@ public class ColorAttribute extends NumericAttribute {
 		
 		return Color.decode(String.format("#%06X",binMidValue));
 	}
-
+	
 	@Override
-	protected void init() {
-		// TODO Auto-generated method stub
-		
+	public String toString() {		
+		return String.format("Red\n%s\nGreen\n%s\nBlue\n%s\n" , red.toString(), green.toString(), blue.toString());
 	}
 
 }

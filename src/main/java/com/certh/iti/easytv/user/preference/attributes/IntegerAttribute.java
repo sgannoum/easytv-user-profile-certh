@@ -23,6 +23,31 @@ public class IntegerAttribute extends NumericAttribute {
 		super(range, step, binsNum, operandMissingValue);
 	}
 	
+	/**
+	 * Fill out the bin label with the proper labels
+	 */
+	@Override
+	protected void init() {
+				
+		binsCounter = new int[binsNum];
+		binsLable = new Object[binsNum];
+				
+		for(int i = 0; i < binsNum; i++) {
+
+			//the bin middle value
+			int binMidValue =  (int) ((i * binSize * step) + range[0]);
+
+			//take the middle value
+			if(binSize % 2 == 0) {
+				binMidValue += (binSize / 2) * step;
+			} else {
+				binMidValue += ((binSize - 1) / 2) * step;
+			}
+			
+			binsLable[i] = binMidValue;
+		}
+	}
+	
 	@Override
 	public Object getRandomValue(Random rand) {
 		Double value = (Double) super.getRandomValue(rand);
@@ -87,6 +112,7 @@ public class IntegerAttribute extends NumericAttribute {
 			binsCounts += String.format("|%-5d", binsCounter[i]);
 		}
 		
+		binId += "|";
 		binlables += "|";
 		binsCounts += "|";
 		
@@ -113,30 +139,5 @@ public class IntegerAttribute extends NumericAttribute {
 											binsCounts, 
 											upperLine);
 	}
-	
-	/**
-	 * Fill out the bin label with the proper labels
-	 */
-	protected void init() {
-				
-		binsCounter = new int[binsNum];
-		binsLable = new Object[binsNum];
-				
-		for(int i = 0; i < binsNum; i++) {
-
-			//the bin middle value
-			int binMidValue =  (int) ((i * binSize * step) + range[0]);
-
-			//take the middle value
-			if(binSize % 2 == 0) {
-				binMidValue += binSize / 2;
-			} else {
-				binMidValue += (binSize - 1) / 2;
-			}
-			
-			binsLable[i] = binMidValue;
-		}
-	}
-	
 
 }
