@@ -110,7 +110,6 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 
 		String separtingLine1 = String.format("%76s", " ").replaceAll(" ", "+");
 		String separtingLine2 = String.format("%25s", " ").replaceAll(" ", "+");
-		String separtingLine3 = String.format("%35s", " ").replaceAll(" ", "+");
 		
 		String statisticalData = String.format("%s\n"+
 												 "|%-74s|\n"+
@@ -144,20 +143,23 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 											    , histogram
 											    , separtingLine2);
 		
+		
+		String separtingLine3 = String.format("%45s", " ").replaceAll(" ", "+");
+
 		String discretizationProperties = String.format( "%s\n" + 
-														 "|%-33s|\n"+
+														 "|%-43s|\n"+
 														 "%s\n" + 
-														 "|%-10s|%-10s|%-10s|\n"+
+														 "|%-10s|%-10s|%-10s|%-9s|\n"+
 														 "%s\n"+
-														 "|%-11d|%-10d|%-10.1f|\n"+
+														 "|%-11d|%-10d|%-10d|%-9.1f|\n"+
 														 "%s\n\n"
 													    
 													    , separtingLine3
-													    , "    Discretization properties"
+													    , "        Discretization properties"
 													    , separtingLine3
-													    , "Bins number", " Bin Size", "   Step"
+													    , "Bins number", " Bin Size", "Remaining", "  Step"
 													    , separtingLine3
-													    , binsNum, binSize, step
+													    , binsNum, binSize, remaining, step
 													    , separtingLine3);
 		
 		

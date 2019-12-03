@@ -2,6 +2,8 @@ package com.certh.iti.easytv.user.preference.attributes;
 
 import java.util.Random;
 
+import org.apache.commons.math3.exception.OutOfRangeException;
+
 public abstract class Attribute {
 
 	protected static int TotalCodeBase = 0;
@@ -16,6 +18,7 @@ public abstract class Attribute {
 	protected int[] binsCounter = null;
 	protected double step = 1.0;
 	protected int binSize = 1;
+	protected int remaining = 0;
 	protected int binsNum = MAX_BINS_NUMS;
 	
 	
@@ -25,11 +28,13 @@ public abstract class Attribute {
 
 		double valueRange = ((range[1] - range[0]) / step) + 1;
 		int initBinNum = (int) (valueRange < MAX_BINS_NUMS ? valueRange : MAX_BINS_NUMS);
-		if(valueRange > initBinNum) 
-			 binSize = (int) Math.ceil(valueRange/initBinNum);
+		if(valueRange > initBinNum) { 
+			 remaining = (int) (valueRange % initBinNum);
+			 binSize = (int) ((valueRange - remaining)  / initBinNum);
+		}
 		
 		//recalculate the bins number
-		this.binsNum = (int) Math.ceil(valueRange < MAX_BINS_NUMS ? valueRange : valueRange / binSize);
+		this.binsNum = (int) Math.floor(valueRange < MAX_BINS_NUMS ? valueRange : valueRange / binSize);
 
 		//call subclass initialization
 		init();
@@ -44,11 +49,13 @@ public abstract class Attribute {
 
 		double valueRange = ((range[1] - range[0]) / step) + 1;
 		int initBinNum = (int) (valueRange < MAX_BINS_NUMS ? valueRange : MAX_BINS_NUMS);
-		if(valueRange > initBinNum) 
-			 binSize = (int) Math.ceil(valueRange/initBinNum);
+		if(valueRange > initBinNum) { 
+			 remaining = (int) (valueRange % initBinNum);
+			 binSize = (int) ((valueRange - remaining)  / initBinNum);
+		}
 		
 		//recalculate the bins number
-		this.binsNum = (int) Math.ceil(valueRange < MAX_BINS_NUMS ? valueRange : valueRange / binSize);
+		this.binsNum = (int) Math.floor(valueRange < MAX_BINS_NUMS ? valueRange : valueRange / binSize);
 
 		//call subclass initialization
 		init();
@@ -64,11 +71,13 @@ public abstract class Attribute {
 
 		double valueRange = ((range[1] - range[0]) / step) + 1;
 		int initBinNum = (int) (valueRange < MAX_BINS_NUMS ? valueRange : MAX_BINS_NUMS);
-		if(valueRange > initBinNum) 
-			 binSize = (int) Math.ceil(valueRange/initBinNum);
+		if(valueRange > initBinNum) { 
+			 remaining = (int) (valueRange % initBinNum);
+			 binSize = (int) ((valueRange - remaining)  / initBinNum);
+		}
 		
 		//recalculate the bins number
-		this.binsNum = (int) Math.ceil(valueRange < MAX_BINS_NUMS ? valueRange : valueRange / binSize);
+		this.binsNum = (int) Math.floor(valueRange < MAX_BINS_NUMS ? valueRange : valueRange / binSize);
 
 		//call subclass initialization
 		init();
@@ -84,8 +93,10 @@ public abstract class Attribute {
 		this.binsNum = binsNum;
 
 		double valueRange = ((range[1] - range[0]) / step) + 1;
-		if(valueRange > binsNum) 
-			binSize = (int) Math.ceil(valueRange/binsNum);
+		if(valueRange > binsNum) {
+			 remaining = (int) (valueRange % binsNum);
+			 binSize = (int) ((valueRange - remaining)  / binsNum);
+		}
 		
 		//call subclass initialization
 		init();
@@ -175,10 +186,18 @@ public abstract class Attribute {
 		if (value % step != 0)
 			throw new IllegalArgumentException("The value " + value + " is not compatible with step: " + step);
 		
-		//the value position in the sequence of value ranges
-		int position = (int) ((value - range[0]) / step);
+		if(value < range[0] || value > range[1])
+			throw new OutOfRangeException(value, range[0], range[1]);
 		
-		int binId = (int) Math.floor(position / binSize);
+		//the value position in the sequence of value ranges
+		int binId = 0;
+		int position = (int) ((value - range[0]) / step);
+		int firstValueRange = remaining * (binSize + 1);
+		
+		if(position < firstValueRange)
+			binId = (int) Math.floor(position / (binSize + 1));
+		else 
+			binId = (int) Math.floor((position - firstValueRange) / binSize) + remaining;
 
 		//specify the itemId
 		return binId;
@@ -198,9 +217,6 @@ public abstract class Attribute {
 		
 		if (binId >= binsNum)
 			throw new IllegalArgumentException("Out of range bin id: " + binId);
-		
-		if (binId % step != 0)
-			throw new IllegalArgumentException("ItemId: " + itemId + " is not compatible with step: " + step);
 						
 		return binsCenter[binId];
 	}

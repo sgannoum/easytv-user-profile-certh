@@ -32,21 +32,28 @@ public class IntegerAttribute extends NumericAttribute {
 		binslables = new String[binsNum];
 		binsCounter = new int[binsNum];
 		binsCenter = new Object[binsNum];
-				
+		
+		int size = binSize + 1;
+		double initialRange = 0;
+		
+		//second section with bins that has size of binSize 
 		for(int i = 0; i < binsNum; i++) {
 
-			//the bin middle value
-			int firstValue =  (int) ((i * binSize * step) + range[0]);
-			int lastValue =  (int) ((((i + 1) * binSize * step) + range[0]) - step);
-			if(lastValue > range[1]) lastValue = (int) range[1];
+			if(i == remaining) {
+				size = binSize;
+				initialRange = remaining * step ;
+			}
 			
+			//the bin middle value
+			int firstValue = (int) (initialRange + (i * size * step) + range[0]);
+			int lastValue =  (int) (initialRange + (((i + 1) * size * step) + range[0]) - step);
 			int midValue = 0;
 			
 			//take the middle value
 			if(binSize % 2 == 0) {
-				midValue += firstValue + (binSize / 2) * step;
+				midValue += firstValue + (size / 2) * step;
 			} else {
-				midValue += firstValue + ((binSize - 1) / 2) * step;
+				midValue += firstValue + ((size - 1) / 2) * step;
 			}
 			
 			binsCenter[i] = midValue;

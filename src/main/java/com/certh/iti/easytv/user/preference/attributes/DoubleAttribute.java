@@ -31,24 +31,34 @@ public class DoubleAttribute extends NumericAttribute {
 		binslables = new String[binsNum];
 		binsCounter = new int[binsNum];
 		binsCenter = new Object[binsNum];
-				
+		
+		int size = binSize + 1;
+		double initialRange = 0;
+		
+		//second section with bins that has size of binSize 
 		for(int i = 0; i < binsNum; i++) {
 
+			if(i == remaining) {
+				size = binSize;
+				initialRange = remaining * step ;
+			}
+			
 			//the bin middle value
-			double firstValue =  (i * binSize * step) + range[0];
-			double lastValue =  (((i + 1) * binSize * step) + range[0]) - step;
-			double midValue = 0.0;
+			double firstValue = initialRange + (i * size * step) + range[0];
+			double lastValue =  initialRange + (((i + 1) * size * step) + range[0]) - step;
+			double midValue = 0;
 			
 			//take the middle value
 			if(binSize % 2 == 0) {
-				midValue += firstValue + (binSize / 2) * step;
+				midValue += firstValue + (size / 2) * step;
 			} else {
-				midValue += firstValue + ((binSize - 1) / 2) * step;
+				midValue += firstValue + ((size - 1) / 2) * step;
 			}
 			
 			binsCenter[i] = midValue;
 			binslables[i] = String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
 		}
+	
 	}
 
 	@Override
