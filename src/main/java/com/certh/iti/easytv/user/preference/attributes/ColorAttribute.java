@@ -19,12 +19,42 @@ public class ColorAttribute extends NumericAttribute {
 		super(range);
 	}
 	
+	/**
+	 * Fill out the bin label with the proper labels
+	 */
 	@Override
 	protected void init() {
+				
+		binslables = new String[binsNum];
 		binsCounter = new int[binsNum];
 		binsCenter = new Object[binsNum];
-	
-		//TODO fill binsLable table
+		
+		int size = binSize + 1;
+		double initialRange = 0;
+		
+		//second section with bins that has size of binSize 
+		for(int i = 0; i < binsNum; i++) {
+
+			if(i == remaining) {
+				size = binSize;
+				initialRange = remaining * step ;
+			}
+			
+			//the bin middle value
+			int firstValue = (int) (initialRange + (i * size * step) + range[0]);
+			int lastValue =  (int) (initialRange + (((i + 1) * size * step) + range[0]) - step);
+			int midValue = 0;
+			
+			//take the middle value
+			if(binSize % 2 == 0) {
+				midValue += firstValue + (size / 2) * step;
+			} else {
+				midValue += firstValue + ((size - 1) / 2) * step;
+			}
+			
+			binsCenter[i] = midValue;
+			binslables[i] = String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
+		}
 	}
 	
 	@Override
@@ -90,15 +120,9 @@ public class ColorAttribute extends NumericAttribute {
 	public int code(Object literal) {		
 		Color color = Color.decode((String) literal);
 		
-		int value = Math.abs(color.getRGB());
-		
-		//the value position in the sequence of value ranges
-		int position = (int) ((value - range[0]) / step);
-		
-		//specify the itemId
-		int binId = codeBase + (int) (position / binSize);
+		double value = Math.abs(color.getRGB()) * 1.0;
 
-		return binId;
+		return super.code(value);
 	}
 
 	@Override 
@@ -122,11 +146,6 @@ public class ColorAttribute extends NumericAttribute {
 		}
 		
 		return Color.decode(String.format("#%06X",binMidValue));
-	}
-	
-	@Override
-	public String toString() {		
-		return String.format("Red\n%s\nGreen\n%s\nBlue\n%s\n" , red.toString(), green.toString(), blue.toString());
 	}
 
 }

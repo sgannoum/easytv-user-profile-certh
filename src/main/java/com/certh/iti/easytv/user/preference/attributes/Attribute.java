@@ -150,8 +150,12 @@ public abstract class Attribute {
 		return binsCounter;
 	}
 	
-	public Object[] getBinsLabel() {
+	public Object[] getBinsValues() {
 		return binsCenter;
+	}
+	
+	public String[] getBinsLabel() {
+		return binslables;
 	}
 	
 	/**

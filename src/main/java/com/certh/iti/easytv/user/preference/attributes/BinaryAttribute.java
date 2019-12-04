@@ -85,11 +85,16 @@ public abstract class BinaryAttribute extends Attribute {
 	 * Fill out the bin label with the proper labels
 	 */
 	protected void init() {
+		binslables = new String[binsNum];
 		binsCounter = new int[binsNum];
 		binsCenter = new Object[binsNum]; 
 		
 		binsCenter[0] = false;	
 		binsCenter[1] = true;
+		
+		binslables[0] = "false";
+		binslables[1] = "true";
+
 	}
 
 }

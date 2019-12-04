@@ -296,15 +296,23 @@ public class Profile implements Clusterable {
 	 * Get the frequency counts of the occurred items
 	 * @return
 	 */
-	public static final int[] getPreferencesDistinctItemsFrequency() {
-		return UserProfile.getPreferencesDistinctItemsFrequency();
+	public static final int[] getPreferencesDistinctItemsCounts() {
+		return UserProfile.getPreferencesDistinctItemsCounts();
 	}
 	
 	/**
-	 * Get bins labels
+	 * Get bins associated values
 	 * @return
 	 */
-	public static final Object[] getPreferencesDistinctItemsLabels() {
+	public static final Object[] getPreferencesDistinctItemsValues() {
+		return UserProfile.getPreferencesDistinctItemsValues();
+	}
+	
+	/**
+	 * Get bins associated labels
+	 * @return
+	 */
+	public static final String[] getPreferencesDistinctItemsLabels() {
 		return UserProfile.getPreferencesDistinctItemsLabels();
 	}
 	
