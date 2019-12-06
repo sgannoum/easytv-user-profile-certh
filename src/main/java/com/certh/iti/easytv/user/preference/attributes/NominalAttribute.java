@@ -145,7 +145,7 @@ public class NominalAttribute extends Attribute implements INominal {
 		if (state == -1)
 			throw new IllegalStateException("Unknown state " + literal);
 		
-		return this.codeBase + state;
+		return state;
 	}
 	
 	

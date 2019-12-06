@@ -6,13 +6,18 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.Map.Entry;
 
+import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
+import com.certh.iti.easytv.user.UserContent;
+import com.certh.iti.easytv.user.UserContext;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.ColorAttribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.LanguageAttribute;
@@ -73,6 +78,12 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		//  put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new LanguageAttribute());
 		
     }};
+    
+    
+	private static AttributesAggregator aggregator = new AttributesAggregator();
+	static {
+		aggregator.add(Preference.preferencesAttributes);
+	}
 	
     protected double[] points;
 	protected String name = new String();
@@ -151,11 +162,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			{
 				handled_value = handler.handle(value);
 			}
-			catch(IllegalStateException e) {	
-				throw new UserProfileParsingException( key+ " "+e.getMessage());
-			}
 			catch(ClassCastException e) {	
 				throw new UserProfileParsingException("Non compatible data value: '"+value+"' for preference '"+ key+"' "+e.getMessage());
+			}
+			catch(Exception e) {	
+				throw new UserProfileParsingException( key+ " "+e.getMessage());
 			}
 			
 			//Add
@@ -270,123 +281,14 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	 * 
 	 * @return 
 	 */
-	public static final Attribute[] getOperands() {
-		Collection<Attribute> values = preferencesAttributes.values();
-		Attribute[] operandsLiteral = new Attribute[values.size()];
-		int index = 0;		
-			
-		for(Entry<String, Attribute> entry: preferencesAttributes.entrySet()) 
-			operandsLiteral[index++] = entry.getValue();
-		
-		return 	operandsLiteral;
+	public static final Vector<Attribute> getOperands() {
+		return aggregator.getOperands();
 	}
 	
 	/**
 	 * @return uris arrays
 	 */
-	public static String[] getUris(){
-		Collection<String> keys = preferencesAttributes.keySet();
-		String[] uris = new String[keys.size()];
-		int index = 0;		
-		
-		for(Entry<String, Attribute> entry: preferencesAttributes.entrySet()) 
-			uris[index++] = entry.getKey();
-		
-		return 	uris;
+	public static final Vector<String> getUris(){
+		return 	aggregator.getUris();
 	}
-	
-	
-	/**
-	 * Get the number of distinct items in the given data
-	 * @return
-	 */
-	public static int getPreferencesDistinctItems() {
-		return Attribute.getDistinctItemsNumber();
-	}
-	
-	/**
-	 * Get the frequency counts of the occurred items
-	 * @return
-	 */
-	public static final int[] getPreferencesDistinctItemsCounts() {
-		int index = 0, size = 0;
-		Collection<Attribute> entries = preferencesAttributes.values();
-		
-		for(Attribute attributHandler : preferencesAttributes.values()) 
-			size += attributHandler.getBinNumber();
-		
-		//create a table to hold all counts
-		int[] counts = new int[size];
-
-		//get bin frequency counts
-		for(Object entry : entries) {
-			Attribute attributHandler = (Attribute) entry;
-			
-			int[] binCounter = attributHandler.getBinsCounter();
-			
-			if(binCounter == null) continue;
-			
-			for(int j = 0; j < binCounter.length; counts[index++] = binCounter[j++]);
-		}
-		
-		return counts;
-	}
-	
-	/**
-	 * Get the bins corresponding values 
-	 * @return
-	 */
-	public static final Object[] getPreferencesDistinctItemsValues() {
-		int index = 0, size = 0;
-		Collection<Attribute> entries = preferencesAttributes.values();
-		
-		for(Attribute attributHandler : preferencesAttributes.values()) 
-			size += attributHandler.getBinNumber();
-		
-		//create a table to hold all counts
-		Object[] labels = new Object[size];
-
-		//get bin frequency counts
-		for(Object entry : entries) {
-			Attribute attributHandler = (Attribute) entry;
-			
-			Object[] binsLabels = attributHandler.getBinsValues();
-			
-			if(binsLabels == null) continue;
-			
-			for(int j = 0; j < binsLabels.length; labels[index++] = binsLabels[j++]);
-		}
-		
-		return labels;
-	}
-	
-	/**
-	 * Get the bins corresponding labels 
-	 * @return
-	 */
-	public static final String[] getPreferencesDistinctItemsLabels() {
-		int index = 0, size = 0;
-		Collection<Entry<String, Attribute>> entries = preferencesAttributes.entrySet();
-		
-		for(Attribute attributHandler : preferencesAttributes.values()) 
-			size += attributHandler.getBinNumber();
-		
-		//create a table to hold all counts
-		String[] labels = new String[size];
-
-		//get bin frequency counts
-		for(Entry<String, Attribute> entry : entries) {
-
-			String[] binsLabels = entry.getValue().getBinsLabel();
-			
-			if(binsLabels == null) continue;
-			
-			for(int j = 0; j < binsLabels.length; j++)
-				labels[index++] = String.format("%s - %s", entry.getKey(), binsLabels[j]);
-		}
-		
-		return labels;
-	}
-	
-	
 }

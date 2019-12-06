@@ -122,7 +122,7 @@ public class IntegerAttribute extends NumericAttribute {
 		//convert int to double
 		double value = ((int) literal) * 1.0;
 
-		return codeBase + getBinId(value);
+		return getBinId(value);
 	}
 
 }

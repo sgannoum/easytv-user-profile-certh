@@ -27,14 +27,14 @@ public class SymmetricBinaryAttributeTest {
 
 	@Test
 	public void test_code_attribute1() {
-		Assert.assertEquals(0, attr1.code(false) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(1, attr1.code(true) - attr1.getAttributeCodeBase());
+		Assert.assertEquals(0, attr1.code(false));
+		Assert.assertEquals(1, attr1.code(true));
 	}
 	
 	@Test
 	public void test_decode_attribute1() {
-		Assert.assertEquals(false, attr1.decode(attr1.getAttributeCodeBase() + 0));
-		Assert.assertEquals(true, attr1.decode(attr1.getAttributeCodeBase() + 1));
+		Assert.assertEquals(false, attr1.decode(0));
+		Assert.assertEquals(true, attr1.decode(1));
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -45,7 +45,7 @@ public class SymmetricBinaryAttributeTest {
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_decode_WrongBinID1() {
-		attr1.decode(attr1.getAttributeCodeBase() + attr1.getBinNumber());
+		attr1.decode(attr1.getBinNumber());
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)

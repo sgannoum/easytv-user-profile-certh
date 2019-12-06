@@ -127,11 +127,7 @@ public class ColorAttribute extends NumericAttribute {
 
 	@Override 
 	public Object decode(int itemId) {
-		int binId = itemId - codeBase;
-		int attributeId = itemId - binId;
-		
-		if (attributeId != codeBase)
-			throw new IllegalArgumentException("Wrong attribute id: " + codeBase + " " + attributeId);
+		int binId = itemId;	
 		
 		if (binId >= MAX_BINS_NUMS)
 			throw new IllegalArgumentException("Out of range bin id: " + binId);

@@ -40,81 +40,81 @@ public class DoubleAttributeTest {
 	@Test
 	public void test_code_attribute1() {
 		//bin 0 bin size + 1 elements = 5
-		Assert.assertEquals(0, attr1.code(0.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(0, attr1.code(1.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(0, attr1.code(2.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(0, attr1.code(3.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(0, attr1.code(4.0) - attr1.getAttributeCodeBase());
+		Assert.assertEquals(0, attr1.code(0.0) );
+		Assert.assertEquals(0, attr1.code(1.0) );
+		Assert.assertEquals(0, attr1.code(2.0) );
+		Assert.assertEquals(0, attr1.code(3.0) );
+		Assert.assertEquals(0, attr1.code(4.0) );
 		
 		//bin 1 has bin size elements = 4
-		Assert.assertEquals(1, attr1.code(5.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(1, attr1.code(6.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(1, attr1.code(7.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(1, attr1.code(8.0) - attr1.getAttributeCodeBase());
+		Assert.assertEquals(1, attr1.code(5.0) );
+		Assert.assertEquals(1, attr1.code(6.0) );
+		Assert.assertEquals(1, attr1.code(7.0) );
+		Assert.assertEquals(1, attr1.code(8.0) );
 		
 		//bin 2 has bin size elements = 4
-		Assert.assertEquals(2, attr1.code(9.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(2, attr1.code(10.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(2, attr1.code(11.0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(2, attr1.code(12.0) - attr1.getAttributeCodeBase());
+		Assert.assertEquals(2, attr1.code(9.0) );
+		Assert.assertEquals(2, attr1.code(10.0) );
+		Assert.assertEquals(2, attr1.code(11.0) );
+		Assert.assertEquals(2, attr1.code(12.0) );
 	}
 	
 	@Test
 	public void test_decode_attribute1() {
-		Assert.assertEquals(2.0, attr1.decode(attr1.getAttributeCodeBase() + 0));
-		Assert.assertEquals(7.0, attr1.decode(attr1.getAttributeCodeBase() + 1));
-		Assert.assertEquals(11.0, attr1.decode(attr1.getAttributeCodeBase() + 2));
+		Assert.assertEquals(2.0, attr1.decode(0));
+		Assert.assertEquals(7.0, attr1.decode(1));
+		Assert.assertEquals(11.0, attr1.decode(2));
 	}
 	
 	@Test
 	public void test_code_attribute2() {		
-		Assert.assertEquals(0, attr2.code(1.0) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(1, attr2.code(2.0) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(2, attr2.code(3.0) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(3, attr2.code(4.0) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(4, attr2.code(5.0) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(5, attr2.code(6.0) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(6, attr2.code(7.0) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(7, attr2.code(8.0) - attr2.getAttributeCodeBase());
+		Assert.assertEquals(0, attr2.code(1.0));
+		Assert.assertEquals(1, attr2.code(2.0));
+		Assert.assertEquals(2, attr2.code(3.0));
+		Assert.assertEquals(3, attr2.code(4.0));
+		Assert.assertEquals(4, attr2.code(5.0));
+		Assert.assertEquals(5, attr2.code(6.0));
+		Assert.assertEquals(6, attr2.code(7.0));
+		Assert.assertEquals(7, attr2.code(8.0));
 	}
 	
 	@Test
 	public void test_decode_attribute2() {
-		Assert.assertEquals(1.0, attr2.decode(attr2.getAttributeCodeBase() + 0));
-		Assert.assertEquals(2.0, attr2.decode(attr2.getAttributeCodeBase() + 1));
-		Assert.assertEquals(3.0, attr2.decode(attr2.getAttributeCodeBase() + 2));
+		Assert.assertEquals(1.0, attr2.decode(0));
+		Assert.assertEquals(2.0, attr2.decode(1));
+		Assert.assertEquals(3.0, attr2.decode(2));
 	}
 
 	@Test
 	public void test_code_attribute3() {		
-		Assert.assertEquals(0, attr3.code(1.0) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(1, attr3.code(1.5) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(2, attr3.code(2.0) - attr3.getAttributeCodeBase());
+		Assert.assertEquals(0, attr3.code(1.0));
+		Assert.assertEquals(1, attr3.code(1.5));
+		Assert.assertEquals(2, attr3.code(2.0));
 	}
 	
 	@Test
 	public void test_decode_attribute3() {
-		Assert.assertEquals(1.0, attr3.decode(attr3.getAttributeCodeBase() + 0));
-		Assert.assertEquals(1.5, attr3.decode(attr3.getAttributeCodeBase() + 1));
-		Assert.assertEquals(2.0, attr3.decode(attr3.getAttributeCodeBase() + 2));
+		Assert.assertEquals(1.0, attr3.decode(0));
+		Assert.assertEquals(1.5, attr3.decode(1));
+		Assert.assertEquals(2.0, attr3.decode(2));
 	}
 	
 	@Test
 	public void test_code_attribute4() {		
-		Assert.assertEquals(0, attr4.code(1.5) - attr4.getAttributeCodeBase());
-		Assert.assertEquals(1, attr4.code(2.0) - attr4.getAttributeCodeBase());
-		Assert.assertEquals(2, attr4.code(2.5) - attr4.getAttributeCodeBase());
-		Assert.assertEquals(3, attr4.code(3.0) - attr4.getAttributeCodeBase());
-		Assert.assertEquals(4, attr4.code(3.5) - attr4.getAttributeCodeBase());
+		Assert.assertEquals(0, attr4.code(1.5));
+		Assert.assertEquals(1, attr4.code(2.0));
+		Assert.assertEquals(2, attr4.code(2.5));
+		Assert.assertEquals(3, attr4.code(3.0));
+		Assert.assertEquals(4, attr4.code(3.5));
 	}
 	
 	@Test
 	public void test_decode_attribute4() {
-		Assert.assertEquals(1.5, attr4.decode(attr4.getAttributeCodeBase() + 0));
-		Assert.assertEquals(2.0, attr4.decode(attr4.getAttributeCodeBase() + 1));
-		Assert.assertEquals(2.5, attr4.decode(attr4.getAttributeCodeBase() + 2));
-		Assert.assertEquals(3.0, attr4.decode(attr4.getAttributeCodeBase() + 3));
-		Assert.assertEquals(3.5, attr4.decode(attr4.getAttributeCodeBase() + 4));
+		Assert.assertEquals(1.5, attr4.decode(0));
+		Assert.assertEquals(2.0, attr4.decode(1));
+		Assert.assertEquals(2.5, attr4.decode(2));
+		Assert.assertEquals(3.0, attr4.decode(3));
+		Assert.assertEquals(3.5, attr4.decode(4));
 
 	}
 	
@@ -126,12 +126,12 @@ public class DoubleAttributeTest {
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_decode_WrongBinID1() {
-		attr4.decode(attr4.getAttributeCodeBase() + attr4.getBinNumber());
+		attr4.decode(attr4.getBinNumber());
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_decode_WrongBinID2() {
-		attr4.decode(0);
+		attr4.decode(-1);
 	}
 	
 	@Test(expectedExceptions = OutOfRangeException.class)

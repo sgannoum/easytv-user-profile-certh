@@ -107,36 +107,4 @@ public class UserPreferences implements Clusterable {
 	public int[] getPreferencesAsItemSet() {
 		return this.defaultPreference.getPreferencesAsItemSet();
 	}
-
-	/**
-	 * Get the number of distinct items of the user preferences
-	 * @return
-	 */
-	public static int getPreferencesDistinctItems() {
-		return Preference.getPreferencesDistinctItems();
-	}
-	
-	/**
-	 * Get the frequency counts of the occurred items
-	 * @return
-	 */
-	public static final int[] getPreferencesDistinctItemsCounts() {
-		return Preference.getPreferencesDistinctItemsCounts();
-	}
-	
-	/**
-	 * Get bins associated values
-	 * @return
-	 */
-	public static final Object[] getPreferencesDistinctItemsValues() {
-		return Preference.getPreferencesDistinctItemsValues();
-	}
-	
-	/**
-	 * Get bins associated labels
-	 * @return
-	 */
-	public static final String[] getPreferencesDistinctItemsLabels() {
-		return Preference.getPreferencesDistinctItemsLabels();
-	}
 }

@@ -6,9 +6,7 @@ import org.apache.commons.math3.exception.OutOfRangeException;
 
 public abstract class Attribute {
 
-	protected static int TotalCodeBase = 0;
 	protected static final int MAX_BINS_NUMS = 100;
-	protected final int codeBase;
 	
 	protected double missingValue = -1.0;
 	protected double[] range;
@@ -24,7 +22,6 @@ public abstract class Attribute {
 	
 	public Attribute(double[] range) {
 		this.range = range;
-		this.codeBase = TotalCodeBase;
 
 		double valueRange = ((range[1] - range[0]) / step) + 1;
 		int initBinNum = (int) (valueRange < MAX_BINS_NUMS ? valueRange : MAX_BINS_NUMS);
@@ -39,13 +36,11 @@ public abstract class Attribute {
 		//call subclass initialization
 		init();
 		
-		TotalCodeBase += binsNum;
 	}
 	
 	public Attribute(double[] range, double operandMissingValue) {
 		this.range = range;
 		this.missingValue = operandMissingValue;
-		this.codeBase = TotalCodeBase;
 
 		double valueRange = ((range[1] - range[0]) / step) + 1;
 		int initBinNum = (int) (valueRange < MAX_BINS_NUMS ? valueRange : MAX_BINS_NUMS);
@@ -60,13 +55,11 @@ public abstract class Attribute {
 		//call subclass initialization
 		init();
 		
-		TotalCodeBase += binsNum;
 	}
 	
 	public Attribute(double[] range, double step, double operandMissingValue) {
 		this.range = range;
 		this.missingValue = operandMissingValue;
-		this.codeBase = TotalCodeBase;
 		this.step = step;
 
 		double valueRange = ((range[1] - range[0]) / step) + 1;
@@ -82,13 +75,11 @@ public abstract class Attribute {
 		//call subclass initialization
 		init();
 		
-		TotalCodeBase += binsNum;
 	}
 	
 	public Attribute(double[] range, double step, int binsNum, double operandMissingValue) {
 		this.range = range;
 		this.missingValue = operandMissingValue;
-		this.codeBase = TotalCodeBase;
 		this.step = step;
 		this.binsNum = binsNum;
 
@@ -101,7 +92,6 @@ public abstract class Attribute {
 		//call subclass initialization
 		init();
 		
-		TotalCodeBase += binsNum;
 	}
 	
 	/**
@@ -130,10 +120,6 @@ public abstract class Attribute {
 		return new double[] {missingValue};
 	}
 	
-	public int getAttributeCodeBase() {
-		return codeBase;
-	}
-	
 	public double getStep() {
 		return step;
 	}
@@ -159,15 +145,6 @@ public abstract class Attribute {
 	}
 	
 	/**
-	 * Get the number of distinct items
-	 * 
-	 * @return
-	 */
-	public static int getDistinctItemsNumber() {
-		return TotalCodeBase;
-	}
-	
-	/**
 	 * Get an integer representation of the given value
 	 * 
 	 * @return
@@ -178,7 +155,7 @@ public abstract class Attribute {
 			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Double");
 		
 		//specify the itemId
-		return codeBase + getBinId((double) literal);
+		return getBinId((double) literal);
 	}
 	
 	/**
@@ -215,11 +192,7 @@ public abstract class Attribute {
 	 * @return
 	 */
 	public Object decode(int itemId) {
-		int binId = itemId - codeBase;
-		int attributeId = itemId - binId;
-		
-		if (attributeId != codeBase)
-			throw new IllegalArgumentException("Wrong attribute id: " + codeBase + " " + attributeId);
+		int binId = itemId;
 		
 		if (binId >= binsNum || binId < 0)
 			throw new IllegalArgumentException("Out of range bin id: " + binId);
@@ -257,22 +230,22 @@ public abstract class Attribute {
 	
 	@Override
 	public String toString() {
-		String separtingLine = String.format("%64s", " ").replaceAll(" ", "+");
+		String separtingLine = String.format("%43s", " ").replaceAll(" ", "+");
 		
 		return String.format("%s\n" +
-							 "|%-62s|\n" +
+							 "|%-41s|\n" +
 							 "%s\n" +
-							 "|%-20s|%-20s|%-20s|\n"+
+							 "|%-20s|%-20s|\n"+
 							 "%s\n" +
-							 "|[%-8.1f, %-8.1f]|%-20.1f|%-20d|\n" +
+							 "|[%-8.1f, %-8.1f]|%-20.1f|\n" +
 							 "%s\n\n" 
 							 , 
 							 separtingLine,
-							 String.format("%20s", " ") + "Atrribute properties", 
+							 String.format("%10s", " ") + "Atrribute properties", 
 							 separtingLine,
-							 String.format("%8s", " ") + "Range", String.format("%4s", " ") + "Missing Value", String.format("%4s", " ") + "Code base",
+							 String.format("%8s", " ") + "Range", String.format("%4s", " ") + "Missing Value", 
 							 separtingLine,
-							 range[0], range[1], missingValue, codeBase,
+							 range[0], range[1], missingValue, 
 							 separtingLine);
 	}
 }

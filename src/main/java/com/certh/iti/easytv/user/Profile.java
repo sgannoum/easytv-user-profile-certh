@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.Vector;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONException;
@@ -14,12 +15,18 @@ import org.json.JSONObject;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 
 public class Profile implements Clusterable {
 	
 	private static long num_profiles = 0;
-	private static Attribute[] operandsLiteral = null;
-	private static String[] uris = null;
+	private static AttributesAggregator aggregator = new AttributesAggregator();
+	
+	static {
+		aggregator.add(Preference.preferencesAttributes);
+		aggregator.add(UserContext.contextAttributes);
+		aggregator.add(UserContent.content_attributes);
+	}
 	
 	private double[] points = null;
 	private int userId = -1;
@@ -201,84 +208,15 @@ public class Profile implements Clusterable {
 	 * 
 	 * @return 
 	 */
-	public static final Attribute[] getOperands() {
-		
-		if(operandsLiteral == null) {
-		
-			Set<Entry<String, Attribute>> preferenceEntrySet = Preference.preferencesAttributes.entrySet();
-			Set<Entry<String, Attribute>> contexteEntrySet = UserContext.contextAttributes.entrySet();
-			Set<Entry<String, Attribute>> contenteEntrySet = UserContent.content_attributes.entrySet();
-			
-			int length = preferenceEntrySet.size() + contexteEntrySet.size() + contenteEntrySet.size();
-			operandsLiteral = new Attribute[length];
-			uris = new String[length];
-			int index = 0;		
-				
-			//add preferences
-			for(Entry<String, Attribute> entry: preferenceEntrySet) {
-				uris[index] = entry.getKey();
-				operandsLiteral[index] = entry.getValue();
-				index++;
-			}
-			
-			//add context
-			for(Entry<String, Attribute> entry: contexteEntrySet) {
-				uris[index] = entry.getKey();
-				operandsLiteral[index] = entry.getValue();
-				index++;
-			}
-			
-			//add content
-			for(Entry<String, Attribute> entry: contenteEntrySet) {
-				uris[index] = entry.getKey();
-				operandsLiteral[index] = entry.getValue();
-				index++;
-			}
-			
-		}
-		
-		return 	operandsLiteral;
+	public static final Vector<Attribute> getOperands() {
+		return aggregator.getOperands();
 	}
 	
 	/**
 	 * @return uris arrays
 	 */
-	public static String[] getUris(){
-		
-		if(uris == null) {
-
-			Set<Entry<String, Attribute>> preferenceEntrySet = Preference.preferencesAttributes.entrySet();
-			Set<Entry<String, Attribute>> contexteEntrySet = UserContext.contextAttributes.entrySet();
-			Set<Entry<String, Attribute>> contenteEntrySet = UserContent.content_attributes.entrySet();
-			
-			int length = preferenceEntrySet.size() + contexteEntrySet.size() + contenteEntrySet.size();
-			operandsLiteral = new Attribute[length];
-			uris = new String[length];
-			int index = 0;		
-				
-			//add preferences
-			for(Entry<String, Attribute> entry: preferenceEntrySet) {
-				uris[index] = entry.getKey();
-				operandsLiteral[index] = entry.getValue();
-				index++;
-			}
-			
-			//add context
-			for(Entry<String, Attribute> entry: contexteEntrySet) {
-				uris[index] = entry.getKey();
-				operandsLiteral[index] = entry.getValue();
-				index++;
-			}
-			
-			//add content
-			for(Entry<String, Attribute> entry: contenteEntrySet) {
-				uris[index] = entry.getKey();
-				operandsLiteral[index] = entry.getValue();
-				index++;
-			}
-		}
-		
-		return 	uris;
+	public static final Vector<String> getUris(){
+		return 	aggregator.getUris();
 	}
 	
 	/**
@@ -300,65 +238,31 @@ public class Profile implements Clusterable {
 	 * @return
 	 */
 	public static int getPreferencesDistinctItems() {
-		return Attribute.getDistinctItemsNumber();
+		return aggregator.getSize();
 	}
 	
 	/**
 	 * Get the frequency counts of the occurred items
 	 * @return
 	 */
-	public static final int[] getPreferencesDistinctItemsCounts() {
-		int index = 0;
-		int[] preferencesDistinct = UserProfile.getPreferencesDistinctItemsCounts();
-		int[] contextDistinct = UserContext.getItemsCounts();
-		int[] contentDistinct = UserContent.getItemsCounts();
-		
-		int[] itemSet = new int[preferencesDistinct.length + contextDistinct.length + contentDistinct.length];
-		
-		for(int i = 0; i < preferencesDistinct.length; itemSet[index++] = preferencesDistinct[i++]);
-		for(int i = 0; i < contextDistinct.length; itemSet[index++] = contextDistinct[i++]);
-		for(int i = 0; i < contentDistinct.length; itemSet[index++] = contentDistinct[i++]);
-		
-		return itemSet;
+	public static final Vector<Integer> getPreferencesDistinctItemsCounts() {
+		return aggregator.getBinsCounts();
 	}
 	
 	/**
 	 * Get bins associated values
 	 * @return
 	 */
-	public static final Object[] getPreferencesDistinctItemsValues() {
-		
-		int index = 0;
-		Object[] preferencesDistinct = UserProfile.getPreferencesDistinctItemsValues();
-		Object[] contextDistinct = UserContext.getItemsValues();
-		Object[] contentDistinct = UserContent.getItemsValues();
-		
-		Object[] itemSet = new Object[preferencesDistinct.length + contextDistinct.length + contentDistinct.length];
-		
-		for(int i = 0; i < preferencesDistinct.length; itemSet[index++] = preferencesDistinct[i++]);
-		for(int i = 0; i < contextDistinct.length; itemSet[index++] = contextDistinct[i++]);
-		for(int i = 0; i < contentDistinct.length; itemSet[index++] = contentDistinct[i++]);
-		
-		return itemSet;
+	public static final Vector<Object> getPreferencesDistinctItemsValues() {
+		return aggregator.getBinsValues();
 	}
 	
 	/**
 	 * Get bins associated labels
 	 * @return
 	 */
-	public static final String[] getPreferencesDistinctItemsLabels() {
-		int index = 0;
-		String[] preferencesDistinct = UserProfile.getPreferencesDistinctItemsLabels();
-		String[] contextDistinct = UserContext.getItemsLabels();
-		String[] contentDistinct = UserContent.getItemsLabels();
-		
-		String[] itemSet = new String[preferencesDistinct.length + contextDistinct.length + contentDistinct.length];
-		
-		for(int i = 0; i < preferencesDistinct.length; itemSet[index++] = preferencesDistinct[i++]);
-		for(int i = 0; i < contextDistinct.length; itemSet[index++] = contextDistinct[i++]);
-		for(int i = 0; i < contentDistinct.length; itemSet[index++] = contentDistinct[i++]);
-		
-		return itemSet;
+	public static final Vector<String> getPreferencesDistinctItemsLabels() {
+		return aggregator.getBinsLables();
 	}
 	
 }

@@ -64,16 +64,4 @@ public class PreferenceTests {
 		Assert.assertTrue(jsonFound.similar(jsonExpected), "\nExpected: "+jsonExpected.toString(4)+"\n Found: "+jsonFound.toString(4)+"\n");
 	}
 	
-	@Test
-	public void test_preference_ItemSet() throws UserProfileParsingException {
-
-		String[] labels = Preference.getPreferencesDistinctItemsLabels();
-		
-		
-		System.out.println("Distinct itemSet: " +Preference.getPreferencesDistinctItems());
-		for(int i = 0; i < labels.length; i++) {
-			System.out.println(labels[i]);
-		}	
-	}
-	
 }

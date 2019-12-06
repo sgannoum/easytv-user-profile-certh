@@ -39,100 +39,100 @@ public class IntegerAttributeTest {
 	@Test
 	public void test_code_attribute1() {
 		//bin 0 bin size + 1 elements = 5
-		Assert.assertEquals(0, attr1.code(0) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(0, attr1.code(1) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(0, attr1.code(2) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(0, attr1.code(3) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(0, attr1.code(4) - attr1.getAttributeCodeBase());
+		Assert.assertEquals(0, attr1.code(0));
+		Assert.assertEquals(0, attr1.code(1));
+		Assert.assertEquals(0, attr1.code(2));
+		Assert.assertEquals(0, attr1.code(3));
+		Assert.assertEquals(0, attr1.code(4));
 		
 		//bin 1 has bin size elements = 4
-		Assert.assertEquals(1, attr1.code(5) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(1, attr1.code(6) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(1, attr1.code(7) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(1, attr1.code(8) - attr1.getAttributeCodeBase());
+		Assert.assertEquals(1, attr1.code(5));
+		Assert.assertEquals(1, attr1.code(6));
+		Assert.assertEquals(1, attr1.code(7));
+		Assert.assertEquals(1, attr1.code(8));
 		
 		//bin 2 has bin size elements = 4
-		Assert.assertEquals(2, attr1.code(9) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(2, attr1.code(10) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(2, attr1.code(11) - attr1.getAttributeCodeBase());
-		Assert.assertEquals(2, attr1.code(12) - attr1.getAttributeCodeBase());
+		Assert.assertEquals(2, attr1.code(9));
+		Assert.assertEquals(2, attr1.code(10));
+		Assert.assertEquals(2, attr1.code(11));
+		Assert.assertEquals(2, attr1.code(12));
 	}
 	
 	@Test
 	public void test_decode_attribute1() {
-		Assert.assertEquals(2, attr1.decode(attr1.getAttributeCodeBase() + 0));
-		Assert.assertEquals(7, attr1.decode(attr1.getAttributeCodeBase() + 1));
-		Assert.assertEquals(11, attr1.decode(attr1.getAttributeCodeBase() + 2));
+		Assert.assertEquals(2, attr1.decode(0));
+		Assert.assertEquals(7, attr1.decode(1));
+		Assert.assertEquals(11, attr1.decode(2));
 	}
 	
 	@Test
 	public void test_code_attribute2() {		
-		Assert.assertEquals(0, attr2.code(1) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(1, attr2.code(2) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(2, attr2.code(3) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(3, attr2.code(4) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(4, attr2.code(5) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(5, attr2.code(6) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(6, attr2.code(7) - attr2.getAttributeCodeBase());
-		Assert.assertEquals(7, attr2.code(8) - attr2.getAttributeCodeBase());
+		Assert.assertEquals(0, attr2.code(1));
+		Assert.assertEquals(1, attr2.code(2));
+		Assert.assertEquals(2, attr2.code(3));
+		Assert.assertEquals(3, attr2.code(4));
+		Assert.assertEquals(4, attr2.code(5));
+		Assert.assertEquals(5, attr2.code(6));
+		Assert.assertEquals(6, attr2.code(7));
+		Assert.assertEquals(7, attr2.code(8));
 	}
 	
 	@Test
 	public void test_decode_attribute2() {
-		Assert.assertEquals(1, attr2.decode(attr2.getAttributeCodeBase() + 0));
-		Assert.assertEquals(2, attr2.decode(attr2.getAttributeCodeBase() + 1));
-		Assert.assertEquals(3, attr2.decode(attr2.getAttributeCodeBase() + 2));
+		Assert.assertEquals(1, attr2.decode(0));
+		Assert.assertEquals(2, attr2.decode(1));
+		Assert.assertEquals(3, attr2.decode(2));
 	}
 	
 	@Test
 	public void test_code_attribute3() {		
 		//bin 0 bin size + 1 elements = 4
-		Assert.assertEquals(0, attr3.code(-15) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(0, attr3.code(-14) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(0, attr3.code(-13) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(0, attr3.code(-12) - attr3.getAttributeCodeBase());
+		Assert.assertEquals(0, attr3.code(-15));
+		Assert.assertEquals(0, attr3.code(-14));
+		Assert.assertEquals(0, attr3.code(-13));
+		Assert.assertEquals(0, attr3.code(-12));
 		
 		//bin 1 has bin size elements = 3
-		Assert.assertEquals(1, attr3.code(-11) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(1, attr3.code(-10) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(1, attr3.code(-9) - attr3.getAttributeCodeBase());
+		Assert.assertEquals(1, attr3.code(-11));
+		Assert.assertEquals(1, attr3.code(-10));
+		Assert.assertEquals(1, attr3.code(-9));
 
 		//bin 2 has bin size elements = 3
-		Assert.assertEquals(2, attr3.code(-8) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(2, attr3.code(-7) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(2, attr3.code(-6) - attr3.getAttributeCodeBase());
+		Assert.assertEquals(2, attr3.code(-8));
+		Assert.assertEquals(2, attr3.code(-7));
+		Assert.assertEquals(2, attr3.code(-6));
 		
 		//.
 		//.
 		//.
 		
 		//bin 9 has bin size elements = 3
-		Assert.assertEquals(9, attr3.code(13) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(9, attr3.code(14) - attr3.getAttributeCodeBase());
-		Assert.assertEquals(9, attr3.code(15) - attr3.getAttributeCodeBase());
+		Assert.assertEquals(9, attr3.code(13));
+		Assert.assertEquals(9, attr3.code(14));
+		Assert.assertEquals(9, attr3.code(15));
 	}
 	
 	@Test
 	public void test_decode_attribute3() {
-		Assert.assertEquals(-14, attr3.decode(attr3.getAttributeCodeBase() + 0));
-		Assert.assertEquals(-10, attr3.decode(attr3.getAttributeCodeBase() + 1));
-		Assert.assertEquals(-7, attr3.decode(attr3.getAttributeCodeBase() + 2));
+		Assert.assertEquals(-14, attr3.decode(0));
+		Assert.assertEquals(-10, attr3.decode(1));
+		Assert.assertEquals(-7, attr3.decode(2));
 	}
 	
 	@Test
 	public void test_code_attribute4() {
 		//bin 0 
-		Assert.assertEquals(0, attr4.code(0) - attr4.getAttributeCodeBase());
-		Assert.assertEquals(0, attr4.code(2) - attr4.getAttributeCodeBase());
-		Assert.assertEquals(0, attr4.code(4) - attr4.getAttributeCodeBase());
+		Assert.assertEquals(0, attr4.code(0));
+		Assert.assertEquals(0, attr4.code(2));
+		Assert.assertEquals(0, attr4.code(4));
 
 		//bin 1
-		Assert.assertEquals(1, attr4.code(6) - attr4.getAttributeCodeBase());
-		Assert.assertEquals(1, attr4.code(8) - attr4.getAttributeCodeBase());
+		Assert.assertEquals(1, attr4.code(6));
+		Assert.assertEquals(1, attr4.code(8));
 		
 		//bin 2 
-		Assert.assertEquals(2, attr4.code(10) - attr4.getAttributeCodeBase());
-		Assert.assertEquals(2, attr4.code(12) - attr4.getAttributeCodeBase());
+		Assert.assertEquals(2, attr4.code(10));
+		Assert.assertEquals(2, attr4.code(12));
 		
 		
 		//.
@@ -140,15 +140,15 @@ public class IntegerAttributeTest {
 		//.
 		
 		//bin 24 
-		Assert.assertEquals(24, attr4.code(98) - attr4.getAttributeCodeBase());
-		Assert.assertEquals(24, attr4.code(100) - attr4.getAttributeCodeBase());
+		Assert.assertEquals(24, attr4.code(98));
+		Assert.assertEquals(24, attr4.code(100));
 	}
 	
 	@Test
 	public void test_decode_attribute4() {
-		Assert.assertEquals(2, attr4.decode(attr4.getAttributeCodeBase() + 0));
-		Assert.assertEquals(8, attr4.decode(attr4.getAttributeCodeBase() + 1));
-		Assert.assertEquals(12, attr4.decode(attr4.getAttributeCodeBase() + 2));
+		Assert.assertEquals(2, attr4.decode(0));
+		Assert.assertEquals(8, attr4.decode(1));
+		Assert.assertEquals(12, attr4.decode(2));
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
@@ -159,12 +159,12 @@ public class IntegerAttributeTest {
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_decode_WrongBinID1() {
-		attr4.decode(attr4.getAttributeCodeBase() + attr4.getBinNumber());
+		attr4.decode(attr4.getBinNumber());
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_decode_WrongBinID2() {
-		attr4.decode(0);
+		attr4.decode(-1);
 	}
 	
 	@Test(expectedExceptions = OutOfRangeException.class)

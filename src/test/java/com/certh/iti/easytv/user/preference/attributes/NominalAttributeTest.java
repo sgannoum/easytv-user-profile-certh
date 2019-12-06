@@ -30,36 +30,36 @@ public class NominalAttributeTest {
 	
 	@Test
 	public void test_code_attribute1() {
-		Assert.assertEquals(0, attr1.code("15") - attr1.getAttributeCodeBase());
-		Assert.assertEquals(1, attr1.code("20") - attr1.getAttributeCodeBase());
-		Assert.assertEquals(2, attr1.code("23") - attr1.getAttributeCodeBase());
+		Assert.assertEquals(0, attr1.code("15"));
+		Assert.assertEquals(1, attr1.code("20"));
+		Assert.assertEquals(2, attr1.code("23"));
 	}
 	
 	@Test
 	public void test_decode_attribute1() {
-		Assert.assertEquals("15", attr1.decode(attr1.getAttributeCodeBase() + 0));
-		Assert.assertEquals("20", attr1.decode(attr1.getAttributeCodeBase() + 1));
-		Assert.assertEquals("23", attr1.decode(attr1.getAttributeCodeBase() + 2));
+		Assert.assertEquals("15", attr1.decode(0));
+		Assert.assertEquals("20", attr1.decode(1));
+		Assert.assertEquals("23", attr1.decode(2));
 	}
 	
 	@Test
 	public void test_code_attribute2() {		
-		Assert.assertEquals(0, attr2.code("none") - attr2.getAttributeCodeBase());
-		Assert.assertEquals(1, attr2.code("gaze_control") - attr2.getAttributeCodeBase());
-		Assert.assertEquals(2, attr2.code("gesture_control") - attr2.getAttributeCodeBase());
+		Assert.assertEquals(0, attr2.code("none"));
+		Assert.assertEquals(1, attr2.code("gaze_control"));
+		Assert.assertEquals(2, attr2.code("gesture_control"));
 	}
 	
 	@Test
 	public void test_decode_attribute2() {
-		Assert.assertEquals("none", attr2.decode(attr2.getAttributeCodeBase() + 0));
-		Assert.assertEquals("gaze_control", attr2.decode(attr2.getAttributeCodeBase() + 1));
-		Assert.assertEquals("gesture_control", attr2.decode(attr2.getAttributeCodeBase() + 2));
+		Assert.assertEquals("none", attr2.decode(0));
+		Assert.assertEquals("gaze_control", attr2.decode(1));
+		Assert.assertEquals("gesture_control", attr2.decode(2));
 	}
 
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_decode_WrongBinID1() {
-		attr1.decode(attr1.getAttributeCodeBase() + attr1.getBinNumber());
+		attr1.decode(attr1.getBinNumber());
 	}
 	
 	@Test(expectedExceptions = IllegalArgumentException.class)
