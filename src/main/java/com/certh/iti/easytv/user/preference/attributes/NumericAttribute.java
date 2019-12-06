@@ -193,26 +193,26 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		middleLine = emplyLine.replaceAll(" ", "-");
 		
 		return  String.format("%s\n"
-											+ "|%-"+(upperLine.length() - 2)+"s|\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n"
-											+ "%s\n",
-											upperLine,
-											 "Bins histogram",
-											upperLine, 
-											binId, 
-											middleLine, 
-											binLabel, 
-											middleLine, 
-											binCenter, 
-											middleLine, 
-											binsCounts, 
-											upperLine);
+							+ "|%-"+(upperLine.length() - 2)+"s|\n"
+							+ "%s\n"
+							+ "%s\n"
+							+ "%s\n"
+							+ "%s\n"
+							+ "%s\n"
+							+ "%s\n"
+							+ "%s\n"
+							+ "%s\n"
+							+ "%s\n",
+							upperLine,
+							 "Bins histogram",
+							upperLine, 
+							binId, 
+							middleLine, 
+							binLabel, 
+							middleLine, 
+							binCenter, 
+							middleLine, 
+							binsCounts, 
+							upperLine);
 	}
 }

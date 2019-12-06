@@ -27,6 +27,18 @@ public class TimeAttribute extends Attribute{
 		super(range, operandMissingValue);
 	}
 	
+	/**
+	 * Fill out the bin label with the proper labels
+	 */
+	@Override
+	protected void init() {
+		binslables = null;
+		binsCounter = null;
+		binsCenter = null;
+		binSize = 0;
+		binsNum = 0;
+	}
+	
 	@Override
 	public Object getRandomValue(Random rand) {
 		return String.format("%02d:%02d:%02d", rand.nextInt(12), rand.nextInt(60), rand.nextInt(60));	
@@ -63,7 +75,6 @@ public class TimeAttribute extends Attribute{
 			return new double[] {missingValue};
 		}
 		
-		
 		//long ms = Instant.parse( (CharSequence) literal).toEpochMilli();
 		return new double[] {time.getTime()};
 	}
@@ -79,12 +90,5 @@ public class TimeAttribute extends Attribute{
 		//TODO handle to value for time attribute
 		return null;
 	}
-	
-	@Override
-	protected void init() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	
 }

@@ -107,7 +107,18 @@ public class Profile implements Clusterable {
 	 * @return
 	 */
 	public int[] getPreferencesAsItemSet() {
-		return userProfile.getPreferencesAsItemSet();
+		int index = 0;
+		int[] preferencesitemSet = userProfile.getPreferencesAsItemSet();
+		int[] contextItemSet = userContext.getAsItemSet();
+		int[] contentItemSet = userContent.getAsItemSet();
+		
+		int[] itemSet = new int[preferencesitemSet.length + contextItemSet.length + contentItemSet.length];
+		
+		for(int i = 0; i < preferencesitemSet.length; itemSet[index++] = preferencesitemSet[i++]);
+		for(int i = 0; i < contextItemSet.length; itemSet[index++] = contextItemSet[i++]);
+		for(int i = 0; i < contentItemSet.length; itemSet[index++] = contentItemSet[i++]);
+		
+		return itemSet;
 	}
 	
 	public JSONObject getJSONObject() {
@@ -289,7 +300,7 @@ public class Profile implements Clusterable {
 	 * @return
 	 */
 	public static int getPreferencesDistinctItems() {
-		return UserProfile.getPreferencesDistinctItems();
+		return Attribute.getDistinctItemsNumber();
 	}
 	
 	/**
@@ -297,7 +308,18 @@ public class Profile implements Clusterable {
 	 * @return
 	 */
 	public static final int[] getPreferencesDistinctItemsCounts() {
-		return UserProfile.getPreferencesDistinctItemsCounts();
+		int index = 0;
+		int[] preferencesDistinct = UserProfile.getPreferencesDistinctItemsCounts();
+		int[] contextDistinct = UserContext.getItemsCounts();
+		int[] contentDistinct = UserContent.getItemsCounts();
+		
+		int[] itemSet = new int[preferencesDistinct.length + contextDistinct.length + contentDistinct.length];
+		
+		for(int i = 0; i < preferencesDistinct.length; itemSet[index++] = preferencesDistinct[i++]);
+		for(int i = 0; i < contextDistinct.length; itemSet[index++] = contextDistinct[i++]);
+		for(int i = 0; i < contentDistinct.length; itemSet[index++] = contentDistinct[i++]);
+		
+		return itemSet;
 	}
 	
 	/**
@@ -305,7 +327,19 @@ public class Profile implements Clusterable {
 	 * @return
 	 */
 	public static final Object[] getPreferencesDistinctItemsValues() {
-		return UserProfile.getPreferencesDistinctItemsValues();
+		
+		int index = 0;
+		Object[] preferencesDistinct = UserProfile.getPreferencesDistinctItemsValues();
+		Object[] contextDistinct = UserContext.getItemsValues();
+		Object[] contentDistinct = UserContent.getItemsValues();
+		
+		Object[] itemSet = new Object[preferencesDistinct.length + contextDistinct.length + contentDistinct.length];
+		
+		for(int i = 0; i < preferencesDistinct.length; itemSet[index++] = preferencesDistinct[i++]);
+		for(int i = 0; i < contextDistinct.length; itemSet[index++] = contextDistinct[i++]);
+		for(int i = 0; i < contentDistinct.length; itemSet[index++] = contentDistinct[i++]);
+		
+		return itemSet;
 	}
 	
 	/**
@@ -313,7 +347,18 @@ public class Profile implements Clusterable {
 	 * @return
 	 */
 	public static final String[] getPreferencesDistinctItemsLabels() {
-		return UserProfile.getPreferencesDistinctItemsLabels();
+		int index = 0;
+		String[] preferencesDistinct = UserProfile.getPreferencesDistinctItemsLabels();
+		String[] contextDistinct = UserContext.getItemsLabels();
+		String[] contentDistinct = UserContent.getItemsLabels();
+		
+		String[] itemSet = new String[preferencesDistinct.length + contextDistinct.length + contentDistinct.length];
+		
+		for(int i = 0; i < preferencesDistinct.length; itemSet[index++] = preferencesDistinct[i++]);
+		for(int i = 0; i < contextDistinct.length; itemSet[index++] = contextDistinct[i++]);
+		for(int i = 0; i < contentDistinct.length; itemSet[index++] = contentDistinct[i++]);
+		
+		return itemSet;
 	}
 	
 }

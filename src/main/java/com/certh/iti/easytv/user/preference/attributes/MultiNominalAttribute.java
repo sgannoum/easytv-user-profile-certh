@@ -22,6 +22,17 @@ public class MultiNominalAttribute extends NominalAttribute {
 		super(range, operandMissingValue, states);
 	}
 	
+	/**
+	 * Fill out the bin label with the proper labels
+	 */
+	@Override
+	protected void init() {
+		binslables = null;
+		binsCounter = null;
+		binsCenter = null;
+		binSize = 0;
+		binsNum = 0;
+	}
 	
 	@Override
 	public Object getRandomValue(Random rand) {

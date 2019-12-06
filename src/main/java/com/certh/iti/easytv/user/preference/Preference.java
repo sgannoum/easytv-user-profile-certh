@@ -309,11 +309,14 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	 * @return
 	 */
 	public static final int[] getPreferencesDistinctItemsCounts() {
-		int index = 0;
+		int index = 0, size = 0;
 		Collection<Attribute> entries = preferencesAttributes.values();
 		
+		for(Attribute attributHandler : preferencesAttributes.values()) 
+			size += attributHandler.getBinNumber();
+		
 		//create a table to hold all counts
-		int[] counts = new int[Attribute.getDistinctItemsNumber()];
+		int[] counts = new int[size];
 
 		//get bin frequency counts
 		for(Object entry : entries) {
@@ -323,8 +326,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			
 			if(binCounter == null) continue;
 			
-			for(int j = 0; j < binCounter.length; j++)
-				counts[index++] = binCounter[j];
+			for(int j = 0; j < binCounter.length; counts[index++] = binCounter[j++]);
 		}
 		
 		return counts;
@@ -335,11 +337,14 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	 * @return
 	 */
 	public static final Object[] getPreferencesDistinctItemsValues() {
-		int index = 0;
+		int index = 0, size = 0;
 		Collection<Attribute> entries = preferencesAttributes.values();
 		
+		for(Attribute attributHandler : preferencesAttributes.values()) 
+			size += attributHandler.getBinNumber();
+		
 		//create a table to hold all counts
-		Object[] labels = new Object[Attribute.getDistinctItemsNumber()];
+		Object[] labels = new Object[size];
 
 		//get bin frequency counts
 		for(Object entry : entries) {
@@ -349,8 +354,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			
 			if(binsLabels == null) continue;
 			
-			for(int j = 0; j < binsLabels.length; j++)
-				labels[index++] = binsLabels[j];
+			for(int j = 0; j < binsLabels.length; labels[index++] = binsLabels[j++]);
 		}
 		
 		return labels;
@@ -361,11 +365,14 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	 * @return
 	 */
 	public static final String[] getPreferencesDistinctItemsLabels() {
-		int index = 0;
+		int index = 0, size = 0;
 		Collection<Entry<String, Attribute>> entries = preferencesAttributes.entrySet();
 		
+		for(Attribute attributHandler : preferencesAttributes.values()) 
+			size += attributHandler.getBinNumber();
+		
 		//create a table to hold all counts
-		String[] labels = new String[Attribute.getDistinctItemsNumber()];
+		String[] labels = new String[size];
 
 		//get bin frequency counts
 		for(Entry<String, Attribute> entry : entries) {

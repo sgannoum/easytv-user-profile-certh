@@ -139,6 +139,117 @@ public class UserContext implements Clusterable{
 	}
 	
 	/**
+	 * Get context as a set of itemset 
+	 * 
+	 * @return
+	 */
+	public int[] getAsItemSet() {
+		int index = 0, size = 0;
+		Collection<Entry<String, Object>> entries = context.entrySet();
+		
+		for(Attribute attributHandler : contextAttributes.values()) 
+			size += attributHandler.getBinNumber();
+		
+		int[] itemSet = new int[size];
+		
+		for(Entry<String, Object> entry : entries) {
+			Attribute attributHandler = contextAttributes.get(entry.getKey());
+			
+			if(attributHandler.getBinNumber() != 0 )
+				itemSet[index++] = attributHandler.code(entry.getValue());
+		}
+		
+		return itemSet;
+	}
+	
+	/**
+	 * Get context as a set of itemset 
+	 * 
+	 * @return
+	 */
+	public static final int[] getItemsCounts() {
+		int index = 0, size = 0;
+		Collection<Attribute> entries = contextAttributes.values();
+		
+		for(Attribute attributHandler : contextAttributes.values()) 
+			size += attributHandler.getBinNumber();
+				
+		//create a table to hold all counts
+		int[] counts = new int[size];
+
+		//get bin frequency counts
+		for(Object entry : entries) {
+			Attribute attributHandler = (Attribute) entry;
+			
+			int[] binCounter = attributHandler.getBinsCounter();
+			
+			if(binCounter == null) continue;
+			
+			for(int j = 0; j < binCounter.length; j++)
+				counts[index++] = binCounter[j];
+		}
+		
+		return counts;
+	}
+	
+	/**
+	 * Get the bins corresponding values 
+	 * @return
+	 */
+	public static final Object[] getItemsValues() {
+		int index = 0, size = 0;
+		Collection<Attribute> entries = contextAttributes.values();
+		
+		for(Attribute attributHandler : contextAttributes.values()) 
+			size += attributHandler.getBinNumber();
+		
+		//create a table to hold all counts
+		Object[] labels = new Object[size];
+
+		//get bin frequency counts
+		for(Object entry : entries) {
+			Attribute attributHandler = (Attribute) entry;
+			
+			Object[] binsLabels = attributHandler.getBinsValues();
+			
+			if(binsLabels == null) continue;
+			
+			for(int j = 0; j < binsLabels.length; j++)
+				labels[index++] = binsLabels[j];
+		}
+		
+		return labels;
+	}
+	
+	/**
+	 * Get the bins corresponding labels 
+	 * @return
+	 */
+	public static final String[] getItemsLabels() {
+		int index = 0, size = 0;
+		Collection<Entry<String, Attribute>> entries = contextAttributes.entrySet();
+		
+		for(Attribute attributHandler : contextAttributes.values()) 
+			size += attributHandler.getBinNumber();
+		
+		//create a table to hold all counts
+		String[] labels = new String[size];
+
+		//get bin frequency counts
+		for(Entry<String, Attribute> entry : entries) {
+
+			String[] binsLabels = entry.getValue().getBinsLabel();
+			
+			if(binsLabels == null) continue;
+			
+			for(int j = 0; j < binsLabels.length; j++)
+				labels[index++] = String.format("%s - %s", entry.getKey(), binsLabels[j]);
+		}
+		
+		return labels;
+	}
+	
+	/**
 	 * Get users profiles dimensional operands
 	 * 
 	 * @return 
