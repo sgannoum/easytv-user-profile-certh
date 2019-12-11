@@ -113,7 +113,7 @@ public class Profile implements Clusterable {
 	 * 
 	 * @return
 	 */
-	public int[] getPreferencesAsItemSet() {
+	public int[] getAsItemSet() {
 		int index = 0;
 		int[] preferencesitemSet = userProfile.getPreferencesAsItemSet();
 		int[] contextItemSet = userContext.getAsItemSet();
