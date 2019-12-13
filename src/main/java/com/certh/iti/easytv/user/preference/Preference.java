@@ -9,12 +9,9 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
 
-import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.UserContent;
-import com.certh.iti.easytv.user.UserContext;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
@@ -80,7 +77,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
     }};
     
     
-	private static AttributesAggregator aggregator = new AttributesAggregator();
+	public static AttributesAggregator aggregator = new AttributesAggregator();
 	static {
 		aggregator.add(Preference.preferencesAttributes);
 	}
@@ -123,13 +120,20 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	 * @return
 	 */
 	public int[] getPreferencesAsItemSet() {
-		Collection<Entry<String, Object>> entries = preferences.entrySet();
-		int[] itemSet = new int[entries.size()];
-		int index = 0;
+		Collection<Entry<String, Attribute>> entries = preferencesAttributes.entrySet();
+		int[] itemSet = new int[preferences.size()];
+		int index = 0, base = 0;
 		
-		for(Entry<String, Object> entry : entries) {
-			Attribute attributHandler = preferencesAttributes.get(entry.getKey());
-			itemSet[index++] = attributHandler.code(entry.getValue());
+		for(Entry<String, Attribute> entry : entries) {
+			String key = entry.getKey();
+			Attribute attributHandler = preferencesAttributes.get(key);
+			Object value = preferences.get(key);
+			
+			//add only existing preferences
+			if(value != null)
+				itemSet[index++] = attributHandler.code(value) + base;
+	
+			base += attributHandler.getBinNumber();
 		}
 		
 		return itemSet;
@@ -274,6 +278,16 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	@Override
 	public String toString() {
 		return this.getJSONObject().toString(4);
+	}
+	
+	
+	/**
+	 * Get users profiles dimensional operands
+	 * 
+	 * @return 
+	 */
+	public static final AttributesAggregator getAttributesAggregator() {
+		return aggregator;
 	}
 	
 	/**

@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 
 public class Profile implements Clusterable {
@@ -114,16 +115,18 @@ public class Profile implements Clusterable {
 	 * @return
 	 */
 	public int[] getAsItemSet() {
-		int index = 0;
 		int[] preferencesitemSet = userProfile.getPreferencesAsItemSet();
 		int[] contextItemSet = userContext.getAsItemSet();
 		int[] contentItemSet = userContent.getAsItemSet();
 		
 		int[] itemSet = new int[preferencesitemSet.length + contextItemSet.length + contentItemSet.length];
 		
-		for(int i = 0; i < preferencesitemSet.length; itemSet[index++] = preferencesitemSet[i++]);
-		for(int i = 0; i < contextItemSet.length; itemSet[index++] = contextItemSet[i++]);
-		for(int i = 0; i < contentItemSet.length; itemSet[index++] = contentItemSet[i++]);
+		int base = 0, index = 0;
+		for(int i = 0; i < preferencesitemSet.length; itemSet[index++] = preferencesitemSet[i++] + base );
+		base = UserProfile.getAttributesAggregator().getSize();
+		for(int i = 0; i < contextItemSet.length; itemSet[index++] = contextItemSet[i++] + base);
+		base = UserContext.getAttributesAggregator().getSize();
+		for(int i = 0; i < contentItemSet.length; itemSet[index++] = contentItemSet[i++] + base);
 		
 		return itemSet;
 	}
@@ -242,27 +245,11 @@ public class Profile implements Clusterable {
 	}
 	
 	/**
-	 * Get the frequency counts of the occurred items
-	 * @return
-	 */
-	public static final Vector<Integer> getPreferencesDistinctItemsCounts() {
-		return aggregator.getBinsCounts();
-	}
-	
-	/**
 	 * Get bins associated values
 	 * @return
 	 */
-	public static final Vector<Object> getPreferencesDistinctItemsValues() {
-		return aggregator.getBinsValues();
-	}
-	
-	/**
-	 * Get bins associated labels
-	 * @return
-	 */
-	public static final Vector<String> getPreferencesDistinctItemsLabels() {
-		return aggregator.getBinsLables();
+	public static final Vector<Bin> getBins() {
+		return aggregator.getBins();
 	}
 	
 }

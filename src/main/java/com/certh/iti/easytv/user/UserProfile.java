@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
+import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 
 public class UserProfile implements Clusterable {
 	
@@ -105,5 +106,15 @@ public class UserProfile implements Clusterable {
 		UserProfile other = (UserProfile) obj;
 		return getJSONObject().similar(other.getJSONObject());
 	}
+	
+	/**
+	 * Get users profiles dimensional operands
+	 * 
+	 * @return 
+	 */
+	public static final AttributesAggregator getAttributesAggregator() {
+		return UserPreferences.getAttributesAggregator();
+	}
+
 	
 }

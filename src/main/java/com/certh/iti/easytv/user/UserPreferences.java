@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.ConditionalPreference;
 import com.certh.iti.easytv.user.preference.Preference;
+import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 
 public class UserPreferences implements Clusterable {
 	
@@ -106,5 +107,14 @@ public class UserPreferences implements Clusterable {
 	 */
 	public int[] getPreferencesAsItemSet() {
 		return this.defaultPreference.getPreferencesAsItemSet();
+	}
+	
+	/**
+	 * Get users profiles dimensional operands
+	 * 
+	 * @return 
+	 */
+	public static final AttributesAggregator getAttributesAggregator() {
+		return Preference.getAttributesAggregator();
 	}
 }

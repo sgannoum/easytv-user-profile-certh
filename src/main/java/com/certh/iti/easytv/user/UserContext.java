@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.TimeAttribute;
@@ -33,6 +34,11 @@ public class UserContext implements Clusterable{
     }};
 	
 	
+	public static AttributesAggregator aggregator = new AttributesAggregator();
+	static {
+		aggregator.add(UserContext.contextAttributes);
+	}
+    
 	public UserContext() {}
     
 	public UserContext(JSONObject json) throws UserContextParsingException {
@@ -144,22 +150,32 @@ public class UserContext implements Clusterable{
 	 * @return
 	 */
 	public int[] getAsItemSet() {
-		int index = 0, size = 0;
-		Collection<Entry<String, Object>> entries = context.entrySet();
+		int index = 0, base = 0;
+		Collection<Entry<String, Attribute>> entries = contextAttributes.entrySet();
+		int[] itemSet = new int[entries.size()];
 		
-		for(Attribute attributHandler : contextAttributes.values()) 
-			size += attributHandler.getBinNumber();
-		
-		int[] itemSet = new int[size];
-		
-		for(Entry<String, Object> entry : entries) {
+		for(Entry<String, Attribute> entry : entries) {
+			String key = entry.getKey();
 			Attribute attributHandler = contextAttributes.get(entry.getKey());
+			Object value = context.get(key); 
 			
-			if(attributHandler.getBinNumber() != 0 )
-				itemSet[index++] = attributHandler.code(entry.getValue());
+			//add only existing preferences
+			if(value != null)
+				itemSet[index++] = attributHandler.code(value) + base;
+			
+			base += attributHandler.getBinNumber();
 		}
 		
 		return itemSet;
+	}
+	
+	/**
+	 * Get users profiles dimensional operands
+	 * 
+	 * @return 
+	 */
+	public static final AttributesAggregator getAttributesAggregator() {
+		return aggregator;
 	}
 
 }

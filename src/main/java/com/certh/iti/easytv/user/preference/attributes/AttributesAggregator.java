@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Vector;
 
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
+
 /**
  * Aggregating functionalities on top of a set of attributes
  * 
@@ -16,48 +18,14 @@ public class AttributesAggregator {
 	
 	private List<LinkedHashMap<String, Attribute>> attributesHandlers = new ArrayList<LinkedHashMap<String, Attribute>>();
 	
-	private int size;
-	private Vector<Integer> counts = new Vector<Integer>();
-	private Vector<Object>  values = new Vector<Object>();
-	private Vector<String> labels = new Vector<String>();
+	private Vector<Bin>  bins = new Vector<Bin>();
 	private Vector<Attribute> operands = new Vector<Attribute>();
 	private Vector<String> uris = new Vector<String>();
 	
 	public AttributesAggregator() {}
 	
-	
 	public void add(final LinkedHashMap<String, Attribute> attributesHandler) {
-		
-		//add to list
-		this.attributesHandlers.add(attributesHandler);				
-
-		//get bin frequency counts
-		for(Entry<String, Attribute> entry : attributesHandler.entrySet()) {
-			String key = entry.getKey();
-			Attribute attributHandler = entry.getValue();
-			
-			//add operands
-			operands.add(attributHandler);
-			
-			//add uris
-			uris.add(key);
-			
-			//Add discretazation data
-			int[] binCounter = attributHandler.getBinsCounter();
-			Object[] binsValues = attributHandler.getBinsValues();
-			String[] binsLabels = attributHandler.getBinsLabel();
-			
-			size += attributHandler.getBinNumber();
-
-			for(int j = 0; 
-					j < attributHandler.getBinNumber();
-					counts.add(binCounter[j]),
-					values.add(binsValues[j]),
-					labels.add(key + " - " +binsLabels[j]),
-					j++) 
-				;
-			
-		}
+		this.attributesHandlers.add(attributesHandler);	
 	}
 	
 	public boolean remove(LinkedHashMap<String, Attribute> attributesDimensions) {
@@ -72,37 +40,39 @@ public class AttributesAggregator {
 		return 	uris;
 	}
 	
-	public Vector<Integer> getBinsCounts() {
-	
+	public Vector<Bin> getBins() {
 		//clear
-		counts.clear();
+		bins.clear();
 		
 		//get bin frequency counts
 		for(LinkedHashMap<String, Attribute> attributesHandler : attributesHandlers)
 			for(Entry<String, Attribute> entry : attributesHandler.entrySet()) {
+				String key = entry.getKey();
 				Attribute attributHandler = entry.getValue();
-				
-				int[] binCounter = attributHandler.getBinsCounter();
+													
+				for(Bin bin : attributHandler.getBins()) { 
+					Bin newBin = new Bin();
+					newBin.center = bin.center;
+					newBin.range = bin.range;
+					newBin.counts = bin.counts;
+					newBin.label =  String.format("%s - %s", key ,bin.label);
 					
-				for(int j = 0; 
-						j < attributHandler.getBinNumber(); 
-						counts.add(binCounter[j++])) 
-					;
+					bins.add(newBin);
+				}
 				
 			}
-		
-		return counts;
-	}
 	
-	public Vector<Object> getBinsValues() {
-		return values;
-	}
-	
-	public Vector<String> getBinsLables() {
-		return labels;
+		return bins;
 	}
 		
 	public int getSize() {
+		int size = 0;
+		
+		//get bin frequency counts
+		for(LinkedHashMap<String, Attribute> attributesHandler : attributesHandlers)
+			for(Entry<String, Attribute> entry : attributesHandler.entrySet()) 
+				size += entry.getValue().getBinNumber();
+		
 		return size;
 	}
 

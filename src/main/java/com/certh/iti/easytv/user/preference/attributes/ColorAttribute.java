@@ -25,15 +25,14 @@ public class ColorAttribute extends NumericAttribute {
 	@Override
 	protected void init() {
 				
-		binslables = new String[binsNum];
-		binsCounter = new int[binsNum];
-		binsCenter = new Object[binsNum];
+		bins = new Bin[binsNum];
 		
 		int size = binSize + 1;
 		double initialRange = 0;
 		
 		//second section with bins that has size of binSize 
 		for(int i = 0; i < binsNum; i++) {
+			bins[i] = new Bin();
 
 			if(i == remaining) {
 				size = binSize;
@@ -52,8 +51,9 @@ public class ColorAttribute extends NumericAttribute {
 				midValue += firstValue + ((size - 1) / 2) * step;
 			}
 			
-			binsCenter[i] = midValue;
-			binslables[i] = String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
+			bins[i].center = midValue;
+			bins[i].label = String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
+			bins[i].range = new Integer[] {firstValue, lastValue};
 		}
 	}
 	
@@ -108,7 +108,7 @@ public class ColorAttribute extends NumericAttribute {
 		
 		//Increment the number of occurrences 
 		int bindId = getBinId(numericValue);
-		binsCounter[bindId]++;
+		bins[bindId].counts++;
 
 		//sum += numericValue;
 		n++;

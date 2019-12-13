@@ -158,7 +158,7 @@ public class UserContent implements Clusterable {
 	 * @return
 	 */
 	public int[] getAsItemSet() {
-		int index = 0, size = 0;
+		int index = 0, base = 0, size = 0;
 		Collection<Entry<String, Object>> entries = content.entrySet();
 		
 		for(Attribute attributHandler : content_attributes.values()) 
@@ -169,8 +169,10 @@ public class UserContent implements Clusterable {
 		for(Entry<String, Object> entry : entries) {
 			Attribute attributHandler = content_attributes.get(entry.getKey());
 			
-			if(attributHandler.getBinNumber() != 0 )
-				itemSet[index++] = attributHandler.code(entry.getValue());
+			if(attributHandler.getBinNumber() != 0 ) {
+				itemSet[index++] = attributHandler.code(entry.getValue()) + base;
+				base += attributHandler.getBinNumber();
+			}
 		}
 		
 		return itemSet;

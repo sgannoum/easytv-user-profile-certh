@@ -174,13 +174,13 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	protected String getBinsHistogram() {
 		
 		String binCenter =  "|Center ", binsCounts = "|Counts ", emplyLine = "",upperLine = "", middleLine = "", binId = "|Id     ", binLabel = "|Range  ";
-		String type = Double.class.isInstance(binsCenter[0]) ? ".1f" : "d";
+		String type = Double.class.isInstance(bins[0].center) ? ".1f" : "d";
 		
 		for(int i = 0 ; i < binsNum; i++) {
 			binId += String.format("|%-10d", i);
-			binLabel += String.format("|%-10s", binslables[i]);
-			binCenter += String.format("|%-10" + type, binsCenter[i]);
-			binsCounts += String.format("|%-10d", binsCounter[i]);
+			binLabel += String.format("|%-10s", bins[i].label);
+			binCenter += String.format("|%-10" + type, bins[i].center);
+			binsCounts += String.format("|%-10d", bins[i].counts);
 		}
 		
 		binId += "|";

@@ -5,6 +5,8 @@ import java.util.Random;
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
+
 public class IntegerAttributeWithoutBins extends NumericAttribute {	
 	
 	public IntegerAttributeWithoutBins(double[] range) {
@@ -20,9 +22,7 @@ public class IntegerAttributeWithoutBins extends NumericAttribute {
 	 */
 	@Override
 	protected void init() {
-		binslables = null;
-		binsCenter = null;
-		binsCounter = null;
+		bins = new Bin[0];
 		binSize = 0;
 		binsNum = 0;
 	}

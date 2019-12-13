@@ -1,9 +1,12 @@
 package com.certh.iti.easytv.user;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Vector;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -13,6 +16,7 @@ import com.certh.iti.easytv.user.config.Config;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 
 public class ProfileTest {
 		
@@ -74,7 +78,36 @@ public class ProfileTest {
 			//System.out.println(entry.getKey()+" "+d +"  "+ actualPoints[index]);
 			index++;
 		}
-
 	}
+	
+	@Test
+	public void test_dimensions() throws IOException, UserProfileParsingException {
+		
+		int index = 0;
+		for(Bin bin : Profile.getBins()) {
+			
+			System.out.println(String.format("%d: %s %d", index++, bin.label, bin.counts));
+		}
+	}
+	
+	@Test
+	public void test_dimensios() throws IOException, UserProfileParsingException {
+		Vector<Bin> bins = Profile.getBins();
+		int[] itemset = profile1.getAsItemSet();
+		
+		JSONObject preferences = json.getJSONObject("user_profile").getJSONObject("user_preferences").getJSONObject("default").getJSONObject("preferences");
+		
+		for(String key : preferences.keySet()) {
+			//System.out.println(key);
+			Object value = preferences.get(key);
+		}
+
+		System.out.println();
+		for(int i : itemset) {
+			Bin bin = bins.get(i);
+			System.out.println(String.format("%d: %s %d", i, bin.label, bin.counts));
+		}
+	}
+
 
 }

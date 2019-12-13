@@ -15,9 +15,13 @@ public class NominalAttribute extends Attribute implements INominal {
 		this.counts = new long[states.length];
 		
 		//Discretization properties
-		this.binsCenter = states;
-		this.binslables = states;	
-		this.binsCounter = new int[states.length];;	
+		this.bins = new Bin[states.length];
+		for(int i = 0; i < states.length; i++) {
+			bins[i] = new Bin();
+			bins[i].center = states[i];
+			bins[i].range = new String[] {states[i]};
+			bins[i].label = states[i];
+		}
 	}
 
 	public NominalAttribute(double[] range, String[] states) {
@@ -26,9 +30,13 @@ public class NominalAttribute extends Attribute implements INominal {
 		this.counts = new long[states.length];
 		
 		//Discretization properties
-		this.binsCenter = states;
-		this.binslables = states;	
-		this.binsCounter = new int[states.length];;	
+		this.bins = new Bin[states.length];
+		for(int i = 0; i < states.length; i++) {
+			bins[i] = new Bin();
+			bins[i].center = states[i];
+			bins[i].range = new String[] {states[i]};
+			bins[i].label = states[i];
+		}
 	}
 
 	public NominalAttribute(double operandMissingValue, String[] states) {
@@ -37,9 +45,13 @@ public class NominalAttribute extends Attribute implements INominal {
 		this.counts = new long[states.length];
 		
 		//Discretization properties
-		this.binsCenter = states;
-		this.binslables = states;	
-		this.binsCounter = new int[states.length];;
+		this.bins = new Bin[states.length];
+		for(int i = 0; i < states.length; i++) {
+			bins[i] = new Bin();
+			bins[i].center = states[i];
+			bins[i].range = new String[] {states[i]};
+			bins[i].label = states[i];
+		}
 	}
 
 	public NominalAttribute(double[] range, double operandMissingValue, String[] states) {
@@ -48,9 +60,13 @@ public class NominalAttribute extends Attribute implements INominal {
 		this.counts = new long[states.length];
 		
 		//Discretization properties
-		this.binsCenter = states;
-		this.binslables = states;	
-		this.binsCounter = new int[states.length];;
+		this.bins = new Bin[states.length];
+		for(int i = 0; i < states.length; i++) {
+			bins[i] = new Bin();
+			bins[i].center = states[i];
+			bins[i].range = new String[] {states[i]};
+			bins[i].label = states[i];
+		}
 	}
 	
 	public NominalAttribute(double[] range, double operandMissingValue, double step, int binNum, String[] states) {
@@ -59,9 +75,13 @@ public class NominalAttribute extends Attribute implements INominal {
 		this.counts = new long[states.length];
 		
 		//Discretization properties
-		this.binsCenter = states;
-		this.binslables = states;	
-		this.binsCounter = new int[states.length];;
+		this.bins = new Bin[states.length];
+		for(int i = 0; i < states.length; i++) {
+			bins[i] = new Bin();
+			bins[i].center = states[i];
+			bins[i].range = new String[] {states[i]};
+			bins[i].label = states[i];
+		}
 	}
 	
 	/**

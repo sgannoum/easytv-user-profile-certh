@@ -5,15 +5,21 @@ import java.util.Random;
 import org.apache.commons.math3.exception.OutOfRangeException;
 
 public abstract class Attribute {
-
+	
+	
+	public static class Bin {
+		public String label;
+		public Object[] range;
+		public Object center;
+		public int counts;
+	}
+	
 	protected static final int MAX_BINS_NUMS = 100;
 	
 	protected double missingValue = -1.0;
 	protected double[] range;
-	
-	protected String[] binslables = null;
-	protected Object[] binsCenter = null;
-	protected int[] binsCounter = null;
+
+	protected Bin[] bins;
 	protected double step = 1.0;
 	protected int binSize = 1;
 	protected int remaining = 0;
@@ -132,16 +138,8 @@ public abstract class Attribute {
 		return binsNum;
 	}
 	
-	public int[] getBinsCounter() {
-		return binsCounter;
-	}
-	
-	public Object[] getBinsValues() {
-		return binsCenter;
-	}
-	
-	public String[] getBinsLabel() {
-		return binslables;
+	public final Bin[] getBins() {
+		return bins;
 	}
 	
 	/**
@@ -197,7 +195,7 @@ public abstract class Attribute {
 		if (binId >= binsNum || binId < 0)
 			throw new IllegalArgumentException("Out of range bin id: " + binId);
 						
-		return binsCenter[binId];
+		return bins[binId].center;
 	}
 
 	/**

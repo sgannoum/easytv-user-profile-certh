@@ -6,12 +6,10 @@ public abstract class BinaryAttribute extends Attribute {
 	
 	public BinaryAttribute(double[] range) {
 		super(range);
-		binsCounter = new int[2];
 	}
 	
 	public BinaryAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
-		binsCounter = new int[2];
 	}
 	
 	@Override
@@ -44,7 +42,7 @@ public abstract class BinaryAttribute extends Attribute {
 		int binId = literal == false ? 0 : 1;
 		
 		//increase bin counter
-		binsCounter[binId]++;
+		bins[binId].counts++;
 		
 		return value;
 	}
@@ -53,9 +51,9 @@ public abstract class BinaryAttribute extends Attribute {
 	public String toString() {
 		
 		String binlables =  "", binsCounts = "", emplyLine = "",upperLine = "", middleLine = "";
-		for(int i = 0 ; i < binsCounter.length; i++) {
-			binlables += String.format("|%-7s", (boolean) binsCenter[i] ? "True" : "False");
-			binsCounts += String.format("|%-7d", binsCounter[i]);
+		for(int i = 0 ; i < bins.length; i++) {
+			binlables += String.format("|%-7s", (boolean) bins[i].center ? "True" : "False");
+			binsCounts += String.format("|%-7d", bins[i].counts);
 		}
 		
 		binlables += "|";
@@ -85,16 +83,18 @@ public abstract class BinaryAttribute extends Attribute {
 	 * Fill out the bin label with the proper labels
 	 */
 	protected void init() {
-		binslables = new String[binsNum];
-		binsCounter = new int[binsNum];
-		binsCenter = new Object[binsNum]; 
-		
-		binsCenter[0] = false;	
-		binsCenter[1] = true;
-		
-		binslables[0] = "false";
-		binslables[1] = "true";
+		bins = new Bin[binsNum];
+		bins[0] = new Bin();
+		bins[1] = new Bin();
 
+		bins[0].range = new Boolean[] {false};
+		bins[1].range = new Boolean[] {true};
+		
+		bins[0].center = false;	
+		bins[1].center = true;
+		
+		bins[0].label = "false";
+		bins[1].label = "true";
 	}
 
 }

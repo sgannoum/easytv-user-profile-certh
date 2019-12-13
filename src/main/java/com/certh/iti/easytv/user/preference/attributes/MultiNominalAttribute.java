@@ -27,9 +27,7 @@ public class MultiNominalAttribute extends NominalAttribute {
 	 */
 	@Override
 	protected void init() {
-		binslables = null;
-		binsCounter = null;
-		binsCenter = null;
+		bins = new Bin[0];
 		binSize = 0;
 		binsNum = 0;
 	}
