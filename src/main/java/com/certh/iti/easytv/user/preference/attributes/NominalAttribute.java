@@ -161,11 +161,30 @@ public class NominalAttribute extends Attribute implements INominal {
 		
 		String str = String.valueOf(literal);
 
-		int state = orderOf(str);
-		if (state == -1)
+		int binId = orderOf(str);
+		if (binId == -1)
 			throw new IllegalStateException("Unknown state " + literal);
 		
-		return state;
+		//check that the given value belongs to the bin range
+		if(!isInBinRange(literal, binId)) 
+			throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+"]");
+		
+		return binId;
+	}
+	
+	@Override
+	public boolean isInBinRange(Object literal, int binId) {
+		
+		if(!String.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into integer");
+		
+		if(binId < 0 || binId >= bins.length)
+			throw new IllegalArgumentException("Out of Range bin id: " + binId+" ["+0+","+bins.length+"]");
+		
+		String value = (String) literal;
+		Bin bin = bins[binId];
+		
+		return (value.equalsIgnoreCase((String) bin.range[0]));
 	}
 	
 	

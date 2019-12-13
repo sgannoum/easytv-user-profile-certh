@@ -60,6 +60,33 @@ public class DoubleAttributeTest {
 	}
 	
 	@Test
+	public void test_isInBinRange_attribute1() {
+		//bin 0 bin size + 1 elements = 5
+		Assert.assertFalse(attr1.isInBinRange(-10., 0));
+		Assert.assertTrue(attr1.isInBinRange(0.0, 0));
+		Assert.assertTrue(attr1.isInBinRange(1.0, 0));
+		Assert.assertTrue(attr1.isInBinRange(2.0, 0));
+		Assert.assertTrue(attr1.isInBinRange(3.0, 0));
+		Assert.assertTrue(attr1.isInBinRange(4.0, 0));
+		Assert.assertFalse(attr1.isInBinRange(5.0, 0));
+
+		
+		//bin 1 has bin size elements = 4
+		Assert.assertFalse(attr1.isInBinRange(4.0, 1));
+		Assert.assertTrue(attr1.isInBinRange(5.0, 1));
+		Assert.assertTrue(attr1.isInBinRange(6.0, 1));
+		Assert.assertTrue(attr1.isInBinRange(7.0, 1));
+		Assert.assertTrue(attr1.isInBinRange(8.0, 1));
+		Assert.assertFalse(attr1.isInBinRange(9.0, 1));
+		
+		//bin 2 has bin size elements = 4
+		Assert.assertTrue(attr1.isInBinRange(9.0, 2));
+		Assert.assertTrue(attr1.isInBinRange(10.0, 2));
+		Assert.assertTrue(attr1.isInBinRange(11.0, 2));
+		Assert.assertTrue(attr1.isInBinRange(12.0, 2));
+	}
+	
+	@Test
 	public void test_decode_attribute1() {
 		Assert.assertEquals(2.0, attr1.decode(0));
 		Assert.assertEquals(7.0, attr1.decode(1));
@@ -76,6 +103,27 @@ public class DoubleAttributeTest {
 		Assert.assertEquals(5, attr2.code(6.0));
 		Assert.assertEquals(6, attr2.code(7.0));
 		Assert.assertEquals(7, attr2.code(8.0));
+	}
+	
+	@Test
+	public void test_isInBinRange_attribute2() {
+		//bin 0 bin size + 1 elements = 5
+		Assert.assertTrue(attr2.isInBinRange(1.0, 0));
+		Assert.assertTrue(attr2.isInBinRange(2.0, 1));
+		Assert.assertTrue(attr2.isInBinRange(3.0, 2));
+		Assert.assertTrue(attr2.isInBinRange(4.0, 3));
+		Assert.assertTrue(attr2.isInBinRange(5.0, 4));
+		Assert.assertTrue(attr2.isInBinRange(6.0, 5));
+		Assert.assertTrue(attr2.isInBinRange(7.0, 6));
+		Assert.assertTrue(attr2.isInBinRange(8.0, 7));
+		
+		Assert.assertFalse(attr2.isInBinRange(1.0, 1));
+		Assert.assertFalse(attr2.isInBinRange(2.0, 2));
+		Assert.assertFalse(attr2.isInBinRange(3.0, 3));
+		Assert.assertFalse(attr2.isInBinRange(4.0, 4));
+		Assert.assertFalse(attr2.isInBinRange(5.0, 5));
+		Assert.assertFalse(attr2.isInBinRange(6.0, 6));
+		Assert.assertFalse(attr2.isInBinRange(7.0, 7));
 	}
 	
 	@Test
@@ -146,6 +194,12 @@ public class DoubleAttributeTest {
 		attr1.handle(101.0);
 		attr1.handle(-1.0);
 		attr1.handle(150.0);
+	}
+	
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void test_isInBinRange() {
+		attr1.isInBinRange(1, -1);
+		attr1.isInBinRange(1, 26);
 	}
 	
 	@Test

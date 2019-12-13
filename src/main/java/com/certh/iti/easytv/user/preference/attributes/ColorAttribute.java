@@ -117,12 +117,38 @@ public class ColorAttribute extends NumericAttribute {
 	}
 	
 	@Override
-	public int code(Object literal) {		
-		Color color = Color.decode((String) literal);
+	public int code(Object literal) {	
 		
+		if(!String.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into integer");
+		
+		Color color = Color.decode((String) literal);
 		double value = Math.abs(color.getRGB()) * 1.0;
+		
+		//get bin Id
+		int binId = getBinId(value);
+		
+		//check that the given value belongs to the bin range
+		if(!isInBinRange(literal, binId)) 
+			throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
 
-		return super.code(value);
+		return binId;
+	}
+	
+	@Override
+	public boolean isInBinRange(Object literal, int binId) {
+		
+		if(!String.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into integer");
+		
+		if(binId < 0 || binId >= bins.length)
+			throw new IllegalArgumentException("Out of Range bin id: " + binId+" ["+0+","+bins.length+"]");
+		
+		Color color = Color.decode((String) literal);
+		int value = Math.abs(color.getRGB());
+		Bin bin = bins[binId];
+		
+		return (value >= (int) bin.range[0] && value <= (int) bin.range[1]);
 	}
 
 	@Override 

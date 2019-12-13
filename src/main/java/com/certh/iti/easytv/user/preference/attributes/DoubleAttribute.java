@@ -3,6 +3,8 @@ package com.certh.iti.easytv.user.preference.attributes;
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
+
 public class DoubleAttribute extends NumericAttribute {
 	
 	public DoubleAttribute(double[] range) {
@@ -105,6 +107,41 @@ public class DoubleAttribute extends NumericAttribute {
 		n++;
 		
 		return numericValue;
+	}
+	
+	/**
+	 * Get an integer representation of the given value
+	 * 
+	 * @return
+	 */
+	public int code(Object literal) {
+		
+		if(!Double.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Double");
+		
+		int binId = getBinId((double) literal);
+		
+		//check that the given value belongs to the bin range
+		if(!isInBinRange(literal, binId)) 
+			throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
+		
+		//specify the itemId
+		return binId;
+	}
+	
+	@Override
+	public boolean isInBinRange(Object literal, int binId) {
+		
+		if(!Double.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Double");
+		
+		if(binId < 0 || binId >= bins.length)
+			throw new IllegalArgumentException("Out of Range bin id: " + binId+" ["+0+","+bins.length+"]");
+		
+		double value = (double) literal;
+		Bin bin = bins[binId];
+		
+		return (value >= (double) bin.range[0] && value <= (double) bin.range[1]);
 	}
 
 }

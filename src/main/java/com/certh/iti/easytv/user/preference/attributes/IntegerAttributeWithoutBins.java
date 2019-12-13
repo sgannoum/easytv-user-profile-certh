@@ -5,8 +5,6 @@ import java.util.Random;
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
-
 public class IntegerAttributeWithoutBins extends NumericAttribute {	
 	
 	public IntegerAttributeWithoutBins(double[] range) {
@@ -65,11 +63,13 @@ public class IntegerAttributeWithoutBins extends NumericAttribute {
 	}
 	
 	@Override
-	public int code(Object literal) {		
-		//convert int to double
-		double value = ((int) literal) * 1.0;
-
-		return super.code(value);
+	public int code(Object literal) {	
+		throw new IllegalAccessError("This method is not supported");
+	}
+	
+	@Override
+	public boolean isInBinRange(Object literal, int binId) {
+		throw new IllegalAccessError("This method is not supported");
 	}
 	
 	

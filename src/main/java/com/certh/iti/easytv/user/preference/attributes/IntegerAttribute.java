@@ -119,10 +119,28 @@ public class IntegerAttribute extends NumericAttribute {
 		if(!Integer.class.isInstance(literal))
 			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into integer");
 		
-		//convert int to double
-		double value = ((int) literal) * 1.0;
+		int binId = getBinId(((int) literal) * 1.0);
 
-		return getBinId(value);
+		//check that the given value belongs to the bin range
+		if(!isInBinRange(literal, binId)) 
+			throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
+		
+		return binId;
+	}
+	
+	@Override
+	public boolean isInBinRange(Object literal, int binId) {
+		
+		if(!Integer.class.isInstance(literal))
+			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into integer");
+		
+		if(binId < 0 || binId >= bins.length)
+			throw new IllegalArgumentException("Out of Range bin id: " + binId+" ["+0+","+bins.length+"]");
+		
+		int value = (int) literal;
+		Bin bin = bins[binId];
+		
+		return (value >= (int) bin.range[0] && value <= (int) bin.range[1]);
 	}
 
 }

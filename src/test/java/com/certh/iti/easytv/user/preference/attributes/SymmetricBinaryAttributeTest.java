@@ -32,6 +32,15 @@ public class SymmetricBinaryAttributeTest {
 	}
 	
 	@Test
+	public void test_isInBinRange_attribute1() {
+		Assert.assertFalse(attr1.isInBinRange(false, 1));
+		Assert.assertFalse(attr1.isInBinRange(true, 0));
+
+		Assert.assertTrue(attr1.isInBinRange(false, 0));
+		Assert.assertTrue(attr1.isInBinRange(true, 1));
+	}
+	
+	@Test
 	public void test_decode_attribute1() {
 		Assert.assertEquals(false, attr1.decode(0));
 		Assert.assertEquals(true, attr1.decode(1));
@@ -58,6 +67,10 @@ public class SymmetricBinaryAttributeTest {
 		attr1.handle(0);
 	}
 	
-	
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void test_isInBinRange() {
+		attr1.isInBinRange(false, -1);
+		attr1.isInBinRange(true, 26);
+	}
 		
 }

@@ -147,14 +147,17 @@ public abstract class Attribute {
 	 * 
 	 * @return
 	 */
-	public int code(Object literal) {
-		
-		if(!Double.class.isInstance(literal))
-			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Double");
-		
-		//specify the itemId
-		return getBinId((double) literal);
-	}
+	public abstract int code(Object literal);
+	
+
+	/**
+	 * Check whether the given object is in the given bin range
+	 * 
+	 * @param literal
+	 * @param binId
+	 * @return
+	 */
+	public abstract boolean isInBinRange(Object literal, int binId);
 	
 	/**
 	 * Get the binId that the given number belongs to 
@@ -179,7 +182,10 @@ public abstract class Attribute {
 			binId = (int) Math.floor(position / (binSize + 1));
 		else 
 			binId = (int) Math.floor((position - firstValueRange) / binSize) + remaining;
-
+		
+		if(binId < 0 || binId >= bins.length)
+			throw new IllegalArgumentException("Out of Range bin id: " + binId+" ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
+		
 		//specify the itemId
 		return binId;
 	}

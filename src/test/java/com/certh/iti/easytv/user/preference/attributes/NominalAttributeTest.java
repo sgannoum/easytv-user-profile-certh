@@ -36,6 +36,14 @@ public class NominalAttributeTest {
 	}
 	
 	@Test
+	public void test_isInBinRange_attribute1() {
+		Assert.assertFalse(attr1.isInBinRange("15", 2));
+		Assert.assertTrue(attr1.isInBinRange("15", 0));
+		Assert.assertTrue(attr1.isInBinRange("20", 1));
+		Assert.assertTrue(attr1.isInBinRange("23", 2));
+	}
+	
+	@Test
 	public void test_decode_attribute1() {
 		Assert.assertEquals("15", attr1.decode(0));
 		Assert.assertEquals("20", attr1.decode(1));
@@ -75,6 +83,12 @@ public class NominalAttributeTest {
 	@Test(expectedExceptions = IllegalStateException.class)
 	public void test_handle_outOfRange() {
 		attr1.handle("Null");
+	}
+	
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void test_isInBinRange() {
+		attr1.isInBinRange("15", -1);
+		attr1.isInBinRange("15", 26);
 	}
 	
 }

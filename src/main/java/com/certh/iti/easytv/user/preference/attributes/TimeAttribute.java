@@ -82,6 +82,11 @@ public class TimeAttribute extends Attribute{
 		//TODO handle to item for time attribute
 		return 0;
 	}
+	
+	@Override
+	public boolean isInBinRange(Object literal, int binId) {	
+		return true;
+	}
 
 	@Override
 	public Object decode(int itemId) {
