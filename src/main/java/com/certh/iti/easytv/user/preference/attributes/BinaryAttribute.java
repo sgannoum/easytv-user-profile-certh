@@ -88,37 +88,4 @@ public abstract class BinaryAttribute extends Attribute {
 		
 		return value;
 	}
-	
-	@Override
-	public String toString() {
-		
-		String binlables =  "", binsCounts = "", emplyLine = "",upperLine = "", middleLine = "";
-		for(int i = 0 ; i < bins.length; i++) {
-			binlables += String.format("|%-7s", (boolean) bins[i].center ? "True" : "False");
-			binsCounts += String.format("|%-7d", bins[i].counts);
-		}
-		
-		binlables += "|";
-		binsCounts += "|";
-		
-		emplyLine = String.format("%"+binlables.length()+"s", " ");
-		upperLine = emplyLine.replaceAll(" ", "+");
-		middleLine = emplyLine.replaceAll(" ", "-");
-		
-		return super.toString() + String.format("%s\n"
-				+ "|%-"+(upperLine.length() - 2)+"s|\n"
-				+ "%s\n"
-				+ "%s\n"
-				+ "%s\n"
-				+ "%s\n"
-				+ "%s\n",
-				upperLine,
-				"Bins histogram",
-				upperLine, 
-				binlables, 
-				middleLine, 
-				binsCounts, 
-				upperLine);
-	}
-
 }

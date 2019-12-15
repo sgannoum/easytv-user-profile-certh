@@ -4,6 +4,8 @@ import java.util.Random;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
 
+import com.certh.iti.easytv.user.preference.attributes.Table.Position;
+
 public abstract class Attribute {
 	
 	
@@ -234,22 +236,52 @@ public abstract class Attribute {
 	
 	@Override
 	public String toString() {
-		String separtingLine = String.format("%43s", " ").replaceAll(" ", "+");
+
+		Table table = new Table(2, 20);
+		Table.Row headerRow = table.createRow(1, Position.CENTER);		
+		headerRow.addCell("Atrribute properties");
+		table.addRow(headerRow);
+		table.addRow(new String[] {"Range", "Missing Value"}, Position.CENTER);
+		table.addRow(new Object[] {String.format("[%-8.1f, %-8.1f]", range[0], range[1]), missingValue}, Position.CENTER);
 		
-		return String.format("%s\n" +
-							 "|%-41s|\n" +
-							 "%s\n" +
-							 "|%-20s|%-20s|\n"+
-							 "%s\n" +
-							 "|[%-8.1f, %-8.1f]|%-20.1f|\n" +
-							 "%s\n\n" 
-							 , 
-							 separtingLine,
-							 String.format("%10s", " ") + "Atrribute properties", 
-							 separtingLine,
-							 String.format("%8s", " ") + "Range", String.format("%4s", " ") + "Missing Value", 
-							 separtingLine,
-							 range[0], range[1], missingValue, 
-							 separtingLine);
+		if(binsNum > 0 ) return table.toString() + "\n" + getBinsHistogram() + "\n";
+		else return table.toString() + "\n" ;
+	}
+	
+	/**
+	 * Print in the form of table the bins histogram
+	 * 
+	 * @return
+	 */
+	protected String getBinsHistogram() {
+		
+		Table table = new Table(binsNum + 1, 15);
+		Table.Row headerRow = table.createRow(1, Position.CENTER);
+		Table.Row binIdRow = table.createRow();
+		Table.Row binRangeRow = table.createRow();
+		Table.Row binCenterRow = table.createRow();
+		Table.Row binCountsRow = table.createRow();
+		
+		headerRow.addCell("Bins histogram");
+		binIdRow.addCell("Id");
+		binRangeRow.addCell("Range");
+		binCenterRow.addCell("Center");
+		binCountsRow.addCell("Counts");
+		
+		for(int i = 0 ; i < binsNum; i++) {
+			
+			binIdRow.addCell(i);
+			binRangeRow.addCell(bins[i].label);
+			binCenterRow.addCell(bins[i].center);
+			binCountsRow.addCell(bins[i].counts);
+		}
+		
+		table.addRow(headerRow);
+		table.addRow(binIdRow);
+		table.addRow(binRangeRow);
+		table.addRow(binCenterRow);
+		table.addRow(binCountsRow);
+		
+		return table.toString() +"\n";
 	}
 }

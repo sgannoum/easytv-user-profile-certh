@@ -186,39 +186,5 @@ public class NominalAttribute extends Attribute implements INominal {
 		
 		return (value.equalsIgnoreCase((String) bin.range[0]));
 	}
-	
-	
-	@Override
-	public String toString() {
-		
-		String binlables =  "", binsCounts = "", emplyLine = "",upperLine = "", middleLine = "";
-		for(int i = 0 ; i < states.length; i++) {
-			int fieldLength = states[i].length() + 2;
-			binlables += String.format("|%-"+fieldLength+"s", states[i]);
-			binsCounts += String.format("|%-"+fieldLength+"d", counts[i]);
-		}
-		
-		binlables += "|";
-		binsCounts += "|";
-		
-		emplyLine = String.format("%"+binlables.length()+"s", " ");
-		upperLine = emplyLine.replaceAll(" ", "+");
-		middleLine = emplyLine.replaceAll(" ", "-");
-		
-		return super.toString() + String.format("%s\n"
-				+ "|%-"+(upperLine.length() - 2)+"s|\n"
-				+ "%s\n"
-				+ "%s\n"
-				+ "%s\n"
-				+ "%s\n"
-				+ "%s\n",
-				upperLine,
-				 "Bins histogram",
-				upperLine, 
-				binlables, 
-				middleLine, 
-				binsCounts, 
-				upperLine);
-	}
 
 }

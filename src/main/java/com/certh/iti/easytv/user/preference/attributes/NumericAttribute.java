@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.certh.iti.easytv.user.preference.attributes.Table.Position;
+
 public abstract class NumericAttribute extends Attribute implements INumeric {
 	
 	protected long n = 0;
@@ -101,118 +103,38 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	
 	@Override
 	public String toString() {
+
 		
-		String histogram = "";
+		//Statistical table
+		Table statTable = new Table(6, 10);
+		Table.Row headerRow = statTable.createRow(1, Position.CENTER);		
+		headerRow.addCell("Statistical data");
+		statTable.addRow(headerRow);
+		statTable.addRow(new Object[] {"Total", "sum", "Stand dev", "Mean",  "Min", "Max"}, Position.CENTER);
+		statTable.addRow(new Object[] {n, sum, getStandardDeviation(), getMean(), getMinValue(), getMaxValue() });
+		
+			
+		//Histogram table
+		Table histTable = new Table(2, 11);
+		headerRow = histTable.createRow(1, Position.CENTER);		
+		headerRow.addCell("Values histogram");
+		histTable.addRow(headerRow);
+		histTable.addRow(new Object[] {" Value", " Frequency"}, Position.CENTER);
 		double[][] entriesCounts = getEntriesCounts();
 		for(int i = 0 ; i < entriesCounts.length; i++)
-			histogram += String.format("|%-11.1f|%-11d|\n", entriesCounts[i][0], (int) entriesCounts[i][1]);
-		
+			histTable.addRow(new Object[] {entriesCounts[i][0], (int) entriesCounts[i][1]});
 
-		String separtingLine1 = String.format("%76s", " ").replaceAll(" ", "+");
-		String separtingLine2 = String.format("%25s", " ").replaceAll(" ", "+");
-		
-		String statisticalData = String.format("%s\n"+
-												 "|%-74s|\n"+
-												 "%s\n"+
-										 		 "|%-10s|%-10s|%-19s|%-10s|%-10s|%-10s|\n"+
-										 		 "%s\n"+
-												 "|%-10d|%-10.1f|%-19.1f|%-10.1f|%-10.1f|%-10.1f|\n"+
-												 "%s\n\n"
-												 
-											 	, separtingLine1
-											 	, String.format("%26s", " ") + "Statistical data"
-											 	, separtingLine1
-												, "   Total", "   sum", "Standard deviation", "    Mean",     "    Min",   "    Max"
-												, separtingLine1
-											    , n,       sum, getStandardDeviation(), getMean(), getMinValue(), getMaxValue() 
-											    , separtingLine1);
-		
-		String histogramValues = String.format("%s\n"+
-												 "|%-23s|\n"+
-												 "%s\n"+
-												 "|%-11s|%-11s| \n"+
-												 "%s\n"+
-												 "%s" + 
-												 "%s\n\n"
-												
-											    , separtingLine2
-											    , "  Values histogram"
-											    , separtingLine2
-											    , " Value", " Frequency"
-											    , separtingLine2
-											    , histogram
-											    , separtingLine2);
 		
 		
-		String separtingLine3 = String.format("%45s", " ").replaceAll(" ", "+");
-
-		String discretizationProperties = String.format( "%s\n" + 
-														 "|%-43s|\n"+
-														 "%s\n" + 
-														 "|%-10s|%-10s|%-10s|%-9s|\n"+
-														 "%s\n"+
-														 "|%-11d|%-10d|%-10d|%-9.1f|\n"+
-														 "%s\n\n"
-													    
-													    , separtingLine3
-													    , "        Discretization properties"
-													    , separtingLine3
-													    , "Bins number", " Bin Size", "Remaining", "  Step"
-													    , separtingLine3
-													    , binsNum, binSize, remaining, step
-													    , separtingLine3);
+		//Histogram table
+		Table distTable = new Table(4, 11);
+		headerRow = distTable.createRow(1, Position.CENTER);		
+		headerRow.addCell("Discretization properties");
+		distTable.addRow(headerRow);
+		distTable.addRow(new Object[] {"Bins number", "Bin Size", "Remaining", "Step"}, Position.CENTER);
+		distTable.addRow(new Object[] {binsNum, binSize, remaining, step});
 		
 		
-		return super.toString() + statisticalData + discretizationProperties + histogramValues + getBinsHistogram();
-	}
-	
-	/**
-	 * Print in the form of table the bins histogram
-	 * 
-	 * @return
-	 */
-	protected String getBinsHistogram() {
-		
-		String binCenter =  "|Center ", binsCounts = "|Counts ", emplyLine = "",upperLine = "", middleLine = "", binId = "|Id     ", binLabel = "|Range  ";
-		String type = Double.class.isInstance(bins[0].center) ? ".1f" : "d";
-		
-		for(int i = 0 ; i < binsNum; i++) {
-			binId += String.format("|%-10d", i);
-			binLabel += String.format("|%-10s", bins[i].label);
-			binCenter += String.format("|%-10" + type, bins[i].center);
-			binsCounts += String.format("|%-10d", bins[i].counts);
-		}
-		
-		binId += "|";
-		binLabel += "|";
-		binCenter += "|";
-		binsCounts += "|";
-		
-		emplyLine = String.format("%"+binCenter.length()+"s", " ");
-		upperLine = emplyLine.replaceAll(" ", "+");
-		middleLine = emplyLine.replaceAll(" ", "-");
-		
-		return  String.format("%s\n"
-							+ "|%-"+(upperLine.length() - 2)+"s|\n"
-							+ "%s\n"
-							+ "%s\n"
-							+ "%s\n"
-							+ "%s\n"
-							+ "%s\n"
-							+ "%s\n"
-							+ "%s\n"
-							+ "%s\n"
-							+ "%s\n",
-							upperLine,
-							 "Bins histogram",
-							upperLine, 
-							binId, 
-							middleLine, 
-							binLabel, 
-							middleLine, 
-							binCenter, 
-							middleLine, 
-							binsCounts, 
-							upperLine);
+		return super.toString() + statTable.toString()+ "\n" + distTable.toString() + "\n" + histTable.toString() +" \n" ;
 	}
 }
