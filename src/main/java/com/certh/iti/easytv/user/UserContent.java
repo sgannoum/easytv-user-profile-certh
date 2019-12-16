@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.MultiNominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
 
@@ -32,11 +33,16 @@ public class UserContent implements Clusterable {
 	    put("http://registry.easytv.eu/application/cs/audio/track", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
     }};
 	
+	public static AttributesAggregator aggregator = new AttributesAggregator();
+	static {
+		aggregator.add(UserContent.content_attributes);
+	}
+    
 	public UserContent() {
 		this.setPoint();
 	}
     
-	public UserContent(JSONObject json) {
+	public UserContent(JSONObject json) throws UserContextParsingException {
 		setJSONObject(json);
 	}
 	
@@ -96,34 +102,37 @@ public class UserContent implements Clusterable {
 		return jsonObj;
 	}
 	
-	public void setJSONObject(JSONObject json) {
+	public void setJSONObject(JSONObject json) throws UserContextParsingException {
 
 		//clean up
-		content.clear();
+		Map<String, Object> entries = new HashMap<String, Object>();
 		
 		if(json.has("http://registry.easytv.eu/application/cs/accessibility/detection/face")) {
-			content.put("http://registry.easytv.eu/application/cs/accessibility/detection/face", json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/face"));
+			entries.put("http://registry.easytv.eu/application/cs/accessibility/detection/face", json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/face"));
 		}
 		
 		if(json.has("http://registry.easytv.eu/application/cs/accessibility/detection/text")) {
-			content.put("http://registry.easytv.eu/application/cs/accessibility/detection/text", json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/text"));
+			entries.put("http://registry.easytv.eu/application/cs/accessibility/detection/text", json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/text"));
 		}
 		
 		if(json.has("http://registry.easytv.eu/application/cs/accessibility/detection/sound")) {
-			content.put("http://registry.easytv.eu/application/cs/accessibility/detection/sound", json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/sound"));
+			entries.put("http://registry.easytv.eu/application/cs/accessibility/detection/sound", json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/sound"));
 		}
 		
 		if(json.has("http://registry.easytv.eu/application/cs/accessibility/detection/character")) {
-			content.put("http://registry.easytv.eu/application/cs/accessibility/detection/character", json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/character"));
+			entries.put("http://registry.easytv.eu/application/cs/accessibility/detection/character", json.getBoolean("http://registry.easytv.eu/application/cs/accessibility/detection/character"));
 		}
 		
 		if(json.has("http://registry.easytv.eu/application/cs/cc/subtitles/language")) {			
-			content.put("http://registry.easytv.eu/application/cs/cc/subtitles/language", json.getJSONArray("http://registry.easytv.eu/application/cs/cc/subtitles/language"));
+			entries.put("http://registry.easytv.eu/application/cs/cc/subtitles/language", json.getJSONArray("http://registry.easytv.eu/application/cs/cc/subtitles/language"));
 		}
 		
 		if(json.has("http://registry.easytv.eu/application/cs/audio/track")) {
-			content.put("http://registry.easytv.eu/application/cs/audio/track", json.getJSONArray("http://registry.easytv.eu/application/cs/audio/track"));
+			entries.put("http://registry.easytv.eu/application/cs/audio/track", json.getJSONArray("http://registry.easytv.eu/application/cs/audio/track"));
 		}
+		
+		//Update context
+		this.setContent(entries);
 		
 		//Update points 
 		this.setPoint();
@@ -159,23 +168,29 @@ public class UserContent implements Clusterable {
 	 */
 	public int[] getAsItemSet() {
 		int index = 0, base = 0, size = 0;
-		Collection<Entry<String, Object>> entries = content.entrySet();
+		Collection<Entry<String, Attribute>> entries = content_attributes.entrySet();
 		
 		for(Attribute attributHandler : content_attributes.values()) 
-			size += attributHandler.getBinNumber();
+			if(attributHandler.getBinNumber() != 0)  size ++;
 		
 		int[] itemSet = new int[size];
 		
-		for(Entry<String, Object> entry : entries) {
-			Attribute attributHandler = content_attributes.get(entry.getKey());
+		for(Entry<String, Attribute> entry : entries) {
+			Attribute attributHandler =  entry.getValue();
+			Object value = content.get(entry.getKey()); 
 			
-			if(attributHandler.getBinNumber() != 0 ) {
-				itemSet[index++] = attributHandler.code(entry.getValue()) + base;
+			//add only existing preferences
+			if(attributHandler.getBinNumber() != 0) {
+				itemSet[index++] = attributHandler.code(value) + base;				
 				base += attributHandler.getBinNumber();
 			}
 		}
-		
 		return itemSet;
 	}
+	
+	public static final AttributesAggregator getAttributesAggregator() {
+		return aggregator;
+	}
+
 	
 }
