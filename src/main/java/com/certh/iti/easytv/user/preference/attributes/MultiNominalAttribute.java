@@ -78,7 +78,7 @@ public class MultiNominalAttribute extends NominalAttribute {
 				throw new IllegalStateException("Unknown state " + value);
 	
 			// increase counts
-			counts[state]++;
+			bins[state].counts++;
 			n++;
 		}
 		return value;

@@ -7,12 +7,10 @@ public class NominalAttribute extends Attribute implements INominal {
 	protected int state;
 	protected long n = 0;
 	protected String[] states;
-	protected long[] counts;
 
 	public NominalAttribute(String[] states) {
 		super(new double[] { 0.0, states.length - 1 });
 		this.states = states;
-		this.counts = new long[states.length];
 		
 		//Discretization properties
 		this.bins = new Bin[states.length];
@@ -27,7 +25,6 @@ public class NominalAttribute extends Attribute implements INominal {
 	public NominalAttribute(double[] range, String[] states) {
 		super(range);
 		this.states = states;
-		this.counts = new long[states.length];
 		
 		//Discretization properties
 		this.bins = new Bin[states.length];
@@ -42,7 +39,6 @@ public class NominalAttribute extends Attribute implements INominal {
 	public NominalAttribute(double operandMissingValue, String[] states) {
 		super(new double[] { 0.0, states.length - 1 }, operandMissingValue);
 		this.states = states;
-		this.counts = new long[states.length];
 		
 		//Discretization properties
 		this.bins = new Bin[states.length];
@@ -57,7 +53,6 @@ public class NominalAttribute extends Attribute implements INominal {
 	public NominalAttribute(double[] range, double operandMissingValue, String[] states) {
 		super(range, operandMissingValue);
 		this.states = states;
-		this.counts = new long[states.length];
 		
 		//Discretization properties
 		this.bins = new Bin[states.length];
@@ -72,7 +67,6 @@ public class NominalAttribute extends Attribute implements INominal {
 	public NominalAttribute(double[] range, double operandMissingValue, double step, int binNum, String[] states) {
 		super(range, step, binNum, operandMissingValue);
 		this.states = states;
-		this.counts = new long[states.length];
 		
 		//Discretization properties
 		this.bins = new Bin[states.length];
@@ -89,10 +83,6 @@ public class NominalAttribute extends Attribute implements INominal {
 	 */
 	@Override
 	protected void init() {	
-	}
-
-	public final long[] getStateCounts() {
-		return counts;
 	}
 
 	public final String[] getStates() {
@@ -131,7 +121,7 @@ public class NominalAttribute extends Attribute implements INominal {
 			throw new IllegalStateException("Unknown state " + value);
 
 		// increase counts
-		counts[state]++;
+		bins[state].counts++;
 		n++;
 
 		return value;

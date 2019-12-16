@@ -61,7 +61,7 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		double[][] statesCounts = new double[states.length][1];
 
 		for (int i = 0; i < states.length; i++)
-			statesCounts[i][0] = counts[i];
+			statesCounts[i][0] = bins[i].counts;
 
 		return statesCounts;
 	}
@@ -72,7 +72,7 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		double mean = sum / n;
 
 		for (int i = 0; i < states.length; i++)
-			var += counts[i] * Math.pow(i - mean, 2);
+			var += bins[i].counts * Math.pow(i - mean, 2);
 
 		return Math.sqrt(var / n);
 	}
@@ -103,7 +103,7 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		setMinMaxValue(state);
 
 		// increase counts
-		counts[state]++;
+		bins[state].counts++;
 
 		sum += state;
 
