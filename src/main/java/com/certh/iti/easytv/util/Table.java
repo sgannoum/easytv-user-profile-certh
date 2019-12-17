@@ -1,4 +1,4 @@
-package com.certh.iti.easytv.user.preference.attributes;
+package com.certh.iti.easytv.util;
 
 import java.util.Date;
 

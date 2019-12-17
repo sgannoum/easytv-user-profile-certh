@@ -130,10 +130,10 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			Object value = preferences.get(key);
 			
 			//add only existing preferences
-			if(attributHandler.getBinNumber() != 0 && value != null) {
+			if(attributHandler.getBinNumber() != 0 && value != null) 
 				itemSet[index++] = attributHandler.code(value) + base;
-				base += attributHandler.getBinNumber();
-			}
+			
+			base += attributHandler.getBinNumber();
 		}
 		return itemSet;
 	}

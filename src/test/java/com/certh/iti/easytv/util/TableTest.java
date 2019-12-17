@@ -1,9 +1,10 @@
-package com.certh.iti.easytv.user.preference.attributes;
+package com.certh.iti.easytv.util;
 
 import org.testng.annotations.Test;
 
-import com.certh.iti.easytv.user.preference.attributes.Table.CellFormat;
-import com.certh.iti.easytv.user.preference.attributes.Table.Position;
+import com.certh.iti.easytv.util.Table;
+import com.certh.iti.easytv.util.Table.CellFormat;
+import com.certh.iti.easytv.util.Table.Position;
 
 public class TableTest {
 	

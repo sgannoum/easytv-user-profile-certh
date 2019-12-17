@@ -4,7 +4,8 @@ import java.util.Random;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
 
-import com.certh.iti.easytv.user.preference.attributes.Table.Position;
+import com.certh.iti.easytv.util.Table;
+import com.certh.iti.easytv.util.Table.Position;
 
 public abstract class Attribute {
 	

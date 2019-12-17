@@ -5,7 +5,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.certh.iti.easytv.user.preference.attributes.Table.Position;
+import com.certh.iti.easytv.util.Table;
+import com.certh.iti.easytv.util.Table.Position;
 
 public abstract class NumericAttribute extends Attribute implements INumeric {
 	

@@ -78,7 +78,7 @@ public class ProfileTest {
 		}
 	}
 	
-	@Test
+/*	@Test
 	public void test_dimensions() throws IOException, UserProfileParsingException {
 		
 		int index = 0;
@@ -87,8 +87,8 @@ public class ProfileTest {
 			System.out.println(String.format("%d: %s %d", index++, bin.label, bin.counts));
 		}
 	}
-	
-	@Test
+	*/
+/*	@Test
 	public void test_generatedItemSet() throws IOException, UserProfileParsingException {
 		Vector<Bin> profileBins = Profile.getBins();
 		int[] itemset = profile1.getAsItemSet();
@@ -99,15 +99,21 @@ public class ProfileTest {
 		for(String key : preferences.keySet()) {
 			Object value = preferences.get(key);
 		}
+		
+		int index = 0;
+		for(Bin bin : profileBins) {
+			System.out.println(String.format("%d: %-100s    %d", index++, bin.label, bin.counts));
+		}
 
 		System.out.println();
 		for(int i : itemset) {
+			System.out.println(i);
 			Bin bin = profileBins.get(i);
 			Object value = preferences.get(bin.label.substring(0, bin.label.indexOf(' ')));
 
 			System.out.println(String.format("%d: %-100s    %d %s", i, bin.label, bin.counts, value));
 		}
-	}
+	}*/
 
 
 
