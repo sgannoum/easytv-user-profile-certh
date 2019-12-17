@@ -105,8 +105,8 @@ public class UserPreferences implements Clusterable {
 	 * 
 	 * @return
 	 */
-	public int[] getPreferencesAsItemSet() {
-		return this.defaultPreference.getPreferencesAsItemSet();
+	public int[] getAsItemSet() {
+		return this.defaultPreference.getAsItemSet();
 	}
 	
 	/**

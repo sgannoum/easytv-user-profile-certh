@@ -171,17 +171,20 @@ public class UserContent implements Clusterable {
 		Collection<Entry<String, Attribute>> entries = content_attributes.entrySet();
 		
 		for(Attribute attributHandler : content_attributes.values()) 
-			if(attributHandler.getBinNumber() != 0)  size ++;
+			if(attributHandler.getBinNumber() != 0)  size++;
 		
-		int[] itemSet = new int[size];
+		int[] itemSet;
+		if(content.size() > size)
+			itemSet = new int[size];
+		else itemSet = new int[content.size()];
 		
 		for(Entry<String, Attribute> entry : entries) {
 			Attribute attributHandler =  entry.getValue();
 			Object value = content.get(entry.getKey()); 
 			
 			//add only existing preferences
-			if(attributHandler.getBinNumber() != 0) {
-				itemSet[index++] = attributHandler.code(value) + base;				
+			if(attributHandler.getBinNumber() != 0 && value != null) {
+				itemSet[index++] = attributHandler.code(value) + base;
 				base += attributHandler.getBinNumber();
 			}
 		}

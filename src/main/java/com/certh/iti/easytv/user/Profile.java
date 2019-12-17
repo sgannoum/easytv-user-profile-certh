@@ -115,18 +115,19 @@ public class Profile implements Clusterable {
 	 * @return
 	 */
 	public int[] getAsItemSet() {
-		int[] preferencesitemSet = userProfile.getPreferencesAsItemSet();
+		int[] preferencesitemSet = userProfile.getAsItemSet();
 		int[] contextItemSet = userContext.getAsItemSet();
 		int[] contentItemSet = userContent.getAsItemSet();
 		
 		int[] itemSet = new int[preferencesitemSet.length + contextItemSet.length + contentItemSet.length];
-		
+			
 		int base = 0, index = 0;
 		for(int i = 0; i < preferencesitemSet.length; itemSet[index++] = preferencesitemSet[i++] + base );
-		base = UserProfile.getAttributesAggregator().getSize();
+		base += UserProfile.getAttributesAggregator().getBinNumber();
 		for(int i = 0; i < contextItemSet.length; itemSet[index++] = contextItemSet[i++] + base);
-		base = UserContext.getAttributesAggregator().getSize();
+		base += UserContext.getAttributesAggregator().getBinNumber();
 		for(int i = 0; i < contentItemSet.length; itemSet[index++] = contentItemSet[i++] + base);
+		base += UserContent.getAttributesAggregator().getBinNumber();
 		
 		return itemSet;
 	}
@@ -194,9 +195,9 @@ public class Profile implements Clusterable {
 		//initialize points
 		points = new double[profile_points.length + context_points.length + content_points.length];		
 
-		for(int i = 0; i < profile_points.length; points[index] = profile_points[i], i++, index++ );
-		for(int i = 0; i < context_points.length; points[index] = context_points[i], i++, index++ );
-		for(int i = 0; i < content_points.length; points[index] = content_points[i], i++, index++ );
+		for(int i = 0; i < profile_points.length; points[index++] = profile_points[i++]);
+		for(int i = 0; i < context_points.length; points[index++] = context_points[i++]);
+		for(int i = 0; i < content_points.length; points[index++] = content_points[i++]);
 	}
 	
 	/**
@@ -241,7 +242,7 @@ public class Profile implements Clusterable {
 	 * @return
 	 */
 	public static int getPreferencesDistinctItems() {
-		return aggregator.getSize();
+		return aggregator.getBinNumber();
 	}
 	
 	/**

@@ -73,8 +73,8 @@ public class UserProfile implements Clusterable {
 		return userPreferences.getPoint();
 	}
 	
-	public int[] getPreferencesAsItemSet() {
-		return this.userPreferences.getPreferencesAsItemSet();
+	public int[] getAsItemSet() {
+		return this.userPreferences.getAsItemSet();
 	}
 
 	public JSONObject getJSONObject() {

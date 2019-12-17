@@ -115,11 +115,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	}
 	
 	/**
-	 * Get an item set representation of the usre profile 
+	 * Get an item set representation of the user profile 
 	 * 
 	 * @return
 	 */
-	public int[] getPreferencesAsItemSet() {
+	public int[] getAsItemSet() {
 		Collection<Entry<String, Attribute>> entries = preferencesAttributes.entrySet();
 		int[] itemSet = new int[preferences.size()];
 		int index = 0, base = 0;
@@ -130,12 +130,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			Object value = preferences.get(key);
 			
 			//add only existing preferences
-			if(value != null)
+			if(attributHandler.getBinNumber() != 0 && value != null) {
 				itemSet[index++] = attributHandler.code(value) + base;
-	
-			base += attributHandler.getBinNumber();
+				base += attributHandler.getBinNumber();
+			}
 		}
-		
 		return itemSet;
 	}
 

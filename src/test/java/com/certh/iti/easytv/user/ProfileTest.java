@@ -1,12 +1,10 @@
 package com.certh.iti.easytv.user;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -91,23 +89,26 @@ public class ProfileTest {
 	}
 	
 	@Test
-	public void test_dimensios() throws IOException, UserProfileParsingException {
-		Vector<Bin> bins = Profile.getBins();
+	public void test_generatedItemSet() throws IOException, UserProfileParsingException {
+		Vector<Bin> profileBins = Profile.getBins();
 		int[] itemset = profile1.getAsItemSet();
 		
 		JSONObject preferences = json.getJSONObject("user_profile").getJSONObject("user_preferences").getJSONObject("default").getJSONObject("preferences");
 		
+	//	Arrays.sort(itemset);
 		for(String key : preferences.keySet()) {
-			//System.out.println(key);
 			Object value = preferences.get(key);
 		}
 
 		System.out.println();
 		for(int i : itemset) {
-			Bin bin = bins.get(i);
-			System.out.println(String.format("%d: %s %d", i, bin.label, bin.counts));
+			Bin bin = profileBins.get(i);
+			Object value = preferences.get(bin.label.substring(0, bin.label.indexOf(' ')));
+
+			System.out.println(String.format("%d: %-100s    %d %s", i, bin.label, bin.counts, value));
 		}
 	}
+
 
 
 }

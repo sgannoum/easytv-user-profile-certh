@@ -59,13 +59,12 @@ public class AttributesAggregator {
 					
 					bins.add(newBin);
 				}
-				
 			}
 	
 		return bins;
 	}
 		
-	public int getSize() {
+	public int getBinNumber() {
 		int size = 0;
 		
 		//get bin frequency counts

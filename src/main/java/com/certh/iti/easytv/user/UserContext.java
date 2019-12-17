@@ -27,8 +27,8 @@ public class UserContext implements Clusterable{
  
 	{
 	    put("http://registry.easytv.eu/context/device", new NominalAttribute(new String[] {"pc", "modile", "tablet"}));
-		put("http://registry.easytv.eu/context/light", new IntegerAttribute(new double[] {0.0, 100.0}, -1));
-		put("http://registry.easytv.eu/context/proximity", new IntegerAttribute(new double[] {0.0, 100.0}, -1));
+		put("http://registry.easytv.eu/context/light", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
+		put("http://registry.easytv.eu/context/proximity", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 	    put("http://registry.easytv.eu/context/location", new NominalAttribute(new String[] {"ca", "gr", "it", "es"}));
 	    put("http://registry.easytv.eu/context/time", new TimeAttribute());
     }};
@@ -152,7 +152,7 @@ public class UserContext implements Clusterable{
 	public int[] getAsItemSet() {
 		int index = 0, base = 0;
 		Collection<Entry<String, Attribute>> entries = contextAttributes.entrySet();
-		int[] itemSet = new int[entries.size()];
+		int[] itemSet = new int[context.size()];
 		
 		for(Entry<String, Attribute> entry : entries) {
 			String key = entry.getKey();
@@ -160,10 +160,10 @@ public class UserContext implements Clusterable{
 			Object value = context.get(key); 
 			
 			//add only existing preferences
-			if(value != null)
+			if(attributHandler.getBinNumber() != 0 && value != null) {
 				itemSet[index++] = attributHandler.code(value) + base;
-			
-			base += attributHandler.getBinNumber();
+				base += attributHandler.getBinNumber();
+			}
 		}
 		
 		return itemSet;
