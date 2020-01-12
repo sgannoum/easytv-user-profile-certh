@@ -256,7 +256,15 @@ public abstract class Attribute {
 	 */
 	protected String getBinsHistogram() {
 		
-		Table table = new Table(binsNum + 1, 15);
+		//find table columns width
+		int maxColumnWdith = 6;
+		for(int i = 0 ; i < binsNum; i++) {
+			if(maxColumnWdith < bins[i].label.length())
+				maxColumnWdith = bins[i].label.length();
+		}
+		
+
+		Table table = new Table(binsNum + 1, maxColumnWdith);
 		Table.Row headerRow = table.createRow(1, Position.CENTER);
 		Table.Row binIdRow = table.createRow();
 		Table.Row binRangeRow = table.createRow();
