@@ -75,7 +75,15 @@ public class Table {
 		private String rowLine = new String();
 		
 		protected Row(final CellFormat[] cellFormats) {
-			this.cellFormats = cellFormats;			
+			this.cellFormats = cellFormats;		
+			for(int i = 0; i < cellFormats.length; i++) {
+				this.cellFormats[i] = new CellFormat(cellFormats[i].cellWidth);
+				rowLine += this.cellFormats[i].cellLine;
+			}
+			
+			rowLine +="+\n";
+			row.append(rowLine);
+			tableLine = rowLine;
 		}
 		
 		protected Row(final CellFormat[] cellFormats, Position position) {
