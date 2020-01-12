@@ -14,7 +14,7 @@ public class Table {
 	
 	private StringBuffer table = new StringBuffer();
 	private CellFormat[] tableCellFormats;
-	private String middleLine, upperLine; 
+	private String tableLine; 
 	
 	/**
 	 * A cell in the table
@@ -24,14 +24,17 @@ public class Table {
 		
 		private Position position = Position.LEFT;
 		private int cellWidth;
+		private String cellLine;
 	
 		public CellFormat(int width) {
 			this.cellWidth = width;
+			this.cellLine = String.format("+%"+cellWidth+"s", " ").replaceAll(" ", "-");
 		}
 		
 		public CellFormat(int width, Position position) {
 			this.position = position;
 			this.cellWidth = width;
+			this.cellLine = String.format("+%"+cellWidth+"s", " ").replaceAll(" ", "-");
 		}
 		
 		public String formalize(Object obj) {	
@@ -58,6 +61,7 @@ public class Table {
 			
 			return str;
 		}
+		
 	}
 	
 	/**
@@ -68,6 +72,7 @@ public class Table {
 		private int counts = 0;
 		private CellFormat[] cellFormats;
 		private StringBuffer row = new StringBuffer();
+		private String rowLine = new String();
 		
 		protected Row(final CellFormat[] cellFormats) {
 			this.cellFormats = cellFormats;			
@@ -77,7 +82,12 @@ public class Table {
 			this.cellFormats = new CellFormat[cellFormats.length];
 			for(int i = 0; i < cellFormats.length; i++) {
 				this.cellFormats[i] = new CellFormat(cellFormats[i].cellWidth, position);
+				rowLine += this.cellFormats[i].cellLine;
 			}
+			
+			rowLine +="+\n";
+			row.append(rowLine);
+			tableLine = rowLine;
 		}
 		
 		protected Row(final CellFormat[] cellFormats, int groups) {		
@@ -85,7 +95,12 @@ public class Table {
 			int width = (rowWidth / groups) - 2;
 			for(int i = 0; i < groups; i++) {
 				this.cellFormats[i] = new CellFormat(width, cellFormats[i].position);
+				rowLine += this.cellFormats[i].cellLine;
 			}
+			
+			rowLine +="+\n";
+			row.append(rowLine);
+			tableLine = rowLine;
 		}
 		
 		protected Row(final CellFormat[] cellFormats, int groups, Position position) {			
@@ -93,7 +108,12 @@ public class Table {
 			int width = (rowWidth / groups) - 2;
 			for(int i = 0; i < groups; i++) {
 				this.cellFormats[i] = new CellFormat(width, position);
+				rowLine += this.cellFormats[i].cellLine;
 			}
+			
+			rowLine +="+\n";
+			row.append(rowLine);
+			tableLine = rowLine;
 		}
 		
 		public void addCell(Object obj) {
@@ -101,12 +121,12 @@ public class Table {
 			if(counts == cellFormats.length)
 				throw new OutOfRangeException(cellFormats.length + 1, 0, cellFormats.length);
 
+			
 			CellFormat cellFormat = cellFormats[counts];
 			row.append(cellFormat.formalize(obj));
 			
 			if(++counts == cellFormats.length) {
 				row.append("|\n");
-				row.append(middleLine);
 			}
 		}
 		
@@ -118,7 +138,6 @@ public class Table {
 					row.append(cellFormats[i].formalize(obj));
 				
 				row.append("|\n");
-				row.append(middleLine);
 			}
 		}
 		
@@ -142,22 +161,11 @@ public class Table {
 			rowWidth += f.cellWidth;
 		}
 		
-		String emplyLine = String.format("%"+rowWidth+"s\n", " ");
-		upperLine = emplyLine.replaceAll(" ", "+");
-		middleLine = emplyLine.replaceAll(" ", "-");
-		
-		table.append(upperLine);
 	}
 	
 	public Table(int columns, int columWidth) {
 		rowWidth = (columWidth * columns) + (columns + 1);
-		
-		String emplyLine = String.format("%"+rowWidth+"s\n", " ");
-		upperLine = emplyLine.replaceAll(" ", "+");
-		middleLine = emplyLine.replaceAll(" ", "-");
-		
-		table.append(upperLine);
-					
+				
 		tableCellFormats = new CellFormat[columns];
 		for(int i = 0; i < columns; i++) {
 			tableCellFormats[i] = new CellFormat(columWidth, Position.LEFT);
@@ -166,12 +174,7 @@ public class Table {
 	}
 	
 	public Table(Table other, int columns, int columWidth) {
-		rowWidth = (columWidth * columns) + (columns + 1);
-		
-		String emplyLine = String.format("%"+rowWidth+"s\n", " ");
-		upperLine = emplyLine.replaceAll(" ", "+");
-		middleLine = emplyLine.replaceAll(" ", "-");
-		
+		rowWidth = (columWidth * columns) + (columns + 1);	
 		table.append(other.table.toString());
 		rows += other.rows;
 	}
@@ -237,7 +240,7 @@ public class Table {
 	
 	@Override
 	public String toString() {
-		return table.substring(0, table.length() - rowWidth - 1) + upperLine;
+		return table.toString() + tableLine;
 	}
 	
 	/**
