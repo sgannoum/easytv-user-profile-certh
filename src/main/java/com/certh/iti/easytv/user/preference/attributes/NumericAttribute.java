@@ -112,19 +112,7 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		headerRow.addCell("Statistical data");
 		statTable.addRow(headerRow);
 		statTable.addRow(new Object[] {"Total", "sum", "Stand dev", "Mean",  "Min", "Max"}, Position.CENTER);
-		statTable.addRow(new Object[] {n, sum, getStandardDeviation(), getMean(), getMinValue(), getMaxValue() });
-		
-			
-		//Histogram table
-		Table histTable = new Table(2, 11);
-		headerRow = histTable.createRow(1, Position.CENTER);		
-		headerRow.addCell("Values histogram");
-		histTable.addRow(headerRow);
-		histTable.addRow(new Object[] {" Value", " Frequency"}, Position.CENTER);
-		double[][] entriesCounts = getEntriesCounts();
-		for(int i = 0 ; i < entriesCounts.length; i++)
-			histTable.addRow(new Object[] {entriesCounts[i][0], (int) entriesCounts[i][1]});
-
+		statTable.addRow(new Object[] {n, sum, getStandardDeviation(), getMean(), getMinValue(), getMaxValue() });	
 		
 		
 		//Histogram table
@@ -136,6 +124,21 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		distTable.addRow(new Object[] {binsNum, binSize, remaining, step});
 		
 		
-		return super.toString() + statTable.toString()+ "\n" + distTable.toString() + "\n" + histTable.toString() +" \n" ;
+		return super.toString() + statTable.toString()+ "\n" + distTable.toString() + "\n" + getValueshistogram();
+	}
+	
+	protected String getValueshistogram() {
+		
+		//Histogram table
+		Table histTable = new Table(2, 11);
+		Table.Row headerRow = histTable.createRow(1, Position.CENTER);		
+		headerRow.addCell("Values histogram");
+		histTable.addRow(headerRow);
+		histTable.addRow(new Object[] {" Value", " Frequency"}, Position.CENTER);
+		double[][] entriesCounts = getEntriesCounts();
+		for(int i = 0 ; i < entriesCounts.length; i++)
+			histTable.addRow(new Object[] {entriesCounts[i][0], (int) entriesCounts[i][1]});
+		
+		return histTable.toString() +" \n";
 	}
 }

@@ -15,6 +15,8 @@ import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
+import com.certh.iti.easytv.util.Table;
+import com.certh.iti.easytv.util.Table.Position;
 
 public class ProfileTest {
 		
@@ -78,7 +80,8 @@ public class ProfileTest {
 		}
 	}
 	
-/*	@Test
+/*	
+  	@Test
 	public void test_dimensions() throws IOException, UserProfileParsingException {
 		
 		int index = 0;
@@ -87,7 +90,8 @@ public class ProfileTest {
 			System.out.println(String.format("%d: %s %d", index++, bin.label, bin.counts));
 		}
 	}
-	*/
+*/
+	
 /*	@Test
 	public void test_generatedItemSet() throws IOException, UserProfileParsingException {
 		Vector<Bin> profileBins = Profile.getBins();
@@ -113,8 +117,38 @@ public class ProfileTest {
 
 			System.out.println(String.format("%d: %-100s    %d %s", i, bin.label, bin.counts, value));
 		}
-	}*/
+	}
+*/
 
+
+	@Test
+	public void test_generatedItemSet() throws IOException, UserProfileParsingException {
+		Vector<Bin> profileBins = Profile.getBins();
+		int[] itemset = profile1.getAsItemSet();
+		
+		JSONObject preferences = json.getJSONObject("user_profile").getJSONObject("user_preferences").getJSONObject("default").getJSONObject("preferences");
+
+		Table.CellFormat[] cells = new Table.CellFormat[] {new Table.CellFormat(5),
+														   new Table.CellFormat(90),
+														   new Table.CellFormat(20),
+														   new Table.CellFormat(15)};
+		Table table = new Table(cells);
+		table.addRow(new Object[]{"item","url", "range", "value"}, Position.CENTER);
+		
+		for(int i : itemset) {
+			Bin bin = profileBins.get(i);
+			String[] lable = bin.label.split(" - ");
+			
+			if(preferences.has(lable[0])) {
+				Object initValue = preferences.get(lable[0]);
+							
+				table.addRow(new Object[]{i, lable[0], lable[1], initValue});
+			}
+
+		}
+		
+		System.out.println(table.toString());
+	}
 
 
 }

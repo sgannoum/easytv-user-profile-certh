@@ -240,7 +240,7 @@ public abstract class Attribute {
 
 		Table table = new Table(2, 20);
 		Table.Row headerRow = table.createRow(1, Position.CENTER);		
-		headerRow.addCell("Atrribute properties");
+		headerRow.addCell("Attribute properties");
 		table.addRow(headerRow);
 		table.addRow(new String[] {"Range", "Missing Value"}, Position.CENTER);
 		table.addRow(new Object[] {String.format("[%-8.1f, %-8.1f]", range[0], range[1]), missingValue}, Position.CENTER);

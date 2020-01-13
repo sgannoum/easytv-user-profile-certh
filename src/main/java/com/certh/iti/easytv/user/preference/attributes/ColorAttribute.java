@@ -170,4 +170,8 @@ public class ColorAttribute extends NumericAttribute {
 		return Color.decode(String.format("#%06X",binMidValue));
 	}
 
+	@Override
+	protected String getValueshistogram() {
+		return "";
+	}
 }
