@@ -56,7 +56,7 @@ public class IntegerAttribute extends NumericAttribute {
 			}
 			
 			bins[i].center = midValue;
-			bins[i].label = String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
+			bins[i].label = firstValue == lastValue ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
 			bins[i].range = new Integer[] {firstValue, lastValue};
 		}
 	}
