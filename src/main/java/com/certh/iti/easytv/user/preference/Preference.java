@@ -29,11 +29,23 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		private static final long serialVersionUID = 1L;
  
 	{
+		
+		//D4.5 test case
+/*	    put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  new SymmetricBinaryAttribute());
+	    put("http://registry.easytv.eu/application/cs/accessibility/detection/face",  new SymmetricBinaryAttribute());
 		put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
+	    put("http://registry.easytv.eu/application/cs/ui/text/size", new OrdinalAttribute(new String[] {"15", "20", "23"}));					
+	    put("http://registry.easytv.eu/application/cs/accessibility/magnification/scale", new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, 0));
+*/
+		
+		//common
+     	put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
 		put("http://registry.easytv.eu/common/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
 	    put("http://registry.easytv.eu/common/content/audio/language", new LanguageAttribute());
 	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, 0));
 	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color", new ColorAttribute());
+	    
+	    //cs
 	    put("http://registry.easytv.eu/application/tts/audio/language", new LanguageAttribute());
 	    put("http://registry.easytv.eu/application/tts/audio/speed", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
 	    put("http://registry.easytv.eu/application/tts/audio/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
@@ -48,16 +60,29 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/cs/ui/text/size", new OrdinalAttribute(new String[] {"15", "20", "23"}));					
 	    put("http://registry.easytv.eu/application/cs/ui/language", new LanguageAttribute());	
 	    put("http://registry.easytv.eu/application/cs/ui/vibration/touch", new SymmetricBinaryAttribute());
-	    put("http://registry.easytv.eu/application/cs/ui/text/magnification/scale",  new SymmetricBinaryAttribute()); 					
-	    put("http://registry.easytv.eu/application/cs/audio/eq/bass", new IntegerAttribute(new double[] {-15.0, 15.0}, 1.0, 10, -16.0));
-	    put("http://registry.easytv.eu/application/cs/audio/eq/mids", new IntegerAttribute(new double[] {-15.0, 15.0}, 1.0, 10, -16.0));
-	    put("http://registry.easytv.eu/application/cs/audio/eq/highs", new IntegerAttribute(new double[] {-15.0, 15.0}, 1.0, 10, -16.0));
-	  	put("http://registry.easytv.eu/application/cs/audio/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
+	    put("http://registry.easytv.eu/application/cs/ui/text/magnification/scale",  new SymmetricBinaryAttribute()); 				
+	    
+	    //audio equalizer
+	    put("http://registry.easytv.eu/application/cs/audio/eq",  new SymmetricBinaryAttribute());
+	    put("http://registry.easytv.eu/application/cs/audio/eq/low/shelf/frequency", new IntegerAttribute(new double[] {35.0, 220.0}, 1.0, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/low/shelf/gain", new IntegerAttribute(new double[] {-50.0, 50.0}, 1.0, -51.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/low/pass/frequency", new IntegerAttribute(new double[] {80.0, 1600.0}, 1.0, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/low/pass/qFactor", new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/frequency", new DoubleAttribute(new double[] {800.0, 5900.0}, 1.0, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/qFactor", new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/frequency", new DoubleAttribute(new double[] {2200.0, 4700.0}, 1.0, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/gain", new IntegerAttribute(new double[] {-50.0, 50.0}, 1.0, -1.0));
+	  	put("http://registry.easytv.eu/application/cs/audio/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1.0));
 	    put("http://registry.easytv.eu/application/cs/audio/track", new LanguageAttribute());
+	    
+	    //control
 	    put("http://registry.easytv.eu/application/control/voice", new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlType", new NominalAttribute(new String[] {"none", "gaze_control", "gesture_control"}));
 	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize",  new DoubleAttribute(new double[] {0.0, 3.0}, 0));
 	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage", new LanguageAttribute());
+	    
+	    //accessibility
+	    put("http://registry.easytv.eu/application/cs/accessibility/detection/text/reader",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type",  new NominalAttribute(new String[] {"none", "face-detection", "image-magnification"}));
 	    put("http://registry.easytv.eu/application/cs/accessibility/audio/description",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  new SymmetricBinaryAttribute());
@@ -65,15 +90,15 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/character",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/magnification/scale", new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, 0));
 	    put("http://registry.easytv.eu/application/cs/accessibility/sign/language", new LanguageAttribute());
-
-		
-		//  put("http://registry.easytv.eu/common/display/screen/enhancement/background", new ColorAttribute());
-		//  put("http://registry.easytv.eu/application/cs/accessibility/detection/face",  new SymmetricBinaryAttribute());
-		//	put("http://registry.easytv.eu/application/control/gaze",  new SymmetricBinaryAttribute());
-		//	put("http://registry.easytv.eu/common/display/screen/enhancement/font/size", new IntegerAttribute(new double[] {1.0, 50.0} , 1));
-		//  put("http://registry.easytv.eu/common/display/screen/enhancement/font/type", new NominalAttribute(new String[] {"fantasy", "monospace", "sans-serif", "serif", "cursive"}));
-		//  put("http://registry.easytv.eu/common/display/screen/enhancement/font/color", new ColorAttribute());
-		//  put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new LanguageAttribute());
+	    
+	    //HbbTV
+	    put("http://registry.easytv.eu/application/hbbtv/screen/read",  new SymmetricBinaryAttribute());
+	    put("http://registry.easytv.eu/application/hbbtv/screen/reader/speed",  new NominalAttribute(new String[] {"slow", "normal", "fast"}));
+	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles",  new SymmetricBinaryAttribute());
+	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/position",  new NominalAttribute(new String[] {"up", "down"}));
+	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/language",  new LanguageAttribute(new String[] {"ca", "en", "ar", "es"}));
+	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/font/size", new IntegerAttribute(new double[] {1.0, 50.0}, 1.0, 49, -1.0));
+	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/background",  new SymmetricBinaryAttribute());
 		
     }};
     

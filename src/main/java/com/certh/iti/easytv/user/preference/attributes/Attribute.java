@@ -14,10 +14,11 @@ public abstract class Attribute {
 		public String label;
 		public Object[] range;
 		public Object center;
+		public Attribute type;
 		public int counts;
 	}
 	
-	protected static final int MAX_BINS_NUMS = 100;
+	protected static final int MAX_BINS_NUMS = 10000;
 	
 	protected double missingValue = -1.0;
 	protected double[] range;
@@ -143,6 +144,10 @@ public abstract class Attribute {
 	
 	public final Bin[] getBins() {
 		return bins;
+	}
+	
+	public String getXMLDataTypeURI() {
+		return "http://www.w3.org/2001/XMLSchema#double";
 	}
 	
 	/**

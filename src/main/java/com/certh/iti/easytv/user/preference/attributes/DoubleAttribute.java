@@ -3,8 +3,6 @@ package com.certh.iti.easytv.user.preference.attributes;
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
-
 public class DoubleAttribute extends NumericAttribute {
 	
 	public DoubleAttribute(double[] range) {
@@ -57,6 +55,7 @@ public class DoubleAttribute extends NumericAttribute {
 			bins[i].center = midValue;
 			bins[i].label = firstValue == lastValue ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
 			bins[i].range = new Double[] {firstValue, lastValue};
+			bins[i].type = this;
 		}
 	
 	}

@@ -42,6 +42,11 @@ public class TimeAttribute extends Attribute{
 		return String.format("%02d:%02d:%02d", rand.nextInt(12), rand.nextInt(60), rand.nextInt(60));	
 	}
 	
+	@Override
+	public String getXMLDataTypeURI() {
+		return "http://www.w3.org/2001/XMLSchema#time";
+	}
+	
 	public static Date convertDate(String timeStr) throws ParseException {
 		Date time = null;
 		

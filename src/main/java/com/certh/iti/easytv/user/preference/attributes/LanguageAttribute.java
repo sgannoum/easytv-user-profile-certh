@@ -6,4 +6,8 @@ public class LanguageAttribute extends NominalAttribute {
 		super(-1,  new String[] {"EN", "ES", "CA", "GR", "IT"});
 	}
 	
+	public LanguageAttribute(String[] langs) {
+		super(-1,  langs);
+	}
+	
 }

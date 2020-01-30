@@ -58,6 +58,7 @@ public class IntegerAttribute extends NumericAttribute {
 			bins[i].center = midValue;
 			bins[i].label = firstValue == lastValue ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
 			bins[i].range = new Integer[] {firstValue, lastValue};
+			bins[i].type = this;
 		}
 	}
 	
@@ -65,6 +66,11 @@ public class IntegerAttribute extends NumericAttribute {
 	public Object getRandomValue(Random rand) {
 		Double value = (Double) super.getRandomValue(rand);
 		return value.intValue();
+	}
+	
+	@Override
+	public String getXMLDataTypeURI() {
+		return "http://www.w3.org/2001/XMLSchema#integer";
 	}
 
 	@Override

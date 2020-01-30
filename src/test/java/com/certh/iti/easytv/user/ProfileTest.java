@@ -1,5 +1,6 @@
 package com.certh.iti.easytv.user;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -66,14 +67,16 @@ public class ProfileTest {
 		int index = 0;
 		double[] actualPoints = profile1.getPoint();
 		Map<String, Object> pref = profile1.getUserProfile().getUserPreferences().getDefaultPreference().getPreferences();
-		
+		System.out.println("\n\n");
+
 		//compare profile preferences with returned points
 		for(Entry<String, Attribute> entry :  Preference.preferencesAttributes.entrySet()) {
-			Object value = pref.get(entry.getKey());
+			Object actualValue = pref.get(entry.getKey());
+			double excpectedValue = entry.getValue().getPoints(actualValue)[0];
 			
 			//Get the 
-			double d = entry.getValue().getPoints(value)[0];
-			Assert.assertEquals(d, actualPoints[index], entry.getKey());
+			Assert.assertEquals(actualPoints[index], excpectedValue, entry.getKey());
+			
 			//To check dimensions and points
 			//System.out.println(entry.getKey()+" "+d +"  "+ actualPoints[index]);
 			index++;
@@ -86,43 +89,58 @@ public class ProfileTest {
 		
 		int index = 0;
 		for(Bin bin : Profile.getBins()) {
-			
 			System.out.println(String.format("%d: %s %d", index++, bin.label, bin.counts));
 		}
 	}
 */
 	
-/*	@Test
-	public void test_generatedItemSet() throws IOException, UserProfileParsingException {
-		Vector<Bin> profileBins = Profile.getBins();
-		int[] itemset = profile1.getAsItemSet();
+	
+	//@Test
+	public void test_print_bins() throws IOException, UserProfileParsingException {	
 		
+		Vector<Bin> profileBins = Profile.getBins();		
 		JSONObject preferences = json.getJSONObject("user_profile").getJSONObject("user_preferences").getJSONObject("default").getJSONObject("preferences");
-		
-	//	Arrays.sort(itemset);
-		for(String key : preferences.keySet()) {
-			Object value = preferences.get(key);
-		}
 		
 		int index = 0;
 		for(Bin bin : profileBins) {
 			System.out.println(String.format("%d: %-100s    %d", index++, bin.label, bin.counts));
 		}
-
+	}
+	
+	@Test
+	public void test_print_itemSet() throws IOException, UserProfileParsingException {
+		
+/*		File f = new File("C:\\Users\\salgan\\Desktop\\profiles\\use case\\userProfile_7.json");
+		Profile profile1 = new Profile(f);
+*/
+		
+		Vector<Bin> profileBins = Profile.getBins();
+		int[] itemset = profile1.getAsItemSet();
+		
+		JSONObject preferences = json.getJSONObject("user_profile").getJSONObject("user_preferences").getJSONObject("default").getJSONObject("preferences");
+		
 		System.out.println();
 		for(int i : itemset) {
-			System.out.println(i);
 			Bin bin = profileBins.get(i);
-			Object value = preferences.get(bin.label.substring(0, bin.label.indexOf(' ')));
-
-			System.out.println(String.format("%d: %-100s    %d %s", i, bin.label, bin.counts, value));
+			
+			String[] lable = bin.label.split(" - ");
+			if(preferences.has(lable[0])) {
+				Object value = preferences.get(lable[0]);
+	
+				System.out.println(String.format("%d: %-100s    %d %s", i, lable[0], bin.counts, value));
+			}
 		}
 	}
-*/
+
 
 
 	@Test
-	public void test_generatedItemSet() throws IOException, UserProfileParsingException {
+	public void test_print_item_to_inforamtion() throws IOException, UserProfileParsingException {
+		
+/*		File f = new File("C:\\Users\\salgan\\Desktop\\profiles\\use case\\userProfile_0.json");
+		Profile profile1 = new Profile(f);
+*/
+		
 		Vector<Bin> profileBins = Profile.getBins();
 		int[] itemset = profile1.getAsItemSet();
 		

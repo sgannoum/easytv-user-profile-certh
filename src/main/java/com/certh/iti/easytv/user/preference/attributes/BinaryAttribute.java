@@ -30,11 +30,19 @@ public abstract class BinaryAttribute extends Attribute {
 		
 		bins[0].label = "false";
 		bins[1].label = "true";
+		
+		bins[0].type = this;
+		bins[1].type = this;
 	}
 	
 	@Override
 	public Object getRandomValue(Random rand) {		
 		return  rand.nextBoolean();
+	}
+	
+	@Override
+	public String getXMLDataTypeURI() {
+		return "http://www.w3.org/2001/XMLSchema#boolean";
 	}
 
 	@Override

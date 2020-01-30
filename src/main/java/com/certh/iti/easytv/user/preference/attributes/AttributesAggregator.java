@@ -56,6 +56,7 @@ public class AttributesAggregator {
 					newBin.range = bin.range;
 					newBin.counts = bin.counts;
 					newBin.label =  String.format("%s - %s", key ,bin.label);
+					newBin.type = bin.type;
 					
 					bins.add(newBin);
 				}

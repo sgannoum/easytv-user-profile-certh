@@ -2,6 +2,8 @@ package com.certh.iti.easytv.user.preference.attributes;
 
 import java.util.Random;
 
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
+
 public class NominalAttribute extends Attribute implements INominal {
 
 	protected int state;
@@ -19,6 +21,7 @@ public class NominalAttribute extends Attribute implements INominal {
 			bins[i].center = states[i];
 			bins[i].range = new String[] {states[i]};
 			bins[i].label = states[i];
+			bins[i].type = this;
 		}
 	}
 
@@ -33,6 +36,7 @@ public class NominalAttribute extends Attribute implements INominal {
 			bins[i].center = states[i];
 			bins[i].range = new String[] {states[i]};
 			bins[i].label = states[i];
+			bins[i].type = this;
 		}
 	}
 
@@ -47,6 +51,7 @@ public class NominalAttribute extends Attribute implements INominal {
 			bins[i].center = states[i];
 			bins[i].range = new String[] {states[i]};
 			bins[i].label = states[i];
+			bins[i].type = this;
 		}
 	}
 
@@ -61,10 +66,11 @@ public class NominalAttribute extends Attribute implements INominal {
 			bins[i].center = states[i];
 			bins[i].range = new String[] {states[i]};
 			bins[i].label = states[i];
+			bins[i].type = this;
 		}
 	}
 	
-	public NominalAttribute(double[] range, double operandMissingValue, double step, int binNum, String[] states) {
+	public NominalAttribute(double[] range, double operandMissingValue, double step, int binNum, String[] states) throws UserProfileParsingException {
 		super(range, step, binNum, operandMissingValue);
 		this.states = states;
 		
@@ -75,6 +81,7 @@ public class NominalAttribute extends Attribute implements INominal {
 			bins[i].center = states[i];
 			bins[i].range = new String[] {states[i]};
 			bins[i].label = states[i];
+			bins[i].type = this;
 		}
 	}
 	
@@ -93,6 +100,11 @@ public class NominalAttribute extends Attribute implements INominal {
 	public Object getRandomValue(Random rand) {
 		int state = rand.nextInt((int) this.range[1]);
 		return this.states[state];	
+	}
+	
+	@Override
+	public String getXMLDataTypeURI() {
+		return "http://www.w3.org/2001/XMLSchema#string";
 	}
 
 	@Override
