@@ -32,13 +32,13 @@ public class IntegerAttributeWithoutBins extends NumericAttribute {
 	}
 
 	@Override
-	public double[] getPoints(Object literal) {
+	public double getPoints(Object literal) {
 		if (literal == null) {
-			return new double[] { missingValue };
+			return missingValue;
 		}
 
 		int value = (int) literal;
-		return new double[] { value };
+		return value;
 	}
 
 	@Override

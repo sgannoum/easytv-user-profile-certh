@@ -78,16 +78,16 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 	}
 
 	@Override
-	public double[] getPoints(Object literal) {
+	public double getPoints(Object literal) {
 		if (literal == null) {
-			return new double[] { missingValue };
+			return missingValue;
 		}
 
 		int state = orderOf((String) literal);
 		if (state == -1)
 			throw new IllegalStateException("Unknown state " + literal);
 
-		return new double[] { state };
+		return state;
 	}
 	
 

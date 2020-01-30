@@ -65,21 +65,21 @@ public class TimeAttribute extends Attribute{
 	}
 	
 	@Override
-	public double[] getPoints(Object literal) {
+	public double getPoints(Object literal) {
 		
 		if(literal == null) 
-			return new double[] {missingValue};
+			return missingValue;
 		
 		String timeStr =  (String) literal;
 		
 		try {
 			time = TimeAttribute.convertDate(timeStr);
 		} catch (ParseException e) {
-			return new double[] {missingValue};
+			return missingValue;
 		}
 		
 		//long ms = Instant.parse( (CharSequence) literal).toEpochMilli();
-		return new double[] {time.getTime()};
+		return time.getTime();
 	}
 
 	@Override

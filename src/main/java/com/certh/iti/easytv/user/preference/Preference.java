@@ -261,10 +261,10 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			Object prefValue = preferences.get(prefKey);
 			
 			//get preference points
-			double[] d = handler.getPoints(prefValue);
+			double d = handler.getPoints(prefValue);
 			
-			//add points
-			for(int i = 0; i < d.length && pointsList.add(new Double(d[i])); i++);
+			pointsList.add(d);
+
 		}
 		
 		//convert to double[]

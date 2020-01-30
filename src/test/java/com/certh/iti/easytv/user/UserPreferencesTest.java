@@ -41,5 +41,4 @@ public class UserPreferencesTest {
 		Assert.assertTrue(userPreferences.getJSONObject().similar(json.getJSONObject("user_preferences")));
 	}
 	
-	
 }

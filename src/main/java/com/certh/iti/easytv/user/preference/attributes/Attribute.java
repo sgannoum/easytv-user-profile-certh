@@ -115,7 +115,7 @@ public abstract class Attribute {
 	 * @param literal
 	 * @return
 	 */
-	public abstract double[] getPoints(Object literal);
+	public abstract double getPoints(Object literal);
 	
 		
 	public double[] getRange() {

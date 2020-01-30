@@ -154,10 +154,7 @@ public class UserContent implements Clusterable {
 			//get preference value
 			Object prefValue = content.get(prefKey);
 			
-			//get preference points
-			double[] d = handler.getPoints(prefValue);
-			
-			points[index++] = d[0];
+			points[index++] = handler.getPoints(prefValue);
 		}
 	}
 	

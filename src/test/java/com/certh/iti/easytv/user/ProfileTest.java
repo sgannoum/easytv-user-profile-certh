@@ -1,6 +1,5 @@
 package com.certh.iti.easytv.user;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -72,7 +71,7 @@ public class ProfileTest {
 		//compare profile preferences with returned points
 		for(Entry<String, Attribute> entry :  Preference.preferencesAttributes.entrySet()) {
 			Object actualValue = pref.get(entry.getKey());
-			double excpectedValue = entry.getValue().getPoints(actualValue)[0];
+			double excpectedValue = entry.getValue().getPoints(actualValue);
 			
 			//Get the 
 			Assert.assertEquals(actualPoints[index], excpectedValue, entry.getKey());

@@ -74,14 +74,14 @@ public class ColorAttribute extends NumericAttribute {
 	}
 	
 	@Override
-	public double[] getPoints(Object literal) {
+	public double getPoints(Object literal) {
 		if(literal == null) {
 			//TODO: handle the missing value of a color, as one value
-			return new double[] {missingValue};
+			return missingValue;
 		}
 		
 		Color color = Color.decode((String) literal);
-		return new double[] {color.getRGB()};
+		return color.getRGB();
 	}
 	
 	public NumericAttribute[] getDimensions() {

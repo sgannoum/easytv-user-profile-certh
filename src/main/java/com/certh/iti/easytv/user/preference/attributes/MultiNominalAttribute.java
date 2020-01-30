@@ -45,10 +45,10 @@ public class MultiNominalAttribute extends NominalAttribute {
 	}
 
 	@Override
-	public double[] getPoints(Object literal) {
+	public double getPoints(Object literal) {
 		
 		if (literal == null) 
-			return new double[] { missingValue };
+			return missingValue;
 		
 		JSONArray values = (JSONArray) literal;
 		int mask = 0;
@@ -60,7 +60,7 @@ public class MultiNominalAttribute extends NominalAttribute {
 			mask |= (int) Math.pow(2, state);
 		}
 		
-		return new double[] { mask };
+		return mask;
 	}
 	
 	@Override

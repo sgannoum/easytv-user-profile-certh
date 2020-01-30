@@ -7,13 +7,13 @@ public class SymmetricBinaryAttribute extends BinaryAttribute {
 	}
 	
 	@Override
-	public double[] getPoints(Object literal) {
+	public double getPoints(Object literal) {
 		if(literal == null) {
-			return new double[] {missingValue};
+			return missingValue;
 		}
 		
 		double value = ((boolean) literal) == true ? 1.0 : 0.0;
-		return new double[] {value};
+		return value;
 	}
 
 }

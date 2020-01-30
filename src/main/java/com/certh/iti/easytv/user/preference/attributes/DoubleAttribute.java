@@ -61,13 +61,13 @@ public class DoubleAttribute extends NumericAttribute {
 	}
 
 	@Override
-	public double[] getPoints(Object literal) {
+	public double getPoints(Object literal) {
 		if (literal == null) {
-			return new double[] { missingValue };
+			return missingValue;
 		}
 
 		double value = (double) literal;
-		return new double[] { value };
+		return value;
 	}
 
 	@Override
