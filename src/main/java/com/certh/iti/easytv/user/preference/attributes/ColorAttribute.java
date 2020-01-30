@@ -54,6 +54,7 @@ public class ColorAttribute extends NumericAttribute {
 			bins[i].center = midValue;
 			bins[i].label = String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
 			bins[i].range = new Integer[] {firstValue, lastValue};
+			bins[i].type = this;
 		}
 	}
 	
@@ -68,10 +69,15 @@ public class ColorAttribute extends NumericAttribute {
 	}
 	
 	@Override
+	public String getXMLDataTypeURI() {
+		return "http://www.w3.org/2001/XMLSchema#integer";
+	}
+	
+	@Override
 	public double[] getPoints(Object literal) {
 		if(literal == null) {
 			//TODO: handle the missing value of a color, as one value
-			return new double[] {missingValue, missingValue, missingValue};
+			return new double[] {missingValue};
 		}
 		
 		Color color = Color.decode((String) literal);
