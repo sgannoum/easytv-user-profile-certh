@@ -1,5 +1,7 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import java.math.BigDecimal;
+
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
@@ -54,7 +56,7 @@ public class DoubleAttribute extends NumericAttribute {
 			
 			bins[i].center = midValue;
 			bins[i].label = firstValue == lastValue ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
-			bins[i].range = new Double[] {firstValue, lastValue};
+			bins[i].range = firstValue == lastValue ? new Double[] {firstValue} : new Double[] {firstValue, lastValue};
 			bins[i].type = this;
 		}
 	
@@ -86,8 +88,12 @@ public class DoubleAttribute extends NumericAttribute {
 		if(numericValue < range[0] || numericValue > range[1])
 			throw new OutOfRangeException(numericValue, range[0], range[1]);
 		
-		if(numericValue % step != 0) 
+		
+	    BigDecimal x = new BigDecimal( String.valueOf(numericValue) );
+	    BigDecimal bdVal = x.remainder( new BigDecimal( String.valueOf(step) ) ) ;
+		if(bdVal.doubleValue() != 0.0) 
 			throw new OutOfRangeException(new DummyLocalizable("Non compatible with step: " + step), numericValue, range[0], range[1]);
+		
 		
 		// Increate histogram counts
 		Double key = new Double(numericValue);
@@ -140,7 +146,10 @@ public class DoubleAttribute extends NumericAttribute {
 		double value = (double) literal;
 		Bin bin = bins[binId];
 		
-		return (value >= (double) bin.range[0] && value <= (double) bin.range[1]);
+		if(bin.range.length == 2)
+			return (value >= (double) bin.range[0] && value <= (double) bin.range[1]);
+		else 
+			return (value == (double) bin.range[0]);
 	}
 
 }

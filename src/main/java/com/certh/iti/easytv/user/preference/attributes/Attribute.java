@@ -1,5 +1,6 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import java.math.BigDecimal;
 import java.util.Random;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
@@ -175,7 +176,9 @@ public abstract class Attribute {
 	 */
 	public int getBinId(double value) {
 		
-		if (value % step != 0)
+	    BigDecimal x = new BigDecimal( String.valueOf(value) );
+	    BigDecimal bdVal = x.remainder( new BigDecimal( String.valueOf(step) ) ) ;
+		if (bdVal.doubleValue() != 0)
 			throw new IllegalArgumentException("The value " + value + " is not compatible with step: " + step);
 		
 		if(value < range[0] || value > range[1])
