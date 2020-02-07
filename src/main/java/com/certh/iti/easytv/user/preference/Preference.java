@@ -42,7 +42,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
      	put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
 		put("http://registry.easytv.eu/common/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
 	    put("http://registry.easytv.eu/common/content/audio/language", new LanguageAttribute());
-	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, 0));
+	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, 0));
 	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color", new ColorAttribute());
 	    
 	    //cs
@@ -66,11 +66,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/cs/audio/eq",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/audio/eq/low/shelf/frequency", new IntegerAttribute(new double[] {35.0, 220.0}, 1.0, -1.0));
 	    put("http://registry.easytv.eu/application/cs/audio/eq/low/shelf/gain", new IntegerAttribute(new double[] {-50.0, 50.0}, 1.0, -51.0));
-	    put("http://registry.easytv.eu/application/cs/audio/eq/low/pass/frequency", new IntegerAttribute(new double[] {80.0, 1600.0}, 1.0, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/low/pass/frequency", new IntegerAttribute(new double[] {80.0, 1600.0}, 10.0, -1.0));
 	    put("http://registry.easytv.eu/application/cs/audio/eq/low/pass/qFactor", new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, -1.0));
-	    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/frequency", new DoubleAttribute(new double[] {800.0, 5900.0}, 1.0, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/frequency", new IntegerAttribute(new double[] {800.0, 5900.0}, 100.0, -1.0));
 	    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/qFactor", new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, -1.0));
-	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/frequency", new DoubleAttribute(new double[] {2200.0, 4700.0}, 1.0, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/frequency", new IntegerAttribute(new double[] {2200.0, 4700.0}, 100.0, -1.0));
 	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/gain", new IntegerAttribute(new double[] {-50.0, 50.0}, 1.0, -1.0));
 	  	put("http://registry.easytv.eu/application/cs/audio/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1.0));
 	    put("http://registry.easytv.eu/application/cs/audio/track", new LanguageAttribute());
