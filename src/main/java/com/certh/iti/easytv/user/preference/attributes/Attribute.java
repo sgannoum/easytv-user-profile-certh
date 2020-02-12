@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.Random;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
+import org.apache.commons.math3.exception.util.DummyLocalizable;
 
 import com.certh.iti.easytv.util.Table;
 import com.certh.iti.easytv.util.Table.Position;
@@ -222,13 +223,21 @@ public abstract class Attribute {
 	 * @return
 	 */
 	public Object getRandomValue(Random rand) {
-		int root = (int) (range[1] - range[0]);
-		Object literal = (root / Math.abs(root)) * rand.nextInt(Math.abs(root)) + range[0];
-		
+		double boundaries = 1 + (range[1] - range[0]) / step;
+		double ran = (double) rand.nextInt((int) Math.abs(boundaries));
+		Object literal = range[0] + Math.rint(step * ran);
+
+		//check range boundaries
 		double res = (double) literal;
 		if(res < range[0] || res > range[1]) {
 			throw new IllegalArgumentException("Value "+res+" out of range ["+range[0]+", "+range[1]+"]");
 		}
+		
+		//check step boundaries validity
+	    BigDecimal x = new BigDecimal( String.valueOf(res) );
+	    BigDecimal bdVal = x.remainder( new BigDecimal( String.valueOf(step) )) ;
+		if(bdVal.doubleValue() != 0.0) 
+			throw new OutOfRangeException(new DummyLocalizable("Non compatible with step: " + step), res, range[0], range[1]);
 		
 		return literal;
 	}
@@ -301,4 +310,5 @@ public abstract class Attribute {
 		
 		return table.toString() +"\n";
 	}
+
 }
