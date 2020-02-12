@@ -55,8 +55,8 @@ public class DoubleAttribute extends NumericAttribute {
 			}
 			
 			bins[i].center = midValue;
-			bins[i].label = firstValue == lastValue ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
-			bins[i].range = firstValue == lastValue ? new Double[] {firstValue} : new Double[] {firstValue, lastValue};
+			bins[i].label = binSize == 1 ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
+			bins[i].range = binSize == 1 ? new Double[] {firstValue} : new Double[] {firstValue, lastValue};
 			bins[i].type = this;
 		}
 	
@@ -146,7 +146,7 @@ public class DoubleAttribute extends NumericAttribute {
 		double value = (double) literal;
 		Bin bin = bins[binId];
 		
-		if(bin.range.length == 2)
+		if(binSize > 1)
 			return (value >= (double) bin.range[0] && value <= (double) bin.range[1]);
 		else 
 			return (value == (double) bin.range[0]);

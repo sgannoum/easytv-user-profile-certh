@@ -56,8 +56,8 @@ public class IntegerAttribute extends NumericAttribute {
 			}
 			
 			bins[i].center = midValue;
-			bins[i].label = firstValue == lastValue ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
-			bins[i].range = firstValue == lastValue ? new Integer[] {firstValue} : new Integer[] {firstValue, lastValue};
+			bins[i].label = binSize == 1 ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
+			bins[i].range = binSize == 1 ? new Integer[] {firstValue} : new Integer[] {firstValue, lastValue};
 			bins[i].type = this;
 		}
 	}
@@ -146,7 +146,7 @@ public class IntegerAttribute extends NumericAttribute {
 		int value = (int) literal;
 		Bin bin = bins[binId];
 		
-		if(bin.range.length ==2)
+		if(binSize > 1)
 			return (value >= (int) bin.range[0] && value <= (int) bin.range[1]);
 		else 
 			return (value == (int) bin.range[0]);
