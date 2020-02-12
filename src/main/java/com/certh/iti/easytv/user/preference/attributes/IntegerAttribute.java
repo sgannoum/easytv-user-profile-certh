@@ -5,6 +5,8 @@ import java.util.Random;
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
+
 public class IntegerAttribute extends NumericAttribute {	
 	
 	public IntegerAttribute(double[] range) {
@@ -31,34 +33,50 @@ public class IntegerAttribute extends NumericAttribute {
 				
 		bins = new Bin[binsNum];
 		
-		int size = binSize + 1;
-		double initialRange = 0;
-		
-		//second section with bins that has size of binSize 
-		for(int i = 0; i < binsNum; i++) {
-			bins[i] = new Bin();
+		if(binSize > 1 || remaining != 0) {
+			int size = binSize + 1;
+			double initialRange = 0;
 			
-			if(i == remaining) {
-				size = binSize;
-				initialRange = remaining * step ;
+			//second section with bins that has size of binSize 
+			for(int i = 0; i < binsNum; i++) {
+				bins[i] = new Bin();
+				
+				if(i == remaining) {
+					size = binSize;
+					initialRange = remaining * step ;
+				}
+				
+				//the bin middle value
+				int firstValue = (int) (initialRange + (i * size * step) + range[0]);
+				int lastValue =  (int) (initialRange + (((i + 1) * size * step) + range[0]) - step);
+				int midValue = 0;
+				
+				//take the middle value
+				if(size % 2 == 0) {
+					midValue += firstValue + (size / 2) * step;
+				} else {
+					midValue += firstValue + ((size - 1) / 2) * step;
+				}
+				
+				bins[i].center = midValue;
+				bins[i].label = firstValue == lastValue ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
+				bins[i].range = firstValue == lastValue ? new Integer[] {firstValue} : new Integer[] {firstValue, lastValue};
+				bins[i].type = this;
 			}
+		} else {
 			
-			//the bin middle value
-			int firstValue = (int) (initialRange + (i * size * step) + range[0]);
-			int lastValue =  (int) (initialRange + (((i + 1) * size * step) + range[0]) - step);
-			int midValue = 0;
-			
-			//take the middle value
-			if(binSize % 2 == 0) {
-				midValue += firstValue + (size / 2) * step;
-			} else {
-				midValue += firstValue + ((size - 1) / 2) * step;
+			//second section with bins that has size of binSize 
+			for(int i = 0; i < binsNum; i++) {
+				bins[i] = new Bin();
+				
+				//the bin middle value
+				int firstValue = (int) ((i * step) + range[0]);
+				
+				bins[i].center = firstValue;
+				bins[i].label = String.valueOf(firstValue);
+				bins[i].range = new Integer[] {firstValue};
+				bins[i].type = this;
 			}
-			
-			bins[i].center = midValue;
-			bins[i].label = binSize == 1 ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
-			bins[i].range = binSize == 1 ? new Integer[] {firstValue} : new Integer[] {firstValue, lastValue};
-			bins[i].type = this;
 		}
 	}
 	
@@ -129,7 +147,10 @@ public class IntegerAttribute extends NumericAttribute {
 
 		//check that the given value belongs to the bin range
 		if(!isInBinRange(literal, binId)) 
-			throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
+			if(bins[binId].range.length == 2)
+				throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
+			else 
+				throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+"]");
 		
 		return binId;
 	}
@@ -146,7 +167,7 @@ public class IntegerAttribute extends NumericAttribute {
 		int value = (int) literal;
 		Bin bin = bins[binId];
 		
-		if(binSize > 1)
+		if(bin.range.length == 2)
 			return (value >= (int) bin.range[0] && value <= (int) bin.range[1]);
 		else 
 			return (value == (int) bin.range[0]);

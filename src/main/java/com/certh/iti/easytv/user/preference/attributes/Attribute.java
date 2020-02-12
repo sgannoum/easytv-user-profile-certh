@@ -187,7 +187,7 @@ public abstract class Attribute {
 		
 		//the value position in the sequence of value ranges
 		int binId = 0;
-		int position = (int) ((value - range[0]) / step);
+		int position = x.subtract( new BigDecimal( String.valueOf(range[0]) ) ).divide(new BigDecimal( String.valueOf(step) )).intValue();
 		int firstValueRange = remaining * (binSize + 1);
 		
 		if(position < firstValueRange)
@@ -197,6 +197,8 @@ public abstract class Attribute {
 		
 		if(binId < 0 || binId >= bins.length)
 			throw new IllegalArgumentException("Out of Range bin id: " + binId+" ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
+		
+
 		
 		//specify the itemId
 		return binId;

@@ -30,34 +30,50 @@ public class DoubleAttribute extends NumericAttribute {
 	protected void init() {
 		bins = new Bin[binsNum];
 		
-		int size = binSize + 1;
-		double initialRange = 0;
-		
-		//second section with bins that has size of binSize 
-		for(int i = 0; i < binsNum; i++) {
-			bins[i] = new Bin();
-
-			if(i == remaining) {
-				size = binSize;
-				initialRange = remaining * step ;
+		if(binSize > 1 || remaining != 0) {
+			int size = binSize + 1;
+			double initialRange = 0;
+			
+			//second section with bins that has size of binSize 
+			for(int i = 0; i < binsNum; i++) {
+				bins[i] = new Bin();
+	
+				if(i == remaining) {
+					size = binSize;
+					initialRange = remaining * step ;
+				}
+				
+				//the bin middle value
+				double firstValue = initialRange + (i * size * step) + range[0];
+				double lastValue =  initialRange + (((i + 1) * size * step) + range[0]) - step;
+				double midValue = 0;
+				
+				//take the middle value
+				if(size % 2 == 0) {
+					midValue += firstValue + (size / 2) * step;
+				} else {
+					midValue += firstValue + ((size - 1) / 2) * step;
+				}
+				
+				bins[i].center = midValue;
+				bins[i].label = firstValue == lastValue ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
+				bins[i].range = firstValue == lastValue ? new Double[] {firstValue} : new Double[] {firstValue, lastValue};
+				bins[i].type = this;
 			}
+		} else {
 			
-			//the bin middle value
-			double firstValue = initialRange + (i * size * step) + range[0];
-			double lastValue =  initialRange + (((i + 1) * size * step) + range[0]) - step;
-			double midValue = 0;
-			
-			//take the middle value
-			if(binSize % 2 == 0) {
-				midValue += firstValue + (size / 2) * step;
-			} else {
-				midValue += firstValue + ((size - 1) / 2) * step;
+			//second section with bins that has size of binSize 
+			for(int i = 0; i < binsNum; i++) {
+				bins[i] = new Bin();
+				
+				//the bin middle value
+				double firstValue = (i * step) + range[0];
+				
+				bins[i].center = firstValue;
+				bins[i].label = String.valueOf(firstValue);
+				bins[i].range = new Double[] {firstValue};
+				bins[i].type = this;
 			}
-			
-			bins[i].center = midValue;
-			bins[i].label = binSize == 1 ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
-			bins[i].range = binSize == 1 ? new Double[] {firstValue} : new Double[] {firstValue, lastValue};
-			bins[i].type = this;
 		}
 	
 	}
@@ -127,9 +143,12 @@ public class DoubleAttribute extends NumericAttribute {
 		int binId = getBinId((double) literal);
 		
 		//check that the given value belongs to the bin range
-		if(!isInBinRange(literal, binId)) 
-			throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
-		
+		if(!isInBinRange(literal, binId))
+			if(bins[binId].range.length == 2)
+				throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
+			else 
+				throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+"]");
+
 		//specify the itemId
 		return binId;
 	}
@@ -146,7 +165,7 @@ public class DoubleAttribute extends NumericAttribute {
 		double value = (double) literal;
 		Bin bin = bins[binId];
 		
-		if(binSize > 1)
+		if(bin.range.length == 2)
 			return (value >= (double) bin.range[0] && value <= (double) bin.range[1]);
 		else 
 			return (value == (double) bin.range[0]);
