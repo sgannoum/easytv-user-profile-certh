@@ -25,7 +25,7 @@
         "http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS": true,
         "http://registry.easytv.eu/application/cs/ui/text/magnification/scale": true,
         "http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage": "ca",
-        "http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size": 1.5,
+        "http://registry.easytv.eu/common/display/screen/enhancement/cursor/size": 1.5,
         "http://registry.easytv.eu/application/control/csGazeAndGestureControlType": "gaze_control",
         "http://registry.easytv.eu/application/cs/ui/vibration/touch": true,
         "http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize": 2.0,

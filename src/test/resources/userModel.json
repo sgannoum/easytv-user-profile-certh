@@ -23,7 +23,7 @@
                         "http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS": true,
                         "http://registry.easytv.eu/application/cs/accessibility/detection/sound": true,
                         "http://registry.easytv.eu/application/cs/cc/subtitles/background/color": "#000000",
-                        "http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size": 1,
+                        "http://registry.easytv.eu/common/display/screen/enhancement/cursor/size": 1,
                         "http://registry.easytv.eu/application/cs/accessibility/audio/description": false,
                         "http://registry.easytv.eu/common/display/screen/enhancement/cursor/color": "#ffffff",
                         "http://registry.easytv.eu/application/control/csGazeAndGestureControlType": "gesture_control",
