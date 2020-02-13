@@ -60,39 +60,40 @@ public class ProfileTest {
 							"Expected: " + json.toString(4)+" \n but found: \n"+profile2.getJSONObject().toString(4));
 	}
 	
+	/**
+	 * Test that the user profile points corresponds to those produced by preference attributes
+	 */
 	@Test
 	public void test_getPoints() throws IOException, UserProfileParsingException {
+		
+		JSONObject jsonProfile1 = new JSONObject("{\"user_preferences\": {\"default\": {\"preferences\": {" + 
+				"                        \"http://registry.easytv.eu/common/volume\": 27," + 
+				"                        \"http://registry.easytv.eu/common/content/audio/language\": it," +
+				"                        \"http://registry.easytv.eu/application/cs/audio/eq/low/pass/qFactor\": 1.2," + 
+				"                        \"http://registry.easytv.eu/application/cs/audio/eq/low/shelf/gain\": -50," + 
+				"                        \"http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type\": \"none\"," + 
+				"                        \"http://registry.easytv.eu/application/cs/ui/text/size\": \"15\"" + 
+				"}}}}");
 				
+		UserProfile profile1 = new UserProfile(jsonProfile1);
+
 		int index = 0;
-		double[] actualPoints = profile1.getPoint();
-		Map<String, Object> pref = profile1.getUserProfile().getUserPreferences().getDefaultPreference().getPreferences();
-		System.out.println("\n\n");
+		double[] actual = profile1.getPoint();
+		Map<String, Object> pref = profile1.getUserPreferences().getDefaultPreference().getPreferences();
 
 		//compare profile preferences with returned points
-		for(Entry<String, Attribute> entry :  Preference.preferencesAttributes.entrySet()) {
+		for(Entry<String, Attribute> entry :  Preference.getAttributes().entrySet()) {
 			Object actualValue = pref.get(entry.getKey());
-			double excpectedValue = entry.getValue().getPoints(actualValue);
+			double excpected = entry.getValue().getPoints(actualValue);
 			
-			//Get the 
-			Assert.assertEquals(actualPoints[index], excpectedValue, entry.getKey());
-			
-			//To check dimensions and points
-			//System.out.println(entry.getKey()+" "+d +"  "+ actualPoints[index]);
+			if(actualValue != null)
+				Assert.assertEquals(actual[index], excpected, entry.getKey());
+			else 
+				Assert.assertEquals(actual[index], entry.getValue().getMissingPoint()[0], entry.getKey());
+
 			index++;
 		}
 	}
-	
-/*	
-  	@Test
-	public void test_dimensions() throws IOException, UserProfileParsingException {
-		
-		int index = 0;
-		for(Bin bin : Profile.getBins()) {
-			System.out.println(String.format("%d: %s %d", index++, bin.label, bin.counts));
-		}
-	}
-*/
-	
 	
 	//@Test
 	public void test_print_bins() throws IOException, UserProfileParsingException {	
@@ -106,12 +107,8 @@ public class ProfileTest {
 		}
 	}
 	
-	@Test
+	//@Test
 	public void test_print_itemSet() throws IOException, UserProfileParsingException {
-		
-/*		File f = new File("C:\\Users\\salgan\\Desktop\\profiles\\use case\\userProfile_7.json");
-		Profile profile1 = new Profile(f);
-*/
 		
 		Vector<Bin> profileBins = Profile.getBins();
 		int[] itemset = profile1.getAsItemSet();
@@ -131,14 +128,8 @@ public class ProfileTest {
 		}
 	}
 
-
-
-	@Test
+	//@Test
 	public void test_print_item_to_inforamtion() throws IOException, UserProfileParsingException {
-		
-/*		File f = new File("C:\\Users\\salgan\\Desktop\\profiles\\use case\\userProfile_0.json");
-		Profile profile1 = new Profile(f);
-*/
 		
 		Vector<Bin> profileBins = Profile.getBins();
 		int[] itemset = profile1.getAsItemSet();

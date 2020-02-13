@@ -1,8 +1,8 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Vector;
 
@@ -16,7 +16,7 @@ import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
  */
 public class AttributesAggregator {
 	
-	private List<LinkedHashMap<String, Attribute>> attributesHandlers = new ArrayList<LinkedHashMap<String, Attribute>>();
+	private List<Map<String, Attribute>> attributesHandlers = new ArrayList<Map<String, Attribute>>();
 	
 	private Vector<Bin>  bins = new Vector<Bin>();
 	private Vector<Attribute> operands = new Vector<Attribute>();
@@ -24,11 +24,11 @@ public class AttributesAggregator {
 	
 	public AttributesAggregator() {}
 	
-	public void add(final LinkedHashMap<String, Attribute> attributesHandler) {
+	public void add(final Map<String, Attribute> attributesHandler) {
 		this.attributesHandlers.add(attributesHandler);	
 	}
 	
-	public boolean remove(LinkedHashMap<String, Attribute> attributesDimensions) {
+	public boolean remove(Map<String, Attribute> attributesDimensions) {
 		return this.attributesHandlers.remove(attributesDimensions);
 	}
 	
@@ -45,7 +45,7 @@ public class AttributesAggregator {
 		bins.clear();
 		
 		//get bin frequency counts
-		for(LinkedHashMap<String, Attribute> attributesHandler : attributesHandlers)
+		for(Map<String, Attribute> attributesHandler : attributesHandlers)
 			for(Entry<String, Attribute> entry : attributesHandler.entrySet()) {
 				String key = entry.getKey();
 				Attribute attributHandler = entry.getValue();
@@ -69,7 +69,7 @@ public class AttributesAggregator {
 		int size = 0;
 		
 		//get bin frequency counts
-		for(LinkedHashMap<String, Attribute> attributesHandler : attributesHandlers)
+		for(Map<String, Attribute> attributesHandler : attributesHandlers)
 			for(Entry<String, Attribute> entry : attributesHandler.entrySet()) 
 				size += entry.getValue().getBinNumber();
 		

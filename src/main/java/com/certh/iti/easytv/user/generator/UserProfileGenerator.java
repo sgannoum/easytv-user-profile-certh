@@ -39,7 +39,7 @@ public class UserProfileGenerator {
 	public Profile getNextProfile() throws UserProfileParsingException, IOException{
 		
 		Map<String, Object> userPrefs = new HashMap<String, Object>();
-		for(final Entry<String, Attribute> e : Preference.preferencesAttributes.entrySet()) {
+		for(final Entry<String, Attribute> e : Preference.getAttributes().entrySet()) {
 			Attribute oprand = e.getValue();
 			userPrefs.put(e.getKey(), oprand.getRandomValue(rand));
 		}
@@ -52,7 +52,7 @@ public class UserProfileGenerator {
 		
 		//Create user context
 		Map<String, Object> context = new HashMap<String, Object>();
-		for(final Entry<String, Attribute> e : UserContext.contextAttributes.entrySet()) {
+		for(final Entry<String, Attribute> e : UserContext.getAttributes().entrySet()) {
 			Attribute oprand = e.getValue();
 			context.put(e.getKey(), oprand.getRandomValue(rand));
 		}
@@ -62,7 +62,7 @@ public class UserProfileGenerator {
 		
 		//UserContent userContent = new UserContent();				
 		Map<String, Object> content = new HashMap<String, Object>();
-		for(final Entry<String, Attribute> e : UserContent.content_attributes.entrySet()) {
+		for(final Entry<String, Attribute> e : UserContent.getAttributes().entrySet()) {
 			Attribute oprand = e.getValue();
 			content.put(e.getKey(), oprand.getRandomValue(rand));
 		}

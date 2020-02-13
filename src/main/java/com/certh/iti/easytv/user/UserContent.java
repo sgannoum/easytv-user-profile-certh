@@ -1,6 +1,7 @@
 package com.certh.iti.easytv.user;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class UserContent implements Clusterable {
 	protected Map<String, Object> content  =  new HashMap<String, Object>();
     private JSONObject jsonObj = null;
     
-	public static final LinkedHashMap<String, Attribute> content_attributes  =  new LinkedHashMap<String, Attribute>() {
+	protected static Map<String, Attribute> content_attributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
  
 	{
@@ -192,5 +193,9 @@ public class UserContent implements Clusterable {
 		return aggregator;
 	}
 
+	
+	public static Map<String, Attribute> getAttributes(){
+		return Collections.unmodifiableMap(content_attributes);
+	}
 	
 }

@@ -14,10 +14,10 @@ public class DoubleAttributeTest {
 	@BeforeClass
 	public void beforTest() {
 		
-		attr1 = new DoubleAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0);
-		attr2 = new DoubleAttribute(new double[] {1.0, 8.0}, 0);
-		attr3 = new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, 0);
-		attr4 = new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, 0);
+		attr1 = new DoubleAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1);
+		attr2 = new DoubleAttribute(new double[] {1.0, 8.0}, -1);
+		attr3 = new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, -1);
+		attr4 = new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, -1);
 
 		System.out.println("\n\nBefore Class");
 		System.out.println(attr1.toString());

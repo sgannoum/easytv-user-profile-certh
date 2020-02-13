@@ -24,9 +24,9 @@ public class Profile implements Clusterable {
 	private static AttributesAggregator aggregator = new AttributesAggregator();
 	
 	static {
-		aggregator.add(Preference.preferencesAttributes);
-		aggregator.add(UserContext.contextAttributes);
-		aggregator.add(UserContent.content_attributes);
+		aggregator.add(Preference.getAttributes());
+		//aggregator.add(UserContext.contextAttributes);
+		//aggregator.add(UserContent.content_attributes);
 	}
 	
 	private double[] points = null;
@@ -119,15 +119,18 @@ public class Profile implements Clusterable {
 		int[] contextItemSet = userContext.getAsItemSet();
 		int[] contentItemSet = userContent.getAsItemSet();
 		
-		int[] itemSet = new int[preferencesitemSet.length + contextItemSet.length + contentItemSet.length];
+	//	int[] itemSet = new int[preferencesitemSet.length + contextItemSet.length + contentItemSet.length];
+		
+		int[] itemSet = new int[preferencesitemSet.length];
+
 			
 		int base = 0, index = 0;
 		for(int i = 0; i < preferencesitemSet.length; itemSet[index++] = preferencesitemSet[i++] + base );
-		base += UserProfile.getAttributesAggregator().getBinNumber();
-		for(int i = 0; i < contextItemSet.length; itemSet[index++] = contextItemSet[i++] + base);
-		base += UserContext.getAttributesAggregator().getBinNumber();
-		for(int i = 0; i < contentItemSet.length; itemSet[index++] = contentItemSet[i++] + base);
-		base += UserContent.getAttributesAggregator().getBinNumber();
+	//	base += UserProfile.getAttributesAggregator().getBinNumber();
+	//	for(int i = 0; i < contextItemSet.length; itemSet[index++] = contextItemSet[i++] + base);
+	//	base += UserContext.getAttributesAggregator().getBinNumber();
+	//	for(int i = 0; i < contentItemSet.length; itemSet[index++] = contentItemSet[i++] + base);
+	//	base += UserContent.getAttributesAggregator().getBinNumber();
 		
 		return itemSet;
 	}
@@ -228,7 +231,7 @@ public class Profile implements Clusterable {
 	 */
 	public static String getStatistics() {
 		String output = "";
-		Set<Entry<String, Attribute>> preferenceEntrySet = Preference.preferencesAttributes.entrySet();
+		Set<Entry<String, Attribute>> preferenceEntrySet = Preference.getAttributes().entrySet();
 		
 		for(Entry<String, Attribute> entry : preferenceEntrySet) {
 			output += String.format("%s\n%s\n" , entry.getKey(), entry.getValue().toString());
