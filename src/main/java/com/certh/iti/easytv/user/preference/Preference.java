@@ -66,7 +66,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/frequency", new IntegerAttribute(new double[] {800.0, 5900.0}, 100.0, -1.0));
 	    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/qFactor", new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, -1.0));
 	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/frequency", new IntegerAttribute(new double[] {2200.0, 4700.0}, 100.0, -1.0));
-	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/gain", new IntegerAttribute(new double[] {-50.0, 50.0}, 1.0, -1.0));
+	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/gain", new IntegerAttribute(new double[] {-50.0, 50.0}, 1.0, -51.0));
 	  	put("http://registry.easytv.eu/application/cs/audio/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1.0));
 	    put("http://registry.easytv.eu/application/cs/audio/track", new LanguageAttribute());
 	    
