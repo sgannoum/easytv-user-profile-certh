@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
@@ -25,34 +26,28 @@ import com.certh.iti.easytv.user.preference.attributes.DoubleAttribute;
 
 public class Preference implements Clusterable, Comparable<Preference> {
 
-	public static final LinkedHashMap<String, Attribute> preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
+	private final static Logger logger = Logger.getLogger(Preference.class.getName());
+
+	public static LinkedHashMap<String, Attribute> preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
  
-	{
-		
-		//D4.5 test case
-/*	    put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  new SymmetricBinaryAttribute());
-	    put("http://registry.easytv.eu/application/cs/accessibility/detection/face",  new SymmetricBinaryAttribute());
-		put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
-	    put("http://registry.easytv.eu/application/cs/ui/text/size", new OrdinalAttribute(new String[] {"15", "20", "23"}));					
-	    put("http://registry.easytv.eu/application/cs/accessibility/magnification/scale", new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, 0));
-*/
-		
+	{	
 		//common
-     	put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
-		put("http://registry.easytv.eu/common/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
+     	put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
+		put("http://registry.easytv.eu/common/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 	    put("http://registry.easytv.eu/common/content/audio/language", new LanguageAttribute());
-	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, 0));
+	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, -1));
 	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color", new ColorAttribute());
 	    
 	    //cs
 	    put("http://registry.easytv.eu/application/tts/audio/language", new LanguageAttribute());
-	    put("http://registry.easytv.eu/application/tts/audio/speed", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
-	    put("http://registry.easytv.eu/application/tts/audio/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
+	    put("http://registry.easytv.eu/application/tts/audio/speed", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
+	    put("http://registry.easytv.eu/application/tts/audio/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 	    put("http://registry.easytv.eu/application/tts/audio/voice", new NominalAttribute(new String[] {"male", "female"}));
-		put("http://registry.easytv.eu/application/tts/audio/quality", new IntegerAttribute(new double[] {1.0, 8.0}, 0)); 
+		put("http://registry.easytv.eu/application/tts/audio/quality", new IntegerAttribute(new double[] {1.0, 8.0}, -1)); 
+	    put("http://registry.easytv.eu/application/cs/cc/subtitles", new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new LanguageAttribute());
-	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/size", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0));
+	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/size", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/color", new ColorAttribute());
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/background/color", new ColorAttribute());
 	    put("http://registry.easytv.eu/application/cs/cc/audio/subtitle",  new SymmetricBinaryAttribute());
@@ -78,7 +73,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    //control
 	    put("http://registry.easytv.eu/application/control/voice", new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlType", new NominalAttribute(new String[] {"none", "gaze_control", "gesture_control"}));
-	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize",  new DoubleAttribute(new double[] {0.0, 3.0}, 0));
+	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize",  new DoubleAttribute(new double[] {0.0, 3.0}, 1.0, -1));
 	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage", new LanguageAttribute());
 	    
 	    //accessibility
@@ -88,7 +83,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/text",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/character",  new SymmetricBinaryAttribute());
-	    put("http://registry.easytv.eu/application/cs/accessibility/magnification/scale", new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, 0));
+	    put("http://registry.easytv.eu/application/cs/accessibility/magnification/scale", new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, -1));
 	    put("http://registry.easytv.eu/application/cs/accessibility/sign/language", new LanguageAttribute());
 	    
 	    //HbbTV
@@ -157,7 +152,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			
 			//add only existing preferences
 			if(attributHandler.getBinNumber() != 0 && value != null) 
-				itemSet[index++] = attributHandler.code(value) + base;
+				try {
+					itemSet[index++] = attributHandler.code(value) + base;
+				} catch(IllegalArgumentException e) {
+					throw new IllegalArgumentException(key+ " " + e.getMessage());
+				}
 			
 			base += attributHandler.getBinNumber();
 		}
@@ -330,4 +329,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	public static final Vector<String> getUris(){
 		return 	aggregator.getUris();
 	}
+	
+
 }

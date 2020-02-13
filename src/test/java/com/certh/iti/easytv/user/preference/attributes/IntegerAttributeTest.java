@@ -162,7 +162,7 @@ public class IntegerAttributeTest {
 	
 	@Test
 	public void test_decode_attribute3() {
-		Assert.assertEquals(-14, attr3.decode(0));
+		Assert.assertEquals(-13, attr3.decode(0));
 		Assert.assertEquals(-10, attr3.decode(1));
 		Assert.assertEquals(-7, attr3.decode(2));
 	}

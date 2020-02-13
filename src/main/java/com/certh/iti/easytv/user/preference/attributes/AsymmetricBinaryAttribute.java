@@ -3,7 +3,7 @@ package com.certh.iti.easytv.user.preference.attributes;
 public class AsymmetricBinaryAttribute extends BinaryAttribute {
 	
 	public AsymmetricBinaryAttribute() {
-		super(new double[] {0.0, 1.0 });
+		super(new double[] {0.0, 1.0 }, -1);
 	}
 	
 	@Override
