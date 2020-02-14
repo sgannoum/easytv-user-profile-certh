@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -16,6 +17,7 @@ import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.MultiNominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 
 public class UserContent implements Clusterable {
 	
@@ -26,6 +28,7 @@ public class UserContent implements Clusterable {
 	protected Map<String, Object> content  =  new HashMap<String, Object>();
     private JSONObject jsonObj = null;
     
+	private static AttributesAggregator aggregator = new AttributesAggregator();
 	protected static Map<String, Attribute> content_attributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
  
@@ -38,7 +41,6 @@ public class UserContent implements Clusterable {
 	    put("http://registry.easytv.eu/application/cs/audio/track", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
     }};
 	
-	public static AttributesAggregator aggregator = new AttributesAggregator();
 	static {
 		aggregator.add(UserContent.content_attributes);
 	}
@@ -193,8 +195,20 @@ public class UserContent implements Clusterable {
 		return itemSet;
 	}
 	
-	public static final AttributesAggregator getAttributesAggregator() {
-		return aggregator;
+	/**
+	 * Get the number of distinct items of the user preferences
+	 * @return
+	 */
+	public static int getBinNumber() {
+		return aggregator.getBinNumber();
+	}
+	
+	/**
+	 * Get bins associated values
+	 * @return
+	 */
+	public static Vector<Bin> getBins() {
+		return aggregator.getBins();
 	}
 
 	/**

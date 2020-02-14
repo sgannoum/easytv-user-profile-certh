@@ -29,14 +29,14 @@ public class Profile implements Clusterable {
 	
 	static {
 		aggregator.add(Preference.getAttributes());
-		aggregator.add(UserContext.contextAttributes);
-		aggregator.add(UserContent.content_attributes);
+		aggregator.add(UserContext.getAttributes());
+		aggregator.add(UserContent.getAttributes());
 	}
 	
 	private double[] points = null;
 	private int userId = -1;
-	private UserContext userContext = null;
-	private UserContent userContent = null;
+	private UserContext userContext = new UserContext();
+	private UserContent userContent = new UserContent();;
 	private UserProfile userProfile = new UserProfile();
 	private JSONObject jsonObj = null;
 	
@@ -130,11 +130,11 @@ public class Profile implements Clusterable {
 			
 		int base = 0, index = 0;
 		for(int i = 0; i < preferencesitemSet.length; itemSet[index++] = preferencesitemSet[i++] + base );
-		base += UserProfile.getAttributesAggregator().getBinNumber();
+		base += UserProfile.getBinNumber();
 		for(int i = 0; i < contextItemSet.length; itemSet[index++] = contextItemSet[i++] + base);
-		base += UserContext.getAttributesAggregator().getBinNumber();
+		base += UserContext.getBinNumber();
 		for(int i = 0; i < contentItemSet.length; itemSet[index++] = contentItemSet[i++] + base);
-		base += UserContent.getAttributesAggregator().getBinNumber();
+		base += UserContent.getBinNumber();
 		
 		return itemSet;
 	}
@@ -248,7 +248,7 @@ public class Profile implements Clusterable {
 	 * Get the number of distinct items of the user preferences
 	 * @return
 	 */
-	public static int getDistinctItems() {
+	public static int getBinNumber() {
 		return aggregator.getBinNumber();
 	}
 	
@@ -267,9 +267,18 @@ public class Profile implements Clusterable {
 		logger.info("change profile attribute..");
 		
 		Profile.aggregator.reset();
-		if(preferencesAttributes != null) Profile.aggregator.add(preferencesAttributes);
-		if(contextAttributes != null) Profile.aggregator.add(contextAttributes);
-		if(contentAttributes != null) Profile.aggregator.add(contentAttributes);
+		if(preferencesAttributes != null) {
+			Preference.setAttributes(preferencesAttributes);
+			Profile.aggregator.add(preferencesAttributes);
+		}
+		if(contextAttributes != null) {
+			UserContext.setAttributes(contextAttributes);
+			Profile.aggregator.add(contextAttributes);
+		}
+		if(contentAttributes != null) {
+			UserContent.setAttributes(contentAttributes);
+			Profile.aggregator.add(contentAttributes);
+		}
 	}
 	
 }

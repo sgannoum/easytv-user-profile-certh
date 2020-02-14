@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Vector;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
-import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 
 public class UserProfile implements Clusterable {
 	
@@ -108,12 +109,19 @@ public class UserProfile implements Clusterable {
 	}
 	
 	/**
-	 * Get users profiles dimensional operands
-	 * 
-	 * @return 
+	 * Get the number of distinct items of the user preferences
+	 * @return
 	 */
-	public static AttributesAggregator getAttributesAggregator() {
-		return UserPreferences.getAttributesAggregator();
+	public static int getBinNumber() {
+		return UserPreferences.getBinNumber();
+	}
+	
+	/**
+	 * Get bins associated values
+	 * @return
+	 */
+	public static Vector<Bin> getBins() {
+		return UserPreferences.getBins();
 	}
 
 	

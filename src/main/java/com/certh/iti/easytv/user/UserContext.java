@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
@@ -17,6 +18,7 @@ import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.TimeAttribute;
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 
 public class UserContext implements Clusterable{
 	
@@ -27,6 +29,7 @@ public class UserContext implements Clusterable{
     private Map<String, Object> context  =  new HashMap<String, Object>();
     private JSONObject jsonObj = null;
     
+	private static AttributesAggregator aggregator = new AttributesAggregator();
 	protected static Map<String, Attribute> contextAttributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
  
@@ -39,7 +42,6 @@ public class UserContext implements Clusterable{
     }};
 	
 	
-	public static AttributesAggregator aggregator = new AttributesAggregator();
 	static {
 		aggregator.add(UserContext.contextAttributes);
 	}
@@ -172,12 +174,19 @@ public class UserContext implements Clusterable{
 	}
 	
 	/**
-	 * Get users profiles dimensional operands
-	 * 
-	 * @return 
+	 * Get the number of distinct items of the user preferences
+	 * @return
 	 */
-	public static final AttributesAggregator getAttributesAggregator() {
-		return aggregator;
+	public static int getBinNumber() {
+		return aggregator.getBinNumber();
+	}
+	
+	/**
+	 * Get bins associated values
+	 * @return
+	 */
+	public static Vector<Bin> getBins() {
+		return aggregator.getBins();
 	}
 	
 	

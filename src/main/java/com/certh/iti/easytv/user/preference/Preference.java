@@ -24,12 +24,13 @@ import com.certh.iti.easytv.user.preference.attributes.LanguageAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.OrdinalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 
 public class Preference implements Clusterable, Comparable<Preference> {
 
 	private final static Logger logger = Logger.getLogger(Preference.class.getName());
 
-	public static AttributesAggregator aggregator = new AttributesAggregator();
+	private static AttributesAggregator aggregator = new AttributesAggregator();
 	protected static Map<String, Attribute> preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
  
@@ -336,6 +337,14 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	 */
 	public static int getBinNumber() {
 		return aggregator.getBinNumber();
+	}
+	
+	/**
+	 * Get bins associated values
+	 * @return
+	 */
+	public static Vector<Bin> getBins() {
+		return aggregator.getBins();
 	}
 	
 	/**
