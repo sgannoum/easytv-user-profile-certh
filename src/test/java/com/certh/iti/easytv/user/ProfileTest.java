@@ -95,6 +95,41 @@ public class ProfileTest {
 		}
 	}
 	
+	/**
+	 * Test that the user profile points corresponds to those produced by preference attributes
+	 */
+	@Test
+	public void test_getItemset() throws IOException, UserProfileParsingException {
+		
+		JSONObject jsonProfile1 = new JSONObject("{\"user_preferences\": {\"default\": {\"preferences\": {" + 
+				"                        \"http://registry.easytv.eu/common/volume\": 27," + 
+				"                        \"http://registry.easytv.eu/common/content/audio/language\": it," +
+				"                        \"http://registry.easytv.eu/application/cs/audio/eq/low/pass/qFactor\": 1.2," + 
+				"                        \"http://registry.easytv.eu/application/cs/audio/eq/low/shelf/gain\": -50," + 
+				"                        \"http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type\": \"none\"," + 
+				"                        \"http://registry.easytv.eu/application/cs/ui/text/size\": \"15\"" + 
+				"}}}}");
+				
+		UserProfile profile1 = new UserProfile(jsonProfile1);
+
+		int index = 0;
+		double[] actual = profile1.getPoint();
+		Map<String, Object> pref = profile1.getUserPreferences().getDefaultPreference().getPreferences();
+
+		//compare profile preferences with returned points
+		for(Entry<String, Attribute> entry :  Preference.getAttributes().entrySet()) {
+			Object actualValue = pref.get(entry.getKey());
+			double excpected = entry.getValue().getPoints(actualValue);
+			
+			if(actualValue != null)
+				Assert.assertEquals(actual[index], excpected, entry.getKey());
+			else 
+				Assert.assertEquals(actual[index], entry.getValue().getMissingPoint()[0], entry.getKey());
+
+			index++;
+		}
+	}
+	
 	//@Test
 	public void test_print_bins() throws IOException, UserProfileParsingException {	
 		

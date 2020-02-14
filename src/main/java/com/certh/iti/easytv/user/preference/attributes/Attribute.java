@@ -136,8 +136,12 @@ public abstract class Attribute {
 		return step;
 	}
 	
-	public double getBinSize() {
+	public int getBinSize() {
 		return binSize;
+	}
+	
+	public int getRemaining() {
+		return remaining;
 	}
 	
 	public int getBinNumber() {
@@ -187,9 +191,15 @@ public abstract class Attribute {
 		
 		//the value position in the sequence of value ranges
 		int binId = 0;
-		int position = x.subtract( new BigDecimal( String.valueOf(range[0]) ) ).divide(new BigDecimal( String.valueOf(step) )).intValue();
-		int firstValueRange = remaining * (binSize + 1);
+		int position = x.subtract( new BigDecimal( String.valueOf(range[0])))
+						.divide(new BigDecimal( String.valueOf(step) ))
+						.intValue();
 		
+		int firstValueRange = new BigDecimal( String.valueOf(binSize))
+								.add( new BigDecimal( String.valueOf(1)))
+								.multiply( new BigDecimal( String.valueOf(remaining)))
+								.intValue();
+				
 		if(position < firstValueRange)
 			binId = (int) Math.floor(position / (binSize + 1));
 		else 

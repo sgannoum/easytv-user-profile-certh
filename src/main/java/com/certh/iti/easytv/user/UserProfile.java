@@ -112,7 +112,7 @@ public class UserProfile implements Clusterable {
 	 * 
 	 * @return 
 	 */
-	public static final AttributesAggregator getAttributesAggregator() {
+	public static AttributesAggregator getAttributesAggregator() {
 		return UserPreferences.getAttributesAggregator();
 	}
 

@@ -24,6 +24,16 @@ public class SymmetricBinaryAttributeTest {
 		System.out.println("\n\nAfter Class");
 		System.out.println(attr1.toString());
 	}
+	
+	@Test
+	public void test_BinNumber() {
+		Assert.assertEquals(2, attr1.getBinNumber());
+	}
+	
+	@Test
+	public void test_Binsize_remaining() {
+		Assert.assertEquals(0, attr1.getRemaining());  Assert.assertEquals(1, attr1.getBinSize());
+	}
 
 	@Test
 	public void test_code_attribute1() {

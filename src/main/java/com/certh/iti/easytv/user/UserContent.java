@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
@@ -17,6 +18,9 @@ import com.certh.iti.easytv.user.preference.attributes.MultiNominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
 
 public class UserContent implements Clusterable {
+	
+	private final static Logger logger = Logger.getLogger(UserContent.class.getName());
+
 
 	private double[] points = new double[] { -1, -1, -1, -1, -1, -1}; 
 	protected Map<String, Object> content  =  new HashMap<String, Object>();
@@ -193,6 +197,16 @@ public class UserContent implements Clusterable {
 		return aggregator;
 	}
 
+	/**
+	 * @return uris arrays
+	 */
+	public static void setAttributes(Map<String, Attribute> preferencesAttributes){
+		logger.info("change context attribute..");
+		UserContent.content_attributes = preferencesAttributes;
+		
+		UserContent.aggregator.reset();
+		UserContent.aggregator.add(preferencesAttributes);
+	}
 	
 	public static Map<String, Attribute> getAttributes(){
 		return Collections.unmodifiableMap(content_attributes);

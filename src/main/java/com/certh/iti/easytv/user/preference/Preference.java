@@ -29,6 +29,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 
 	private final static Logger logger = Logger.getLogger(Preference.class.getName());
 
+	public static AttributesAggregator aggregator = new AttributesAggregator();
 	protected static Map<String, Attribute> preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
  
@@ -98,8 +99,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		
     }};
     
-    
-	public static AttributesAggregator aggregator = new AttributesAggregator();
 	static {
 		aggregator.add(Preference.preferencesAttributes);
 	}
@@ -328,7 +327,26 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	 * @return uris arrays
 	 */
 	public static final Vector<String> getUris(){
-		return 	aggregator.getUris();
+		return aggregator.getUris();
+	}
+	
+	/**
+	 * Get the number of distinct items of the user preferences
+	 * @return
+	 */
+	public static int getBinNumber() {
+		return aggregator.getBinNumber();
+	}
+	
+	/**
+	 * @return uris arrays
+	 */
+	public static void setAttributes(Map<String, Attribute> preferencesAttributes){
+		logger.info("change preference attribute..");
+		Preference.preferencesAttributes = preferencesAttributes;
+		
+		Preference.aggregator.reset();
+		Preference.aggregator.add(preferencesAttributes);
 	}
 	
 	/**

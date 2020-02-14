@@ -4,9 +4,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONException;
@@ -20,13 +22,15 @@ import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 
 public class Profile implements Clusterable {
 	
+	private final static Logger logger = Logger.getLogger(Profile.class.getName());
+	
 	private static long num_profiles = 0;
 	private static AttributesAggregator aggregator = new AttributesAggregator();
 	
 	static {
 		aggregator.add(Preference.getAttributes());
-		//aggregator.add(UserContext.contextAttributes);
-		//aggregator.add(UserContent.content_attributes);
+		aggregator.add(UserContext.contextAttributes);
+		aggregator.add(UserContent.content_attributes);
 	}
 	
 	private double[] points = null;
@@ -119,18 +123,18 @@ public class Profile implements Clusterable {
 		int[] contextItemSet = userContext.getAsItemSet();
 		int[] contentItemSet = userContent.getAsItemSet();
 		
-	//	int[] itemSet = new int[preferencesitemSet.length + contextItemSet.length + contentItemSet.length];
+		int[] itemSet = new int[preferencesitemSet.length + contextItemSet.length + contentItemSet.length];
 		
-		int[] itemSet = new int[preferencesitemSet.length];
+	//	int[] itemSet = new int[preferencesitemSet.length];
 
 			
 		int base = 0, index = 0;
 		for(int i = 0; i < preferencesitemSet.length; itemSet[index++] = preferencesitemSet[i++] + base );
-	//	base += UserProfile.getAttributesAggregator().getBinNumber();
-	//	for(int i = 0; i < contextItemSet.length; itemSet[index++] = contextItemSet[i++] + base);
-	//	base += UserContext.getAttributesAggregator().getBinNumber();
-	//	for(int i = 0; i < contentItemSet.length; itemSet[index++] = contentItemSet[i++] + base);
-	//	base += UserContent.getAttributesAggregator().getBinNumber();
+		base += UserProfile.getAttributesAggregator().getBinNumber();
+		for(int i = 0; i < contextItemSet.length; itemSet[index++] = contextItemSet[i++] + base);
+		base += UserContext.getAttributesAggregator().getBinNumber();
+		for(int i = 0; i < contentItemSet.length; itemSet[index++] = contentItemSet[i++] + base);
+		base += UserContent.getAttributesAggregator().getBinNumber();
 		
 		return itemSet;
 	}
@@ -244,7 +248,7 @@ public class Profile implements Clusterable {
 	 * Get the number of distinct items of the user preferences
 	 * @return
 	 */
-	public static int getPreferencesDistinctItems() {
+	public static int getDistinctItems() {
 		return aggregator.getBinNumber();
 	}
 	
@@ -252,8 +256,20 @@ public class Profile implements Clusterable {
 	 * Get bins associated values
 	 * @return
 	 */
-	public static final Vector<Bin> getBins() {
+	public static Vector<Bin> getBins() {
 		return aggregator.getBins();
+	}
+	
+	/**
+	 * @return uris arrays
+	 */
+	public static void setAttributes(Map<String, Attribute> preferencesAttributes, Map<String, Attribute> contextAttributes, Map<String, Attribute> contentAttributes){
+		logger.info("change profile attribute..");
+		
+		Profile.aggregator.reset();
+		if(preferencesAttributes != null) Profile.aggregator.add(preferencesAttributes);
+		if(contextAttributes != null) Profile.aggregator.add(contextAttributes);
+		if(contentAttributes != null) Profile.aggregator.add(contentAttributes);
 	}
 	
 }

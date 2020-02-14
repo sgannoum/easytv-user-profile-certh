@@ -11,6 +11,8 @@
       <class name="com.certh.iti.easytv.user.preference.ConditionPreferenceTest"/>
       <class name="com.certh.iti.easytv.user.preference.ConditionTest"/>
       <class name="com.certh.iti.easytv.user.preference.PreferenceTests"/>
+      <class name="com.certh.iti.easytv.user.preference.PreferenceItemsetTests"/>
+      
       
       <class name="com.certh.iti.easytv.user.preference.attributes.IntegerAttributeTest"/>
       <class name="com.certh.iti.easytv.user.preference.attributes.DoubleAttributeTest"/>

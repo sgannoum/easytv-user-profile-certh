@@ -29,6 +29,18 @@ public class NominalAttributeTest {
 	}
 	
 	@Test
+	public void test_BinNumber() {
+		Assert.assertEquals(3, attr1.getBinNumber());
+		Assert.assertEquals(3, attr2.getBinNumber());
+	}
+	
+	@Test
+	public void test_Binsize_remaining() {
+		Assert.assertEquals(0, attr1.getRemaining());  Assert.assertEquals(1, attr1.getBinSize());
+		Assert.assertEquals(0, attr2.getRemaining()); Assert.assertEquals(1, attr2.getBinSize());
+	}
+	
+	@Test
 	public void test_code_attribute1() {
 		Assert.assertEquals(0, attr1.code("15"));
 		Assert.assertEquals(1, attr1.code("20"));

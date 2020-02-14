@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Logger;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
@@ -18,6 +19,9 @@ import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.TimeAttribute;
 
 public class UserContext implements Clusterable{
+	
+	private final static Logger logger = Logger.getLogger(UserContext.class.getName());
+
 	
     private double[] points = new double[] {-1, -1, -1, -1, -1}; 
     private Map<String, Object> context  =  new HashMap<String, Object>();
@@ -176,6 +180,17 @@ public class UserContext implements Clusterable{
 		return aggregator;
 	}
 	
+	
+	/**
+	 * @return uris arrays
+	 */
+	public static void setAttributes(Map<String, Attribute> preferencesAttributes){
+		logger.info("change context attribute..");
+		UserContext.contextAttributes = preferencesAttributes;
+		
+		UserContext.aggregator.reset();
+		UserContext.aggregator.add(preferencesAttributes);
+	}
 	
 	public static Map<String, Attribute> getAttributes(){
 		return Collections.unmodifiableMap(contextAttributes);

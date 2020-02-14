@@ -37,6 +37,22 @@ public class IntegerAttributeTest {
 	}
 	
 	@Test
+	public void test_BinNumber() {
+		Assert.assertEquals(25, attr1.getBinNumber());
+		Assert.assertEquals(8, attr2.getBinNumber());
+		Assert.assertEquals(10, attr3.getBinNumber());
+		Assert.assertEquals(25, attr4.getBinNumber());
+	}
+	
+	@Test
+	public void test_Binsize_remaining() {
+		Assert.assertEquals(1, attr1.getRemaining());  Assert.assertEquals(4, attr1.getBinSize());
+		Assert.assertEquals(0, attr2.getRemaining()); Assert.assertEquals(1, attr2.getBinSize());
+		Assert.assertEquals(1, attr3.getRemaining()); Assert.assertEquals(3, attr3.getBinSize());
+		Assert.assertEquals(1, attr4.getRemaining()); Assert.assertEquals(2, attr4.getBinSize());
+	}
+	
+	@Test
 	public void test_code_attribute1() {
 		//bin 0 bin size + 1 elements = 5
 		Assert.assertEquals(0, attr1.code(0));
