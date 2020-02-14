@@ -305,16 +305,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		return this.getJSONObject().toString(4);
 	}
 	
-	
-	/**
-	 * Get users profiles dimensional operands
-	 * 
-	 * @return 
-	 */
-	public static final AttributesAggregator getAttributesAggregator() {
-		return aggregator;
-	}
-	
 	/**
 	 * Get users profiles dimensional operands
 	 * 

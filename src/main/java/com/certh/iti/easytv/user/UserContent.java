@@ -196,6 +196,22 @@ public class UserContent implements Clusterable {
 	}
 	
 	/**
+	 * Get users profiles dimensional operands
+	 * 
+	 * @return 
+	 */
+	public static final Vector<Attribute> getOperands() {
+		return aggregator.getOperands();
+	}
+	
+	/**
+	 * @return uris arrays
+	 */
+	public static final Vector<String> getUris(){
+		return aggregator.getUris();
+	}
+	
+	/**
 	 * Get the number of distinct items of the user preferences
 	 * @return
 	 */

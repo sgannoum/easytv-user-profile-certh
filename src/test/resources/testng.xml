@@ -1,24 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Suite">
-  <test name="Test user profile">
+<suite name="User profile unit tests">
+  <test name="User profile tests">
     <classes>
- 
  	  <class name="com.certh.iti.easytv.user.ProfileTest"/>
       <class name="com.certh.iti.easytv.user.UserPreferencesTest"/>
       <class name="com.certh.iti.easytv.user.UserProfileTest"/>
-            
       <class name="com.certh.iti.easytv.user.preference.ConditionPreferenceTest"/>
       <class name="com.certh.iti.easytv.user.preference.ConditionTest"/>
       <class name="com.certh.iti.easytv.user.preference.PreferenceTests"/>
       <class name="com.certh.iti.easytv.user.preference.PreferenceItemsetTests"/>
-      
-      
+    </classes>
+  </test>
+  <test name="Attributes tests">
+    <classes>
       <class name="com.certh.iti.easytv.user.preference.attributes.IntegerAttributeTest"/>
       <class name="com.certh.iti.easytv.user.preference.attributes.DoubleAttributeTest"/>
       <class name="com.certh.iti.easytv.user.preference.attributes.NominalAttributeTest"/>
       <class name="com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttributeTest"/>
-      
     </classes>
   </test>
 </suite>
