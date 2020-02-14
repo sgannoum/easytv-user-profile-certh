@@ -19,6 +19,7 @@ public class AttributesAggregator {
 	private List<Map<String, Attribute>> attributesHandlers = new ArrayList<Map<String, Attribute>>();
 	
 	private int size = 0;
+	private boolean reset = false;
 	private Vector<Bin>  bins = new Vector<Bin>();
 	private Vector<Attribute> operands = new Vector<Attribute>();
 	private Vector<String> uris = new Vector<String>();
@@ -26,18 +27,22 @@ public class AttributesAggregator {
 	public AttributesAggregator() {}
 	
 	public void add(final Map<String, Attribute> attributesHandler) {
+		reset = true;
 		this.attributesHandlers.add(attributesHandler);	
 	}
 	
 	public boolean remove(Map<String, Attribute> attributesDimensions) {
+		reset = true;
 		return this.attributesHandlers.remove(attributesDimensions);
 	}
 	
 	public void reset(){
+		reset = true;
 		attributesHandlers.clear();
 		bins.clear();
 		operands.clear();
 		uris.clear();
+		size = 0;
 	}
 	
 	public Vector<Attribute> getOperands() {		
@@ -49,7 +54,22 @@ public class AttributesAggregator {
 	}
 	
 	public Vector<Bin> getBins() {
-		//clear
+		if(reset)
+			reCalculate();
+		
+		return bins;
+	}
+		
+	public int getBinNumber() {
+		if(reset)
+			reCalculate();
+		
+		return size;
+	}
+	
+	private void reCalculate() {
+		reset = false;
+		size = 0;
 		bins.clear();
 		
 		//get bin frequency counts
@@ -57,7 +77,14 @@ public class AttributesAggregator {
 			for(Entry<String, Attribute> entry : attributesHandler.entrySet()) {
 				String key = entry.getKey();
 				Attribute attributHandler = entry.getValue();
-													
+							
+				//add to operands
+				operands.add(attributHandler);
+				
+				//add uris
+				uris.add(key);
+				
+				//add bin
 				for(Bin bin : attributHandler.getBins()) { 
 					Bin newBin = new Bin();
 					newBin.center = bin.center;
@@ -68,20 +95,10 @@ public class AttributesAggregator {
 					
 					bins.add(newBin);
 				}
-			}
-	
-		return bins;
-	}
-		
-	public int getBinNumber() {
-		int size = 0;
-		
-		//get bin frequency counts
-		for(Map<String, Attribute> attributesHandler : attributesHandlers)
-			for(Attribute attr : attributesHandler.values()) 
-				size += attr.getBinNumber();
-		
-		return size;
+				
+				//add size
+				size += attributHandler.getBinNumber();
+		}
 	}
 
 }
