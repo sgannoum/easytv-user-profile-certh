@@ -87,7 +87,7 @@ public class AttributesAggregator {
 					newBin.center = bin.center;
 					newBin.range = bin.range;
 					newBin.counts = bin.counts;
-					newBin.label =  String.format("%s - %s", key ,bin.label);
+					newBin.label =  key;
 					newBin.type = bin.type;
 					
 					bins.add(newBin);
