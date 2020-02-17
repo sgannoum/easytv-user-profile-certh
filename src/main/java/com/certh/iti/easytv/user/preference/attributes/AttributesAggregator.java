@@ -18,7 +18,6 @@ public class AttributesAggregator {
 	
 	private List<Map<String, Attribute>> attributesHandlers = new ArrayList<Map<String, Attribute>>();
 	
-	private int size = 0;
 	private boolean reset = false;
 	private Vector<Bin>  bins = new Vector<Bin>();
 	private Vector<Attribute> operands = new Vector<Attribute>();
@@ -42,7 +41,6 @@ public class AttributesAggregator {
 		bins.clear();
 		operands.clear();
 		uris.clear();
-		size = 0;
 	}
 	
 	public Vector<Attribute> getOperands() {		
@@ -64,12 +62,11 @@ public class AttributesAggregator {
 		if(reset)
 			reCalculate();
 		
-		return size;
+		return bins.size();
 	}
 	
 	private void reCalculate() {
 		reset = false;
-		size = 0;
 		bins.clear();
 		
 		//get bin frequency counts
@@ -95,10 +92,8 @@ public class AttributesAggregator {
 					
 					bins.add(newBin);
 				}
-				
-				//add size
-				size += attributHandler.getBinNumber();
-		}
+			}
+		
 	}
 
 }

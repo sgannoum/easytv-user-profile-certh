@@ -1,5 +1,6 @@
 package com.certh.iti.easytv.user;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -167,10 +168,13 @@ public class UserContext implements Clusterable{
 			if(attributHandler.getBinNumber() != 0 && value != null) 
 				itemSet[index++] = attributHandler.code(value) + base;
 			
+			
 			base += attributHandler.getBinNumber();
+			
 		}
 		
-		return itemSet;
+		//resize
+		return Arrays.copyOf(itemSet, index);
 	}
 	
 	/**
@@ -209,12 +213,12 @@ public class UserContext implements Clusterable{
 	/**
 	 * @return uris arrays
 	 */
-	public static void setAttributes(Map<String, Attribute> preferencesAttributes){
+	public static void setAttributes(Map<String, Attribute> contextAttributes){
 		logger.info("change context attribute..");
-		UserContext.contextAttributes = preferencesAttributes;
+		UserContext.contextAttributes = contextAttributes;
 		
 		UserContext.aggregator.reset();
-		UserContext.aggregator.add(preferencesAttributes);
+		UserContext.aggregator.add(contextAttributes);
 	}
 	
 	public static Map<String, Attribute> getAttributes(){

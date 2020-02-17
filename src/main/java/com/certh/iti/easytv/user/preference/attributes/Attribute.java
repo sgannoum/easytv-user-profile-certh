@@ -17,7 +17,7 @@ public abstract class Attribute {
 		public Object[] range;
 		public Object center;
 		public Attribute type;
-		public int counts;
+		public int counts = 0;
 	}
 	
 	protected static final int MAX_BINS_NUMS = 10000;

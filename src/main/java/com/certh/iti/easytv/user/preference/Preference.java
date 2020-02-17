@@ -1,6 +1,7 @@
 package com.certh.iti.easytv.user.preference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -153,7 +154,8 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			
 			//add only existing preferences
 			if(attributHandler.getBinNumber() != 0 && value != null) 
-				try {
+				try 
+				{
 					itemSet[index++] = attributHandler.code(value) + base;
 				} catch(IllegalArgumentException e) {
 					throw new IllegalArgumentException(key+ " " + e.getMessage());
@@ -161,7 +163,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			
 			base += attributHandler.getBinNumber();
 		}
-		return itemSet;
+		
+		if(preferences.size() == index)
+			return itemSet;
+		else 
+			return Arrays.copyOf(itemSet, index);
 	}
 
 	public Map<String, Object> getPreferences() {

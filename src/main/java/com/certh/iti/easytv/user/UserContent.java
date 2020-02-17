@@ -1,5 +1,6 @@
 package com.certh.iti.easytv.user;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -192,7 +193,7 @@ public class UserContent implements Clusterable {
 			
 			base += attributHandler.getBinNumber();
 		}
-		return itemSet;
+		return Arrays.copyOf(itemSet, index);
 	}
 	
 	/**
