@@ -91,7 +91,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/cs/accessibility/sign/language", new LanguageAttribute());
 	    
 	    //HbbTV
-	    put("http://registry.easytv.eu/application/hbbtv/screen/read",  new SymmetricBinaryAttribute());
+	    put("http://registry.easytv.eu/application/hbbtv/screen/reader",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/hbbtv/screen/reader/speed",  new NominalAttribute(new String[] {"slow", "normal", "fast"}));
 	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/position",  new NominalAttribute(new String[] {"up", "down"}));
