@@ -25,6 +25,18 @@
 				</configuration>
 			</plugin>
 
+			<!-- Maven testng plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M3</version>
+				<configuration>
+					<suiteXmlFiles>
+						<suiteXmlFile>./src/test/resources/testng.xml</suiteXmlFile>
+					</suiteXmlFiles>
+				</configuration>
+			</plugin>
+			
 			<!-- Make this jar executable -->
 <!-- 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -67,7 +79,6 @@
 				</configuration>
 			</plugin>
  -->
-			
 			
 		</plugins>
 	</build>
