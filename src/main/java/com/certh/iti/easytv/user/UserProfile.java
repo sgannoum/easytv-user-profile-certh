@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Vector;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
@@ -19,6 +20,10 @@ public class UserProfile implements Clusterable {
 	private JSONObject jsonObj = null;
 	
 	public UserProfile() {		}
+	
+	public UserProfile(Random rand) {		
+		this.setUserPreferences(new UserPreferences(rand));
+	}
 	
 	public UserProfile(UserProfile other) throws IOException, UserProfileParsingException {
 		jsonObj = null;

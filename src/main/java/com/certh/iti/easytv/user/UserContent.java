@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Vector;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
@@ -48,6 +49,21 @@ public class UserContent implements Clusterable {
     
 	public UserContent() {
 		this.setPoint();
+	}
+	
+	public UserContent(Random rand) {	
+		
+		for(final Entry<String, Attribute> e : UserContent.getAttributes().entrySet()) {
+			Attribute oprand = e.getValue();
+			content.put(e.getKey(), oprand.getRandomValue(rand));
+		}
+		
+		//Update points
+		this.setPoint();
+		
+		//Update json
+		jsonObj = null;
+		
 	}
     
 	public UserContent(JSONObject json) throws UserContextParsingException {

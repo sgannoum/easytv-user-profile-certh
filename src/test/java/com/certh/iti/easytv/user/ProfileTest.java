@@ -71,7 +71,7 @@ public class ProfileTest {
 				"                        \"http://registry.easytv.eu/common/content/audio/language\": it," +
 				"                        \"http://registry.easytv.eu/application/cs/audio/eq/low/pass/qFactor\": 1.2," + 
 				"                        \"http://registry.easytv.eu/application/cs/audio/eq/low/shelf/gain\": -50," + 
-				"                        \"http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type\": \"none\"," + 
+				"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlType\": \"none\"," + 
 				"                        \"http://registry.easytv.eu/application/cs/ui/text/size\": \"15\"" + 
 				"}}}}");
 				
@@ -106,7 +106,7 @@ public class ProfileTest {
 				"                        \"http://registry.easytv.eu/common/content/audio/language\": it," +
 				"                        \"http://registry.easytv.eu/application/cs/audio/eq/low/pass/qFactor\": 1.2," + 
 				"                        \"http://registry.easytv.eu/application/cs/audio/eq/low/shelf/gain\": -50," + 
-				"                        \"http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type\": \"none\"," + 
+				"                        \"http://registry.easytv.eu/application/control/csGazeAndGestureControlType\": \"none\"," + 
 				"                        \"http://registry.easytv.eu/application/cs/ui/text/size\": \"15\"" + 
 				"}}}}");
 				

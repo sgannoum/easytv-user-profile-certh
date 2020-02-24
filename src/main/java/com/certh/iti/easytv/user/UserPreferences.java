@@ -2,6 +2,7 @@ package com.certh.iti.easytv.user;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Vector;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
@@ -20,6 +21,10 @@ public class UserPreferences implements Clusterable {
 	private JSONObject jsonObj = null;
 	
 	public UserPreferences() {}
+	
+	public UserPreferences(Random rand) {
+		this.setDefaultPreferences(new Preference(rand));
+	}
 	
 	public UserPreferences(JSONObject json) throws UserProfileParsingException {
 		this.setJSONObject(json);

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
@@ -41,6 +42,20 @@ public class Profile implements Clusterable {
 	private JSONObject jsonObj = null;
 	
 	public Profile() {		
+		num_profiles++;
+	}
+	
+	public Profile(int userId, Random rand) throws IOException, UserProfileParsingException {
+		jsonObj = null;
+		
+		this.userId = userId;
+		this.userProfile = new UserProfile(rand);
+		this.userContext = new UserContext(rand);
+		this.userContent = new UserContent(rand);
+
+		//initialize json
+		jsonObj = this.getJSONObject();
+		
 		num_profiles++;
 	}
 	

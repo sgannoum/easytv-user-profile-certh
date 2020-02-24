@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
+import com.certh.iti.easytv.user.preference.attributes.BinaryAttribute;
 import com.certh.iti.easytv.user.preference.attributes.ColorAttribute;
 import com.certh.iti.easytv.user.preference.attributes.DoubleAttribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
@@ -81,12 +83,13 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage", new LanguageAttribute());
 	    
 	    //accessibility
-	    put("http://registry.easytv.eu/application/cs/accessibility/detection/text/reader",  new SymmetricBinaryAttribute());
-	    put("http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type",  new NominalAttribute(new String[] {"none", "face-detection", "image-magnification"}));
 	    put("http://registry.easytv.eu/application/cs/accessibility/audio/description",  new SymmetricBinaryAttribute());
+	    put("http://registry.easytv.eu/application/cs/accessibility/detection/text/reader",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  new SymmetricBinaryAttribute());
+	    put("http://registry.easytv.eu/application/cs/accessibility/detection/face",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/text",  new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/detection/character",  new SymmetricBinaryAttribute());
+	    put("http://registry.easytv.eu/application/cs/accessibility/magnification", new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/accessibility/magnification/scale", new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, -1));
 	    put("http://registry.easytv.eu/application/cs/accessibility/sign/language", new LanguageAttribute());
 	    
@@ -111,6 +114,43 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	protected JSONObject jsonObj = null;
 	
 	public Preference() {}
+	
+	public Preference(Random rand) {
+		this.name = "default";
+		
+		String avoid = " ";
+		for(final Entry<String, Attribute> e : Preference.getAttributes().entrySet()) {
+			String key = e.getKey();
+			Attribute oprand = e.getValue();
+			
+			if(key.startsWith(avoid)) {
+				
+				preferences.put(key+" to be omitted", null);
+				continue;
+			}
+			
+			if(BinaryAttribute.class.isInstance(oprand)) {
+				//get random value
+				boolean res = (boolean) oprand.getRandomValue(rand);
+				
+				//add to preference
+				preferences.put(key, res);
+				
+				//remove dependent preferences
+				if(!res) avoid = key;
+			} else {
+				preferences.put(key, oprand.getRandomValue(rand));
+			}
+			
+		}
+		
+		//Update points
+		this.setPoint();
+		
+		//Update json
+		jsonObj = null;
+	}
+
 	
 	public Preference(String name, Map<String, Object> entries) throws UserProfileParsingException {
 		this.name = name;

@@ -4,20 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import com.certh.iti.easytv.user.Profile;
-import com.certh.iti.easytv.user.UserContent;
-import com.certh.iti.easytv.user.UserContext;
-import com.certh.iti.easytv.user.UserPreferences;
-import com.certh.iti.easytv.user.UserProfile;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
-import com.certh.iti.easytv.user.preference.Preference;
-import com.certh.iti.easytv.user.preference.attributes.Attribute;
 
 public class UserProfileGenerator {
 	
@@ -37,40 +28,7 @@ public class UserProfileGenerator {
 	}
 	
 	public Profile getNextProfile() throws UserProfileParsingException, IOException{
-		
-		Map<String, Object> userPrefs = new HashMap<String, Object>();
-		for(final Entry<String, Attribute> e : Preference.getAttributes().entrySet()) {
-			Attribute oprand = e.getValue();
-			userPrefs.put(e.getKey(), oprand.getRandomValue(rand));
-		}
-		
-		Preference defaultPreference = new Preference("default", userPrefs);
-		List<Preference> preferences = new ArrayList<Preference>();
-		UserPreferences userPreferences = new UserPreferences(defaultPreference, preferences);
-		UserProfile userProfile = new UserProfile(userPreferences);
-		
-		
-		//Create user context
-		Map<String, Object> context = new HashMap<String, Object>();
-		for(final Entry<String, Attribute> e : UserContext.getAttributes().entrySet()) {
-			Attribute oprand = e.getValue();
-			context.put(e.getKey(), oprand.getRandomValue(rand));
-		}
-		
-		UserContext userContext = new UserContext(context);
-		
-		
-		//UserContent userContent = new UserContent();				
-		Map<String, Object> content = new HashMap<String, Object>();
-		for(final Entry<String, Attribute> e : UserContent.getAttributes().entrySet()) {
-			Attribute oprand = e.getValue();
-			content.put(e.getKey(), oprand.getRandomValue(rand));
-		}
-		
-		UserContent userContent = new UserContent(content);
-				
-		
-		return new Profile(userId++, userProfile, userContext, userContent);
+		return new Profile(userId++, rand);
 	}
 	
 	/**

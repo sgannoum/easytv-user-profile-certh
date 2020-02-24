@@ -29,7 +29,6 @@
                         "http://registry.easytv.eu/application/control/csGazeAndGestureControlType": "gesture_control",
                         "http://registry.easytv.eu/application/cs/accessibility/detection/character": true,
                         "http://registry.easytv.eu/application/cs/accessibility/magnification/scale": 2,
-                        "http://registry.easytv.eu/application/cs/accessibility/enhancement/image/type": "face-detection",
                         "http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage": "en",
                         "http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize": 1
 			}		
