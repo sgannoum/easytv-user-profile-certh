@@ -6,22 +6,23 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Vector;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
-import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
+import com.certh.iti.easytv.user.preference.attributes.OrdinalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.TimeAttribute;
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
+
 
 public class UserContext implements Clusterable{
 	
@@ -38,10 +39,14 @@ public class UserContext implements Clusterable{
  
 	{
 	    put("http://registry.easytv.eu/context/device", new NominalAttribute(new String[] {"pc", "modile", "tablet"}));
-		put("http://registry.easytv.eu/context/light", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 		put("http://registry.easytv.eu/context/proximity", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 	    put("http://registry.easytv.eu/context/location", new NominalAttribute(new String[] {"ca", "gr", "it", "es"}));
 	    put("http://registry.easytv.eu/context/time", new TimeAttribute());
+		put("http://registry.easytv.eu/context/light", new OrdinalAttribute(new String[] {"dark", "dark surroundings", "living room", "hallway", "overcast day",
+																						  "home", "class", "workplace", "sunrise", "grocery", "supermarket",
+																						  "theater", "detailed work", "visual task", "demanding visual task",
+																						  "full daylight", "direct sun"}));
+
     }};
 	
 	
