@@ -124,7 +124,7 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		distTable.addRow(new Object[] {binsNum, binSize, remaining, step});
 		
 		
-		return super.toString() + statTable.toString()+ "\n" + distTable.toString() + "\n" + getValueshistogram();
+		return super.toString() + statTable.toString()+ "\r\n" + distTable.toString() + "\r\n" + getValueshistogram();
 	}
 	
 	protected String getValueshistogram() {
@@ -139,6 +139,6 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		for(int i = 0 ; i < entriesCounts.length; i++)
 			histTable.addRow(new Object[] {entriesCounts[i][0], (int) entriesCounts[i][1]});
 		
-		return histTable.toString() +" \n";
+		return histTable.toString() +" \r\n";
 	}
 }

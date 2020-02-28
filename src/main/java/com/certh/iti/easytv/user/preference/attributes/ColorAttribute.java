@@ -180,4 +180,9 @@ public class ColorAttribute extends NumericAttribute {
 	protected String getValueshistogram() {
 		return "";
 	}
+	
+	@Override
+	protected String getBinsHistogram() {
+		return "";
+	}
 }

@@ -274,8 +274,8 @@ public abstract class Attribute {
 		table.addRow(new String[] {"Range", "Missing Value"}, Position.CENTER);
 		table.addRow(new Object[] {String.format("[%-8.1f, %-8.1f]", range[0], range[1]), missingValue}, Position.CENTER);
 		
-		if(binsNum > 0 ) return table.toString() + "\n" + getBinsHistogram() + "\n";
-		else return table.toString() + "\n" ;
+		if(binsNum > 0 ) return table.toString() + "\r\n" + getBinsHistogram() + "\r\n";
+		else return table.toString() + "\r\n" ;
 	}
 	
 	/**
@@ -320,7 +320,7 @@ public abstract class Attribute {
 		table.addRow(binCenterRow);
 		table.addRow(binCountsRow);
 		
-		return table.toString() +"\n";
+		return table.toString() +"\r\n";
 	}
 
 }

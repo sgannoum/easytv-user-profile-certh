@@ -6,8 +6,6 @@ import java.util.Random;
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
-
 public class IntegerAttribute extends NumericAttribute {	
 	
 	public IntegerAttribute(double[] range) {
