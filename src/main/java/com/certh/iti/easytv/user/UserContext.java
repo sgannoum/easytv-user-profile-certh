@@ -15,6 +15,7 @@ import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
+import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
 import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
@@ -97,6 +98,9 @@ public class UserContext implements Clusterable{
 				handled_value = handler.handle(value);
 			} catch(ClassCastException e) {	
 				throw new UserContextParsingException("Non compatible data value: '"+value+"' for preference '"+ key+"' "+e.getMessage());
+			}
+			catch(Exception e) {	
+				throw new UserContextParsingException( key+ " "+e.getMessage());
 			}
 			
 			//Add

@@ -6,20 +6,20 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Vector;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
-import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
+import com.certh.iti.easytv.user.exceptions.UserContentParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
+import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.MultiNominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 
 public class UserContent implements Clusterable {
 	
@@ -66,15 +66,15 @@ public class UserContent implements Clusterable {
 		
 	}
     
-	public UserContent(JSONObject json) throws UserContextParsingException {
+	public UserContent(JSONObject json) throws UserContentParsingException {
 		setJSONObject(json);
 	}
 	
-	public UserContent(Map<String, Object> content) throws UserContextParsingException {
+	public UserContent(Map<String, Object> content) throws UserContentParsingException {
 		setContent(content);
 	}
 	
-	public void setContent(Map<String, Object> content) throws UserContextParsingException {
+	public void setContent(Map<String, Object> content) throws UserContentParsingException {
 		
 		//clear up old preferences
 		this.content.clear();
@@ -89,14 +89,17 @@ public class UserContent implements Clusterable {
 			
 			//Unknown preference throw an exception
 			if(handler == null) {
-				throw new UserContextParsingException("Unknown context: '"+ key+"'");
+				throw new UserContentParsingException("Unknown context: '"+ key+"'");
 			} 
 
 			//Handle preference value
 			try {
 				handled_value = handler.handle(value);
 			} catch(ClassCastException e) {	
-				throw new UserContextParsingException("Non compatible data value: '"+value+"' for preference '"+ key+"' "+e.getMessage());
+				throw new UserContentParsingException("Non compatible data value: '"+value+"' for preference '"+ key+"' "+e.getMessage());
+			}			
+			catch(Exception e) {	
+				throw new UserContentParsingException( key+ " "+e.getMessage());
 			}
 			
 			//Add
@@ -126,7 +129,7 @@ public class UserContent implements Clusterable {
 		return jsonObj;
 	}
 	
-	public void setJSONObject(JSONObject json) throws UserContextParsingException {
+	public void setJSONObject(JSONObject json) throws UserContentParsingException {
 
 		//clean up
 		Map<String, Object> entries = new HashMap<String, Object>();
