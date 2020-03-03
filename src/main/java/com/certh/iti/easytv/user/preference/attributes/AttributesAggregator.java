@@ -28,11 +28,15 @@ public class AttributesAggregator {
 	public void add(final Map<String, Attribute> attributesHandler) {
 		reset = true;
 		this.attributesHandlers.add(attributesHandler);	
+		operands.addAll(attributesHandler.values());
+		uris.addAll(attributesHandler.keySet());
 	}
 	
 	public boolean remove(Map<String, Attribute> attributesDimensions) {
 		reset = true;
-		return this.attributesHandlers.remove(attributesDimensions);
+		return operands.removeAll(attributesDimensions.values()) &&
+				uris.removeAll(attributesDimensions.keySet()) &&
+				this.attributesHandlers.remove(attributesDimensions);
 	}
 	
 	public void reset(){
