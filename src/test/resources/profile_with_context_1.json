@@ -7,7 +7,7 @@
 		"http://registry.easytv.eu/application/cs/accessibility/magnification/scale": 1.5,
 		"http://registry.easytv.eu/application/cs/accessibility/detection/character": false,
 		"http://registry.easytv.eu/application/cs/cc/subtitles/font/color": "#39dc2",
-		"http://registry.easytv.eu/application/cs/cc/subtitles/font/size": 58,
+		"http://registry.easytv.eu/application/cs/cc/subtitles/font/Size": 58,
 		"http://registry.easytv.eu/application/cs/cc/subtitles/language": "CA",
    		"http://registry.easytv.eu/application/cs/audio/eq/low/shelf/frequency": 35,
    		"http://registry.easytv.eu/application/cs/audio/eq/low/shelf/gain": -50,

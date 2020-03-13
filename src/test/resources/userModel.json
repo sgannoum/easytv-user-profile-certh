@@ -15,7 +15,7 @@
                         "http://registry.easytv.eu/application/cs/cc/audio/subtitle": false,
                         "http://registry.easytv.eu/application/cs/ui/vibration/touch": true,
                         "http://registry.easytv.eu/application/cs/cc/subtitles/language": "en",
-                        "http://registry.easytv.eu/application/cs/cc/subtitles/font/size": 12,
+                        "http://registry.easytv.eu/application/cs/cc/subtitles/font/Size": 12,
                         "http://registry.easytv.eu/application/cs/cc/subtitles/font/color": "#ffffff",
                         "http://registry.easytv.eu/application/cs/accessibility/sign/language": "en",
                         "http://registry.easytv.eu/application/cs/ui/text/magnification/scale": true,
