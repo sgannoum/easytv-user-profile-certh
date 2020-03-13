@@ -1,8 +1,5 @@
 package com.certh.iti.easytv.user;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import org.json.JSONObject;
 import org.testng.Assert;
@@ -18,17 +15,7 @@ public class UserProfileTest {
 	
 	@BeforeClass
 	public void beforClass() throws IOException {
-		String line;
-		BufferedReader reader = new BufferedReader(new FileReader(new File(getClass().getClassLoader().getResource(Config.path).getFile())));
-		StringBuffer buff = new StringBuffer();
-		
-		while((line = reader.readLine()) != null) {
-			buff.append(line);
-		}
-		
-		json = new JSONObject(buff.toString());		
-		reader.close();
-		
+		json = Config.getProfile("userModel.json");
 	}
 	
 	@Test
