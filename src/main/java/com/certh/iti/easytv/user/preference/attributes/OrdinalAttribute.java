@@ -33,11 +33,11 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 	}
 
 	public double getMaxValue() {
-		return Maxvalue;
+		return Maxvalue != Minvalue && Maxvalue != Double.MIN_VALUE ? Maxvalue : range[1];
 	}
-
+	
 	public double getMinValue() {
-		return Minvalue;
+		return Maxvalue != Minvalue && Minvalue != Double.MAX_VALUE ? Minvalue : range[0];
 	}
 
 	@Override
