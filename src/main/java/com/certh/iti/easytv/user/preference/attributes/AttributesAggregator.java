@@ -26,17 +26,17 @@ public class AttributesAggregator {
 	public AttributesAggregator() {}
 	
 	public void add(final Map<String, Attribute> attributesHandler) {
-		reset = true;
+		this.reset = true;
 		this.attributesHandlers.add(attributesHandler);	
-		operands.addAll(attributesHandler.values());
-		uris.addAll(attributesHandler.keySet());
+		this.operands.addAll(attributesHandler.values());
+		this.uris.addAll(attributesHandler.keySet());
 	}
 	
 	public boolean remove(Map<String, Attribute> attributesDimensions) {
-		reset = true;
-		return operands.removeAll(attributesDimensions.values()) &&
-				uris.removeAll(attributesDimensions.keySet()) &&
-				this.attributesHandlers.remove(attributesDimensions);
+		this.reset = true;
+		return this.operands.removeAll(attributesDimensions.values()) &&
+				this.uris.removeAll(attributesDimensions.keySet()) &&
+					this.attributesHandlers.remove(attributesDimensions);
 	}
 	
 	public void reset(){
@@ -72,6 +72,8 @@ public class AttributesAggregator {
 	private void reCalculate() {
 		reset = false;
 		bins.clear();
+		operands.clear();
+		uris.clear();
 		
 		//get bin frequency counts
 		for(Map<String, Attribute> attributesHandler : attributesHandlers)
