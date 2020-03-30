@@ -4,9 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -23,23 +22,23 @@ import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 
 public class Profile implements Clusterable {
 	
-	private final static Logger logger = Logger.getLogger(Profile.class.getName());
-	
-	private static long num_profiles = 0;
+	protected static Logger logger;
+	protected static long num_profiles = 0;
 	private static AttributesAggregator aggregator = new AttributesAggregator();
 	
 	static {
+		logger = Logger.getLogger(Profile.class.getName());
 		aggregator.add(Preference.getAttributes());
 		aggregator.add(UserContext.getAttributes());
 		aggregator.add(UserContent.getAttributes());
 	}
 	
-	private double[] points = null;
-	private int userId = -1;
-	private UserContext userContext = new UserContext();
-	private UserContent userContent = new UserContent();;
-	private UserProfile userProfile = new UserProfile();
-	private JSONObject jsonObj = null;
+	protected double[] points = null;
+	protected int userId = -1;
+	protected UserContext userContext = new UserContext();
+	protected UserContent userContent = new UserContent();;
+	protected UserProfile userProfile = new UserProfile();
+	protected JSONObject jsonObj = null;
 	
 	public Profile() {		
 		num_profiles++;
@@ -197,13 +196,12 @@ public class Profile implements Clusterable {
 	public boolean equals(Object obj) {
 		if(obj == null) return false;
 		if(obj == this) return true;
-		if(!Profile.class.isInstance(obj)) return false;
-		Profile other = (Profile) obj;
+		if(!this.getClass().isInstance(obj)) return false;
+		Profile other = this.getClass().cast(obj);
 		return getJSONObject().similar(other.getJSONObject());
 	}
-	
 
-	private void setPoints() {
+	protected void setPoints() {
 
 		int index = 0;
 		double[] profile_points, context_points, content_points;
@@ -234,29 +232,15 @@ public class Profile implements Clusterable {
 	 * 
 	 * @return 
 	 */
-	public static final Vector<Attribute> getOperands() {
+	public static Vector<Attribute> getOperands() {
 		return aggregator.getOperands();
 	}
 	
 	/**
 	 * @return uris arrays
 	 */
-	public static final Vector<String> getUris(){
+	public static Vector<String> getUris(){
 		return 	aggregator.getUris();
-	}
-	
-	/**
-	 * Print the collected statistical data
-	 */
-	public static String getStatistics() {
-		String output = "";
-		Set<Entry<String, Attribute>> preferenceEntrySet = Preference.getAttributes().entrySet();
-		
-		for(Entry<String, Attribute> entry : preferenceEntrySet) {
-			output += String.format("%s\n%s\n" , entry.getKey(), entry.getValue().toString());
-		}
-		
-		return output;
 	}
 	
 	/**
@@ -276,24 +260,16 @@ public class Profile implements Clusterable {
 	}
 	
 	/**
-	 * @return uris arrays
+	 * Print the collected statistical data
 	 */
-	public static void setAttributes(Map<String, Attribute> preferencesAttributes, Map<String, Attribute> contextAttributes, Map<String, Attribute> contentAttributes){
-		logger.info("change profile attribute..");
+	public static String getStatistics() {
+		String output = "";
+		Set<Entry<String, Attribute>> preferenceEntrySet = Preference.getAttributes().entrySet();
 		
-		Profile.aggregator.reset();
-		if(preferencesAttributes != null) {
-			Preference.setAttributes(preferencesAttributes);
-			Profile.aggregator.add(preferencesAttributes);
-		}
-		if(contextAttributes != null) {
-			UserContext.setAttributes(contextAttributes);
-			Profile.aggregator.add(contextAttributes);
-		}
-		if(contentAttributes != null) {
-			UserContent.setAttributes(contentAttributes);
-			Profile.aggregator.add(contentAttributes);
-		}
+		for(Entry<String, Attribute> entry : preferenceEntrySet) 
+			output += String.format("%s\n%s\n" , entry.getKey(), entry.getValue().toString());
+		
+		return output;
 	}
-	
+
 }

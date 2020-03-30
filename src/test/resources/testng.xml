@@ -3,6 +3,7 @@
 <suite name="User profile unit tests">
   <test name="User profile tests">
     <classes>
+      <class name="com.certh.iti.easytv.user.OnlyPreferenceProfileTest"/>
  	  <class name="com.certh.iti.easytv.user.ProfileTest"/>
       <class name="com.certh.iti.easytv.user.UserPreferencesTest"/>
       <class name="com.certh.iti.easytv.user.UserProfileTest"/>
