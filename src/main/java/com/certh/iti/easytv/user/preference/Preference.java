@@ -42,7 +42,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
      	put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 		put("http://registry.easytv.eu/common/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 	    put("http://registry.easytv.eu/common/content/audio/language", new LanguageAttribute());
-	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/size", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, -1));
+	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, -1));
 	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color", new ColorAttribute());
 	    
 	    //cs
@@ -53,7 +53,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		put("http://registry.easytv.eu/application/tts/audio/quality", new IntegerAttribute(new double[] {1.0, 8.0}, -1)); 
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles", new SymmetricBinaryAttribute());
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new LanguageAttribute());
-	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/Size", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
+	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/size", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/color", new ColorAttribute());
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/background/color", new ColorAttribute());
 	    put("http://registry.easytv.eu/application/cs/cc/audio/subtitle",  new SymmetricBinaryAttribute());
