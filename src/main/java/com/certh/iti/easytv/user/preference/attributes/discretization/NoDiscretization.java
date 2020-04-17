@@ -39,7 +39,7 @@ public class NoDiscretization extends Discretization{
 	
 	@Override
 	public String getBinsHistogram() {
-		return null;
+		return "";
 	}
 
 }

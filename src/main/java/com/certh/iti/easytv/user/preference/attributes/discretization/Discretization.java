@@ -31,11 +31,11 @@ public abstract class Discretization {
 		return bins.length;
 	}
 	
-	public final Discrete[] getBins() {
+	public Discrete[] getBins() {
 		return bins;
 	}
 	
-	public final double[] getRange() {
+	public double[] getRange() {
 		return range;
 	}
 	
