@@ -3,7 +3,6 @@ package com.certh.iti.easytv.user.preference.attributes;
 import java.math.BigDecimal;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -24,27 +23,6 @@ public class DoubleAttributeTest {
 		qFactor_equals_bins = new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, 38, -1.0);
 		qFactor_not_equals_bins = new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, 28, -1.0);
 
-		System.out.println("\n\nBefore Class");
-		System.out.println(attr1.toString());
-		System.out.println(attr2.toString());
-		System.out.println(attr3.toString());
-		System.out.println(attr4.toString());
-		System.out.println(qFactor.toString());
-		System.out.println(qFactor_equals_bins.toString());
-		System.out.println(qFactor_not_equals_bins.toString());
-	}
-	
-	@AfterClass
-	public void afterClass() {
-		
-		System.out.println("\n\nAfter Class");
-		System.out.println(attr1.toString());
-		System.out.println(attr2.toString());
-		System.out.println(attr3.toString());
-		System.out.println(attr4.toString());
-		System.out.println(qFactor.toString());
-		System.out.println(qFactor_equals_bins.toString());
-		System.out.println(qFactor_not_equals_bins.toString());
 	}
 	
 	@Test
@@ -60,13 +38,13 @@ public class DoubleAttributeTest {
 	
 	@Test
 	public void test_Binsize_remaining() {
-		Assert.assertEquals(1, attr1.getRemaining());  Assert.assertEquals(4, attr1.getBinSize());
-		Assert.assertEquals(0, attr2.getRemaining()); Assert.assertEquals(1, attr2.getBinSize());
-		Assert.assertEquals(0, attr3.getRemaining()); Assert.assertEquals(1, attr3.getBinSize());
-		Assert.assertEquals(0, attr4.getRemaining()); Assert.assertEquals(1, attr4.getBinSize());
-		Assert.assertEquals(0, qFactor.getRemaining()); Assert.assertEquals(1, qFactor.getBinSize());
-		Assert.assertEquals(0, qFactor_equals_bins.getRemaining()); Assert.assertEquals(3, qFactor_equals_bins.getBinSize());
-		Assert.assertEquals(2, qFactor_not_equals_bins.getRemaining()); Assert.assertEquals(4, qFactor_not_equals_bins.getBinSize());
+		Assert.assertEquals(5, attr1.getBinSize(0)); Assert.assertEquals(4, attr1.getBinSize(1));
+		Assert.assertEquals(1, attr2.getBinSize(0));
+		Assert.assertEquals(1, attr3.getBinSize(0));
+		Assert.assertEquals(1, attr4.getBinSize(0));
+		Assert.assertEquals(1, qFactor.getBinSize(0));
+		Assert.assertEquals(3, qFactor_equals_bins.getBinSize(0));
+		Assert.assertEquals(5, qFactor_not_equals_bins.getBinSize(0)); Assert.assertEquals(5, qFactor_not_equals_bins.getBinSize(1)); Assert.assertEquals(4, qFactor_not_equals_bins.getBinSize(2));
 	}
 	
 	@Test
@@ -251,11 +229,11 @@ public class DoubleAttributeTest {
 		Assert.assertEquals(37, qFactor_equals_bins.code(12.0) );
 		
 		int index = 0;
-		int bin = -1;
+		int expected_binId = 0;
 		BigDecimal x = new BigDecimal(String.valueOf("0.7"));
 		for(double i = 0.7 ; i < 12.0; index++, i += 0.1) {
-			if(index % qFactor_equals_bins.getBinSize() == 0) bin++;
-			Assert.assertEquals(bin, qFactor_equals_bins.code(x.doubleValue()));
+			if(index % qFactor_equals_bins.getBinSize(expected_binId) == 0 && index != 0) expected_binId++;
+			Assert.assertEquals(expected_binId, qFactor_equals_bins.code(x.doubleValue()));
 			x = x.add(new BigDecimal(String.valueOf("0.1")));
 		}
 	}
@@ -266,7 +244,7 @@ public class DoubleAttributeTest {
 		int bin = -1;
 		BigDecimal x = new BigDecimal(String.valueOf("0.7"));
 		for(double i = 0.7 ; i < 12.0; index++, i += 0.1) {
-			if(index % qFactor_equals_bins.getBinSize() == 0) bin++;
+			if(index % qFactor_equals_bins.getBinSize(0) == 0) bin++;
 			Assert.assertTrue(qFactor_equals_bins.isInBinRange(x.doubleValue(), bin));
 			x = x.add(new BigDecimal(String.valueOf("0.1")));
 		}
@@ -296,13 +274,13 @@ public class DoubleAttributeTest {
 		Assert.assertEquals(1, qFactor_not_equals_bins.code(1.6) );
 		
 		Assert.assertEquals(2, qFactor_not_equals_bins.code(1.7) );
-
+		
 		int index = 0;
-		int bin = 1;
+		int expected_binId = 1;
 		BigDecimal x = new BigDecimal(String.valueOf("1.7"));
 		for(double i = 1.7 ; i < 12.0; index++, i += 0.1) {
-			if(index % qFactor_not_equals_bins.getBinSize() == 0) bin++;
-			Assert.assertEquals(bin, qFactor_not_equals_bins.code(x.doubleValue()));
+			if(index % qFactor_not_equals_bins.getBinSize(expected_binId) == 0) expected_binId++;
+			Assert.assertEquals(expected_binId, qFactor_not_equals_bins.code(x.doubleValue()));
 			x = x.add(new BigDecimal(String.valueOf("0.1")));
 		}
 	}

@@ -3,8 +3,6 @@ package com.certh.iti.easytv.user;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Vector;
-
 import org.json.JSONObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -14,9 +12,6 @@ import com.certh.iti.easytv.user.config.Config;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.Preference;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
-import com.certh.iti.easytv.util.Table;
-import com.certh.iti.easytv.util.Table.Position;
 
 public class ProfileTest {
 		
@@ -128,69 +123,6 @@ public class ProfileTest {
 
 			index++;
 		}
-	}
-	
-	//@Test
-	public void test_print_bins() throws IOException, UserProfileParsingException {	
-		
-		Vector<Bin> profileBins = Profile.getBins();		
-		JSONObject preferences = json.getJSONObject("user_profile").getJSONObject("user_preferences").getJSONObject("default").getJSONObject("preferences");
-		
-		int index = 0;
-		for(Bin bin : profileBins) {
-			System.out.println(String.format("%d: %-100s    %d", index++, bin.label, bin.counts));
-		}
-	}
-	
-	//@Test
-	public void test_print_itemSet() throws IOException, UserProfileParsingException {
-		
-		Vector<Bin> profileBins = Profile.getBins();
-		int[] itemset = profile1.getAsItemSet();
-		
-		JSONObject preferences = json.getJSONObject("user_profile").getJSONObject("user_preferences").getJSONObject("default").getJSONObject("preferences");
-		
-		System.out.println();
-		for(int i : itemset) {
-			Bin bin = profileBins.get(i);
-			
-			String[] lable = bin.label.split(" - ");
-			if(preferences.has(lable[0])) {
-				Object value = preferences.get(lable[0]);
-	
-				System.out.println(String.format("%d: %-100s    %d %s", i, lable[0], bin.counts, value));
-			}
-		}
-	}
-
-	//@Test
-	public void test_print_item_to_inforamtion() throws IOException, UserProfileParsingException {
-		
-		Vector<Bin> profileBins = Profile.getBins();
-		int[] itemset = profile1.getAsItemSet();
-		
-		JSONObject preferences = json.getJSONObject("user_profile").getJSONObject("user_preferences").getJSONObject("default").getJSONObject("preferences");
-
-		Table.CellFormat[] cells = new Table.CellFormat[] {new Table.CellFormat(5),
-														   new Table.CellFormat(90),
-														   new Table.CellFormat(20),
-														   new Table.CellFormat(15)};
-		Table table = new Table(cells);
-		table.addRow(new Object[]{"item","url", "range", "value"}, Position.CENTER);
-		
-		for(int i : itemset) {
-			Bin bin = profileBins.get(i);
-			String[] lable = bin.label.split(" - ");
-			
-			if(preferences.has(lable[0])) {
-				Object initValue = preferences.get(lable[0]);
-							
-				table.addRow(new Object[]{i, lable[0], lable[1], initValue});
-			}
-
-		}
-		
-		System.out.println(table.toString());
 	}
 
 

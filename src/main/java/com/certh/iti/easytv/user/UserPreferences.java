@@ -3,7 +3,6 @@ package com.certh.iti.easytv.user;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Vector;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONArray;
@@ -12,7 +11,6 @@ import org.json.JSONObject;
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.ConditionalPreference;
 import com.certh.iti.easytv.user.preference.Preference;
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 
 public class UserPreferences implements Clusterable {
 	
@@ -113,21 +111,5 @@ public class UserPreferences implements Clusterable {
 	 */
 	public int[] getAsItemSet() {
 		return this.defaultPreference.getAsItemSet();
-	}
-	
-	/**
-	 * Get the number of distinct items of the user preferences
-	 * @return
-	 */
-	public static int getBinNumber() {
-		return Preference.getBinNumber();
-	}
-	
-	/**
-	 * Get bins associated values
-	 * @return
-	 */
-	public static Vector<Bin> getBins() {
-		return Preference.getBins();
 	}
 }

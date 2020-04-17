@@ -1,116 +1,27 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
-import java.math.BigDecimal;
 import java.util.Random;
 
-import org.apache.commons.math3.exception.OutOfRangeException;
-import org.apache.commons.math3.exception.util.DummyLocalizable;
-
+import com.certh.iti.easytv.user.preference.attributes.discretization.Discrete;
+import com.certh.iti.easytv.user.preference.attributes.discretization.Discretization;
 import com.certh.iti.easytv.util.Table;
 import com.certh.iti.easytv.util.Table.Position;
 
 public abstract class Attribute {
-	
-	
-	public static class Bin {
-		public String label;
-		public Object[] range;
-		public Object center;
-		public Attribute type;
-		public int counts = 0;
-	}
-	
-	protected static final int MAX_BINS_NUMS = 10000;
-	
+			
 	protected double missingValue = -1.0;
 	protected double[] range;
 
-	protected Bin[] bins;
-	protected double step = 1.0;
-	protected int binSize = 1;
-	protected int remaining = 0;
-	protected int binsNum = MAX_BINS_NUMS;
-	
+	protected Discretization discretization = null;
 	
 	public Attribute(double[] range) {
 		this.range = range;
-
-		double valueRange = ((range[1] - range[0]) / step) + 1;
-		int initBinNum = (int) (valueRange < MAX_BINS_NUMS ? valueRange : MAX_BINS_NUMS);
-		if(valueRange > initBinNum) { 
-			 remaining = (int) (valueRange % initBinNum);
-			 binSize = (int) ((valueRange - remaining)  / initBinNum);
-		}
-		
-		//recalculate the bins number
-		this.binsNum = (int) Math.floor(valueRange < MAX_BINS_NUMS ? valueRange : valueRange / binSize);
-
-		//call subclass initialization
-		init();
-		
 	}
 	
 	public Attribute(double[] range, double operandMissingValue) {
 		this.range = range;
 		this.missingValue = operandMissingValue;
-
-		double valueRange = ((range[1] - range[0]) / step) + 1;
-		int initBinNum = (int) (valueRange < MAX_BINS_NUMS ? valueRange : MAX_BINS_NUMS);
-		if(valueRange > initBinNum) { 
-			 remaining = (int) (valueRange % initBinNum);
-			 binSize = (int) ((valueRange - remaining)  / initBinNum);
-		}
-		
-		//recalculate the bins number
-		this.binsNum = (int) Math.floor(valueRange < MAX_BINS_NUMS ? valueRange : valueRange / binSize);
-
-		//call subclass initialization
-		init();
-		
 	}
-	
-	public Attribute(double[] range, double step, double operandMissingValue) {
-		this.range = range;
-		this.missingValue = operandMissingValue;
-		this.step = step;
-
-		double valueRange = ((range[1] - range[0]) / step) + 1;
-		int initBinNum = (int) (valueRange < MAX_BINS_NUMS ? valueRange : MAX_BINS_NUMS);
-		if(valueRange > initBinNum) { 
-			 remaining = (int) (valueRange % initBinNum);
-			 binSize = (int) ((valueRange - remaining)  / initBinNum);
-		}
-		
-		//recalculate the bins number
-		this.binsNum = (int) Math.floor(valueRange < MAX_BINS_NUMS ? valueRange : valueRange / binSize);
-
-		//call subclass initialization
-		init();
-		
-	}
-	
-	public Attribute(double[] range, double step, int binsNum, double operandMissingValue) {
-		this.range = range;
-		this.missingValue = operandMissingValue;
-		this.step = step;
-		this.binsNum = binsNum;
-
-		double valueRange = ((range[1] - range[0]) / step) + 1;
-		if(valueRange > binsNum) {
-			 remaining = (int) (valueRange % binsNum);
-			 binSize = (int) ((valueRange - remaining)  / binsNum);
-		}
-		
-		//call subclass initialization
-		init();
-		
-	}
-	
-	/**
-	 * Enforce implementation in subclasses, 
-	 * Fill out the bin labels table
-	 */
-	protected abstract void init(); 
 	
 	/**
 	 * Get a vector point representation of the given value
@@ -132,36 +43,27 @@ public abstract class Attribute {
 		return new double[] {missingValue};
 	}
 	
-	public double getStep() {
-		return step;
-	}
-	
-	public int getBinSize() {
-		return binSize;
-	}
-	
-	public int getRemaining() {
-		return remaining;
+	public int getBinSize(int index) {
+		return discretization.getDiscreteSize(index);
 	}
 	
 	public int getBinNumber() {
-		return binsNum;
+		return discretization.getBinNumber();
 	}
 	
-	public final Bin[] getBins() {
-		return bins;
+	public final Discrete[] getBins() {
+		return discretization.getBins();
 	}
 	
-	public String getXMLDataTypeURI() {
-		return "http://www.w3.org/2001/XMLSchema#double";
-	}
-	
+	public abstract String getXMLDataTypeURI();
 	/**
 	 * Get an integer representation of the given value
 	 * 
 	 * @return
 	 */
-	public abstract int code(Object literal);
+	public int code(Object literal) {
+		return discretization.code(literal);
+	}
 	
 
 	/**
@@ -171,7 +73,10 @@ public abstract class Attribute {
 	 * @param binId
 	 * @return
 	 */
-	public abstract boolean isInBinRange(Object literal, int binId);
+	public boolean isInBinRange(Object literal, int binId) {
+		return discretization.inRange(literal, binId);
+	}
+	
 	
 	/**
 	 * Get the binId that the given number belongs to 
@@ -179,39 +84,8 @@ public abstract class Attribute {
 	 * @param value
 	 * @return
 	 */
-	public int getBinId(double value) {
-		
-	    BigDecimal x = new BigDecimal( String.valueOf(value) );
-	    BigDecimal bdVal = x.remainder( new BigDecimal( String.valueOf(step) ) ) ;
-		if (bdVal.doubleValue() != 0)
-			throw new IllegalArgumentException("The value " + value + " is not compatible with step: " + step);
-		
-		if(value < range[0] || value > range[1])
-			throw new OutOfRangeException(value, range[0], range[1]);
-		
-		//the value position in the sequence of value ranges
-		int binId = 0;
-		int position = x.subtract( new BigDecimal( String.valueOf(range[0])))
-						.divide(new BigDecimal( String.valueOf(step) ))
-						.intValue();
-		
-		int firstValueRange = new BigDecimal( String.valueOf(binSize))
-								.add( new BigDecimal( String.valueOf(1)))
-								.multiply( new BigDecimal( String.valueOf(remaining)))
-								.intValue();
-				
-		if(position < firstValueRange)
-			binId = (int) Math.floor(position / (binSize + 1));
-		else 
-			binId = (int) Math.floor((position - firstValueRange) / binSize) + remaining;
-		
-		if(binId < 0 || binId >= bins.length)
-			throw new IllegalArgumentException("Out of Range bin id: " + binId+" ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
-		
-
-		
-		//specify the itemId
-		return binId;
+	public int getBinId(boolean value) {
+		return discretization.getBinId(value);
 	}
 	
 	/**
@@ -220,12 +94,16 @@ public abstract class Attribute {
 	 * @return
 	 */
 	public Object decode(int itemId) {
-		int binId = itemId;
-		
-		if (binId >= binsNum || binId < 0)
-			throw new IllegalArgumentException("Out of range bin id: " + binId);
-						
-		return bins[binId].center;
+		return discretization.decode(itemId);
+	}
+	
+	/**
+	 * Get the corresponding dimension value
+	 * 
+	 * @return
+	 */
+	public Discretization getDiscretization() {
+		return discretization;
 	}
 
 	/**
@@ -235,21 +113,15 @@ public abstract class Attribute {
 	 * @return
 	 */
 	public Object getRandomValue(Random rand) {
-		double boundaries = 1 + (range[1] - range[0]) / step;
+		double boundaries = 1 + (range[1] - range[0]);
 		double ran = (double) rand.nextInt((int) Math.abs(boundaries));
-		Object literal = range[0] + Math.rint(step * ran);
+		Object literal = range[0] + Math.rint(ran);
 
 		//check range boundaries
 		double res = (double) literal;
 		if(res < range[0] || res > range[1]) {
 			throw new IllegalArgumentException("Value "+res+" out of range ["+range[0]+", "+range[1]+"]");
 		}
-		
-		//check step boundaries validity
-	    BigDecimal x = new BigDecimal( String.valueOf(res) );
-	    BigDecimal bdVal = x.remainder( new BigDecimal( String.valueOf(step) )) ;
-		if(bdVal.doubleValue() != 0.0) 
-			throw new OutOfRangeException(new DummyLocalizable("Non compatible with step: " + step), res, range[0], range[1]);
 		
 		return literal;
 	}
@@ -274,7 +146,7 @@ public abstract class Attribute {
 		table.addRow(new String[] {"Range", "Missing Value"}, Position.CENTER);
 		table.addRow(new Object[] {String.format("[%-8.1f, %-8.1f]", range[0], range[1]), missingValue}, Position.CENTER);
 		
-		if(binsNum > 0 ) return table.toString() + "\r\n" + getBinsHistogram() + "\r\n";
+		if(discretization.getBinNumber() > 0 ) return table.toString() + "\r\n" + getBinsHistogram() + "\r\n";
 		else return table.toString() + "\r\n" ;
 	}
 	
@@ -284,43 +156,7 @@ public abstract class Attribute {
 	 * @return
 	 */
 	protected String getBinsHistogram() {
-		
-		//find table columns width
-		int maxColumnWdith = 6;
-		for(int i = 0 ; i < binsNum; i++) {
-			if(maxColumnWdith < bins[i].label.length())
-				maxColumnWdith = bins[i].label.length();
-		}
-		
-
-		Table table = new Table(binsNum + 1, maxColumnWdith);
-		Table.Row headerRow = table.createRow(1, Position.CENTER);
-		Table.Row binIdRow = table.createRow();
-		Table.Row binRangeRow = table.createRow();
-		Table.Row binCenterRow = table.createRow();
-		Table.Row binCountsRow = table.createRow();
-		
-		headerRow.addCell("Bins histogram");
-		binIdRow.addCell("Id");
-		binRangeRow.addCell("Range");
-		binCenterRow.addCell("Center");
-		binCountsRow.addCell("Counts");
-		
-		for(int i = 0 ; i < binsNum; i++) {
-			
-			binIdRow.addCell(i);
-			binRangeRow.addCell(bins[i].label);
-			binCenterRow.addCell(bins[i].center);
-			binCountsRow.addCell(bins[i].counts);
-		}
-		
-		table.addRow(headerRow);
-		table.addRow(binIdRow);
-		table.addRow(binRangeRow);
-		table.addRow(binCenterRow);
-		table.addRow(binCountsRow);
-		
-		return table.toString() +"\r\n";
+		return discretization.getBinsHistogram();
 	}
 
 }

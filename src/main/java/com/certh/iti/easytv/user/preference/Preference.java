@@ -1,8 +1,6 @@
 package com.certh.iti.easytv.user.preference;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -10,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.Vector;
-import java.util.logging.Logger;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
@@ -27,11 +23,8 @@ import com.certh.iti.easytv.user.preference.attributes.LanguageAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.OrdinalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 
 public class Preference implements Clusterable, Comparable<Preference> {
-
-	private final static Logger logger = Logger.getLogger(Preference.class.getName());
 
 	private static AttributesAggregator aggregator = new AttributesAggregator();
 	protected static Map<String, Attribute> preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
@@ -141,7 +134,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			} else {
 				preferences.put(key, oprand.getRandomValue(rand));
 			}
-			
 		}
 		
 		//Update points
@@ -183,31 +175,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	 * @return
 	 */
 	public int[] getAsItemSet() {
-		Collection<Entry<String, Attribute>> entries = preferencesAttributes.entrySet();
-		int[] itemSet = new int[preferences.size()];
-		int index = 0, base = 0;
-		
-		for(Entry<String, Attribute> entry : entries) {
-			String key = entry.getKey();
-			Attribute attributHandler = preferencesAttributes.get(key);
-			Object value = preferences.get(key);
-			
-			//add only existing preferences
-			if(attributHandler.getBinNumber() != 0 && value != null) 
-				try 
-				{
-					itemSet[index++] = attributHandler.code(value) + base;
-				} catch(IllegalArgumentException e) {
-					throw new IllegalArgumentException(key+ " " + e.getMessage());
-				}
-			
-			base += attributHandler.getBinNumber();
-		}
-		
-		if(preferences.size() == index)
-			return itemSet;
-		else 
-			return Arrays.copyOf(itemSet, index);
+		return aggregator.code(preferences);
 	}
 
 	public Map<String, Object> getPreferences() {
@@ -238,7 +206,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 				handled_value = handler.handle(value);
 			}
 			catch(ClassCastException e) {	
-				throw new UserProfileParsingException("Non compatible data value: '"+value+"' for preference '"+ key+"' "+e.getMessage());
+				throw new UserProfileParsingException("Non compatible data value: '"+value+"' of preference '"+ key+"' "+e.getMessage());
 			}
 			catch(Exception e) {	
 				throw new UserProfileParsingException( key+ " "+e.getMessage());
@@ -351,53 +319,12 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		return this.getJSONObject().toString(4);
 	}
 	
-	/**
-	 * Get users profiles dimensional operands
-	 * 
-	 * @return 
-	 */
-	public static final Vector<Attribute> getOperands() {
-		return aggregator.getOperands();
-	}
-	
-	/**
-	 * @return uris arrays
-	 */
-	public static final Vector<String> getUris(){
-		return aggregator.getUris();
-	}
-	
-	/**
-	 * Get the number of distinct items of the user preferences
-	 * @return
-	 */
-	public static int getBinNumber() {
-		return aggregator.getBinNumber();
-	}
-	
-	/**
-	 * Get bins associated values
-	 * @return
-	 */
-	public static Vector<Bin> getBins() {
-		return aggregator.getBins();
-	}
-	
-	/**
-	 * @return uris arrays
-	 */
-	public static void setAttributes(Map<String, Attribute> preferencesAttributes){
-		logger.info("change preference attribute..");
-		Preference.preferencesAttributes = preferencesAttributes;
-		
-		Preference.aggregator.reset();
-		Preference.aggregator.add(preferencesAttributes);
-	}
-	
+
 	/**
 	 * @return uris arrays
 	 */
 	public static Map<String, Attribute> getAttributes(){
 		return Collections.unmodifiableMap(preferencesAttributes);
 	}
+
 }

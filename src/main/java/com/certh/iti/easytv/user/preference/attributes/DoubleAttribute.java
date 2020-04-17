@@ -5,83 +5,34 @@ import java.math.BigDecimal;
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
+import com.certh.iti.easytv.user.preference.attributes.discretization.DoubleDiscretization;
+
 public class DoubleAttribute extends NumericAttribute {
+	
 	
 	public DoubleAttribute(double[] range) {
 		super(range);
+		
+		discretization = new DoubleDiscretization(range);
 	}
 
 	public DoubleAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
+		
+		discretization = new DoubleDiscretization(range);
 	}
 	
 	public DoubleAttribute(double[] range, double step, double operandMissingValue) {
 		super(range, step, operandMissingValue);
+		
+		discretization = new DoubleDiscretization(range, step);
 	}
 	
 	public DoubleAttribute(double[] range, double step, int binsNum, double operandMissingValue) {
-		super(range, step, binsNum, operandMissingValue);
-	}
-	
-	/**
-	 * Fill out the bin label with the proper labels
-	 */
-	@Override
-	protected void init() {
-		bins = new Bin[binsNum];
+		super(range, step, operandMissingValue);
 		
-		int size = binSize + 1;
-		double initialRange = 0;
-		
-		//second section with bins that has size of binSize 
-		for(int i = 0; i < binsNum; i++) {
-			bins[i] = new Bin();
+		discretization = new DoubleDiscretization(range, step, binsNum);
 
-			if(i == remaining) {
-				size = binSize;
-				initialRange = remaining * step ;
-			}
-			
-			//the bin middle value
-			double firstValue = new BigDecimal(String.valueOf(i))
-										.multiply(new BigDecimal(String.valueOf(size)))
-										.multiply(new BigDecimal(String.valueOf(step)))
-										.add(new BigDecimal(String.valueOf(initialRange)))
-										.add(new BigDecimal(String.valueOf(range[0])))
-										.doubleValue();
-
-			double lastValue =  new BigDecimal(String.valueOf(i))
-										.add(new BigDecimal(String.valueOf(1)))
-										.multiply(new BigDecimal(String.valueOf(size)))
-										.multiply(new BigDecimal(String.valueOf(step)))
-										.add(new BigDecimal(String.valueOf(initialRange)))
-										.add(new BigDecimal(String.valueOf(range[0])))
-										.subtract(new BigDecimal(String.valueOf(step)))
-										.doubleValue();
-			//the bin middle value
-			double midValue = 0;
-			
-			//take the middle value
-			if(size % 2 == 0) {
-				midValue = new BigDecimal(String.valueOf(size))
-								.divide(new BigDecimal(String.valueOf(2)))
-								.multiply(new BigDecimal(String.valueOf(step)))
-								.add(new BigDecimal(String.valueOf(firstValue)))
-								.doubleValue();
-			} else {
-				midValue = new BigDecimal(String.valueOf(size))
-								.subtract(new BigDecimal(String.valueOf(1)))
-								.divide(new BigDecimal(String.valueOf(2)))
-								.multiply(new BigDecimal(String.valueOf(step)))
-								.add(new BigDecimal(String.valueOf(firstValue)))
-								.doubleValue();
-			}
-			
-			bins[i].center = midValue;
-			bins[i].label = firstValue == lastValue ? String.valueOf(firstValue) : String.valueOf(firstValue) + ", " + String.valueOf(lastValue) ;
-			bins[i].range = firstValue == lastValue ? new Double[] {firstValue} : new Double[] {firstValue, lastValue};
-			bins[i].type = this;
-		}
 	}
 
 	@Override
@@ -92,6 +43,11 @@ public class DoubleAttribute extends NumericAttribute {
 
 		double value = (double) literal;
 		return value;
+	}
+	
+	@Override
+	public String getXMLDataTypeURI() {
+		return "http://www.w3.org/2001/XMLSchema#double";
 	}
 
 	@Override
@@ -123,8 +79,7 @@ public class DoubleAttribute extends NumericAttribute {
 		frequencyHistogram.put(key, tmp);
 		
 		//Increment the number of occurrences 
-		int bindId = getBinId(numericValue);
-		bins[bindId].counts++;
+		discretization.handle(numericValue);
 		
 		// Set Min Max vlaue
 		setMinMaxValue(numericValue);
@@ -134,47 +89,6 @@ public class DoubleAttribute extends NumericAttribute {
 		n++;
 		
 		return numericValue;
-	}
-	
-	/**
-	 * Get an integer representation of the given value
-	 * 
-	 * @return
-	 */
-	public int code(Object literal) {
-		
-		if(!Double.class.isInstance(literal))
-			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Double");
-		
-		int binId = getBinId((double) literal);
-		
-		//check that the given value belongs to the bin range
-		if(!isInBinRange(literal, binId))
-			if(bins[binId].range.length == 2)
-				throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+","+bins[binId].range[1]+"]");
-			else 
-				throw new IllegalArgumentException("Value " + literal + " is not in bin range ["+bins[binId].range[0]+"]");
-
-		//specify the itemId
-		return binId;
-	}
-	
-	@Override
-	public boolean isInBinRange(Object literal, int binId) {
-		
-		if(!Double.class.isInstance(literal))
-			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Double");
-		
-		if(binId < 0 || binId >= bins.length)
-			throw new IllegalArgumentException("Out of Range bin id: " + binId+" ["+0+","+bins.length+"]");
-		
-		double value = (double) literal;
-		Bin bin = bins[binId];
-		
-		if(bin.range.length == 2)
-			return (value >= (double) bin.range[0] && value <= (double) bin.range[1]);
-		else 
-			return (value == (double) bin.range[0]);
 	}
 
 }

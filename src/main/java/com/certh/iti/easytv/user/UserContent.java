@@ -1,30 +1,22 @@
 package com.certh.iti.easytv.user;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.Vector;
-import java.util.logging.Logger;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContentParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.MultiNominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
 
 public class UserContent implements Clusterable {
-	
-	private final static Logger logger = Logger.getLogger(UserContent.class.getName());
-
 
 	private double[] points = new double[] { -1, -1, -1, -1, -1, -1}; 
 	protected Map<String, Object> content  =  new HashMap<String, Object>();
@@ -74,6 +66,10 @@ public class UserContent implements Clusterable {
 		setContent(content);
 	}
 	
+	public Map<String, Object> getContent(){
+		return content;
+	}
+	
 	public void setContent(Map<String, Object> content) throws UserContentParsingException {
 		
 		//clear up old preferences
@@ -89,7 +85,7 @@ public class UserContent implements Clusterable {
 			
 			//Unknown preference throw an exception
 			if(handler == null) {
-				throw new UserContentParsingException("Unknown context: '"+ key+"'");
+				throw new UserContentParsingException("Unknown content: '"+ key+"'");
 			} 
 
 			//Handle preference value
@@ -191,71 +187,7 @@ public class UserContent implements Clusterable {
 	 * @return
 	 */
 	public int[] getAsItemSet() {
-		int index = 0, base = 0, size = 0;
-		Collection<Entry<String, Attribute>> entries = content_attributes.entrySet();
-		
-		for(Attribute attributHandler : content_attributes.values()) 
-			if(attributHandler.getBinNumber() != 0)  size++;
-		
-		int[] itemSet;
-		if(content.size() > size)
-			itemSet = new int[size];
-		else itemSet = new int[content.size()];
-		
-		for(Entry<String, Attribute> entry : entries) {
-			Attribute attributHandler =  entry.getValue();
-			Object value = content.get(entry.getKey()); 
-			
-			//add only existing preferences
-			if(attributHandler.getBinNumber() != 0 && value != null)
-				itemSet[index++] = attributHandler.code(value) + base;
-			
-			base += attributHandler.getBinNumber();
-		}
-		return Arrays.copyOf(itemSet, index);
-	}
-	
-	/**
-	 * Get users profiles dimensional operands
-	 * 
-	 * @return 
-	 */
-	public static final Vector<Attribute> getOperands() {
-		return aggregator.getOperands();
-	}
-	
-	/**
-	 * @return uris arrays
-	 */
-	public static final Vector<String> getUris(){
-		return aggregator.getUris();
-	}
-	
-	/**
-	 * Get the number of distinct items of the user preferences
-	 * @return
-	 */
-	public static int getBinNumber() {
-		return aggregator.getBinNumber();
-	}
-	
-	/**
-	 * Get bins associated values
-	 * @return
-	 */
-	public static Vector<Bin> getBins() {
-		return aggregator.getBins();
-	}
-
-	/**
-	 * @return uris arrays
-	 */
-	public static void setAttributes(Map<String, Attribute> preferencesAttributes){
-		logger.info("change context attribute..");
-		UserContent.content_attributes = preferencesAttributes;
-		
-		UserContent.aggregator.reset();
-		UserContent.aggregator.add(preferencesAttributes);
+		return aggregator.code(content);
 	}
 	
 	public static Map<String, Attribute> getAttributes(){

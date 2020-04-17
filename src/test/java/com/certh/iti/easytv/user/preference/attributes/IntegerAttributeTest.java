@@ -1,7 +1,6 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -18,22 +17,6 @@ public class IntegerAttributeTest {
 		attr2 = new IntegerAttribute(new double[] {1.0, 8.0}, 0);
 		attr3 = new IntegerAttribute(new double[] {-15.0, 15.0}, 1.0, 10, 0);
 		attr4 = new IntegerAttribute(new double[] {0.0, 100.0}, 2.0, 25, 0);
-		
-		System.out.println("\n\nBefore Class");
-		System.out.println(attr1.toString());
-		System.out.println(attr2.toString());
-		System.out.println(attr3.toString());
-		System.out.println(attr4.toString());
-	}
-	
-	@AfterClass
-	public void afterClass() {
-		
-		System.out.println("\n\nAfter Class");
-		System.out.println(attr1.toString());
-		System.out.println(attr2.toString());
-		System.out.println(attr3.toString());
-		System.out.println(attr4.toString());
 	}
 	
 	@Test
@@ -46,10 +29,10 @@ public class IntegerAttributeTest {
 	
 	@Test
 	public void test_Binsize_remaining() {
-		Assert.assertEquals(1, attr1.getRemaining());  Assert.assertEquals(4, attr1.getBinSize());
-		Assert.assertEquals(0, attr2.getRemaining()); Assert.assertEquals(1, attr2.getBinSize());
-		Assert.assertEquals(1, attr3.getRemaining()); Assert.assertEquals(3, attr3.getBinSize());
-		Assert.assertEquals(1, attr4.getRemaining()); Assert.assertEquals(2, attr4.getBinSize());
+		Assert.assertEquals(5, attr1.getBinSize(0)); Assert.assertEquals(4, attr1.getBinSize(1));
+		Assert.assertEquals(1, attr2.getBinSize(0));
+		Assert.assertEquals(3, attr3.getBinSize(1));
+		 Assert.assertEquals(2, attr4.getBinSize(1));
 	}
 	
 	@Test

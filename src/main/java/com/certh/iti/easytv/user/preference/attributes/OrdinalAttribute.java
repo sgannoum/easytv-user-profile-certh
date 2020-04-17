@@ -1,5 +1,7 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import com.certh.iti.easytv.user.preference.attributes.discretization.StringDiscretization;
+
 public class OrdinalAttribute extends NominalAttribute implements INumeric, INominal {
 
 	private double sum = 0.0;
@@ -9,16 +11,19 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 	public OrdinalAttribute(String[] states) {
 		super(states);
 		this.states = states;
+		discretization = new StringDiscretization(states);
 	}
 
 	public OrdinalAttribute(double[] range, String[] states) {
 		super(range, states);
 		this.states = states;
+		discretization = new StringDiscretization(states);
 	}
 
 	public OrdinalAttribute(double[] range, double operandMissingValue, String[] states) {
 		super(range, operandMissingValue, states);
 		this.states = states;
+		discretization = new StringDiscretization(states);
 	}
 
 	private void setMinMaxValue(double value) {
@@ -61,7 +66,7 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		double[][] statesCounts = new double[states.length][1];
 
 		for (int i = 0; i < states.length; i++)
-			statesCounts[i][0] = bins[i].counts;
+			statesCounts[i][0] = discretization.getBins()[i].getCounts();
 
 		return statesCounts;
 	}
@@ -72,7 +77,7 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		double mean = sum / n;
 
 		for (int i = 0; i < states.length; i++)
-			var += bins[i].counts * Math.pow(i - mean, 2);
+			var += discretization.getBins()[i].getCounts() * Math.pow(i - mean, 2);
 
 		return Math.sqrt(var / n);
 	}
@@ -103,7 +108,7 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		setMinMaxValue(state);
 
 		// increase counts
-		bins[state].counts++;
+		discretization.handle(value);
 
 		sum += state;
 

@@ -1,9 +1,14 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
+
+import org.apache.commons.math3.exception.OutOfRangeException;
+import org.apache.commons.math3.exception.util.DummyLocalizable;
 
 import com.certh.iti.easytv.util.Table;
 import com.certh.iti.easytv.util.Table.Position;
@@ -16,6 +21,8 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	protected double Maxvalue = Double.MIN_VALUE;
 	protected double Minvalue = Double.MAX_VALUE;
 	
+	protected double step = 1.0;
+	
 	protected Map<Double, Long> frequencyHistogram = new HashMap<Double, Long>();
 
 	public NumericAttribute(double[] range) {
@@ -27,14 +34,10 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	}
 	
 	public NumericAttribute(double[] range, double step, double operandMissingValue) {
-		super(range, step, operandMissingValue);
-	}
-	
-	public NumericAttribute(double[] range, double step, int binsNum, double operandMissingValue) {
-		super(range, step, binsNum, operandMissingValue);
+		super(range, operandMissingValue);
+		this.step = step;
 	}
 
-	
 	protected void setMinMaxValue(double value) {
 		
 		if(value > Maxvalue ) {
@@ -102,6 +105,33 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		return standard_deviation; 
 	}
 	
+	/**
+	 * Generate a random value 
+	 * 
+	 * @param rand
+	 * @return
+	 */
+	@Override
+	public Object getRandomValue(Random rand) {
+		double boundaries = 1 + (range[1] - range[0]) / step;
+		double ran = (double) rand.nextInt((int) Math.abs(boundaries));
+		Object literal = range[0] + Math.rint(step * ran);
+
+		//check range boundaries
+		double res = (double) literal;
+		if(res < range[0] || res > range[1]) {
+			throw new IllegalArgumentException("Value "+res+" out of range ["+range[0]+", "+range[1]+"]");
+		}
+		
+		//check step boundaries validity
+	    BigDecimal x = new BigDecimal( String.valueOf(res) );
+	    BigDecimal bdVal = x.remainder( new BigDecimal( String.valueOf(step) )) ;
+		if(bdVal.doubleValue() != 0.0) 
+			throw new OutOfRangeException(new DummyLocalizable("Non compatible with step: " + step), res, range[0], range[1]);
+		
+		return literal;
+	}
+	
 	@Override
 	public String toString() {
 
@@ -120,8 +150,8 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		headerRow = distTable.createRow(1, Position.CENTER);		
 		headerRow.addCell("Discretization properties");
 		distTable.addRow(headerRow);
-		distTable.addRow(new Object[] {"Bins number", "Bin Size", "Remaining", "Step"}, Position.CENTER);
-		distTable.addRow(new Object[] {binsNum, binSize, remaining, step});
+		distTable.addRow(new Object[] {"Bins number", "Bin Size", "Step"}, Position.CENTER);
+		distTable.addRow(new Object[] {discretization.getBinNumber(), discretization.getDiscreteSize(0), step});
 		
 		
 		return super.toString() + statTable.toString()+ "\r\n" + distTable.toString() + "\r\n" + getValueshistogram();

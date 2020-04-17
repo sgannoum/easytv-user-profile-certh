@@ -1,23 +1,19 @@
 package com.certh.iti.easytv.user;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.Vector;
-import java.util.logging.Logger;
 
 import org.apache.commons.math3.ml.clustering.Clusterable;
 import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
-import com.certh.iti.easytv.user.preference.attributes.Attribute.Bin;
 import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
+import com.certh.iti.easytv.user.preference.attributes.DoubleAttribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.OrdinalAttribute;
@@ -26,17 +22,13 @@ import com.certh.iti.easytv.user.preference.attributes.TimeAttribute;
 
 public class UserContext implements Clusterable{
 	
-	private final static Logger logger = Logger.getLogger(UserContext.class.getName());
-
-	
-    private double[] points = new double[] {-1, -1, -1, -1, -1}; 
+    private double[] points = new double[] {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}; 
     private Map<String, Object> context  =  new HashMap<String, Object>();
     private JSONObject jsonObj = null;
     
 	private static AttributesAggregator aggregator = new AttributesAggregator();
 	protected static Map<String, Attribute> contextAttributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
- 
 	{
 	    put("http://registry.easytv.eu/context/device", new NominalAttribute(new String[] {"pc", "modile", "tablet"}));
 		put("http://registry.easytv.eu/context/proximity", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
@@ -48,6 +40,7 @@ public class UserContext implements Clusterable{
 																						  "full daylight", "direct sun"}));
 
     }};
+	
 	
 	
 	static {
@@ -181,70 +174,7 @@ public class UserContext implements Clusterable{
 	 * @return
 	 */
 	public int[] getAsItemSet() {
-		int index = 0, base = 0;
-		Collection<Entry<String, Attribute>> entries = contextAttributes.entrySet();
-		int[] itemSet = new int[context.size()];
-		
-		for(Entry<String, Attribute> entry : entries) {
-			String key = entry.getKey();
-			Attribute attributHandler = contextAttributes.get(entry.getKey());
-			Object value = context.get(key); 
-			
-			//add only existing preferences
-			if(attributHandler.getBinNumber() != 0 && value != null) 
-				itemSet[index++] = attributHandler.code(value) + base;
-			
-			
-			base += attributHandler.getBinNumber();
-			
-		}
-		
-		//resize
-		return Arrays.copyOf(itemSet, index);
-	}
-	
-	/**
-	 * Get users profiles dimensional operands
-	 * 
-	 * @return 
-	 */
-	public static final Vector<Attribute> getOperands() {
-		return aggregator.getOperands();
-	}
-	
-	/**
-	 * @return uris arrays
-	 */
-	public static final Vector<String> getUris(){
-		return aggregator.getUris();
-	}
-	
-	/**
-	 * Get the number of distinct items of the user preferences
-	 * @return
-	 */
-	public static int getBinNumber() {
-		return aggregator.getBinNumber();
-	}
-	
-	/**
-	 * Get bins associated values
-	 * @return
-	 */
-	public static Vector<Bin> getBins() {
-		return aggregator.getBins();
-	}
-	
-	
-	/**
-	 * @return uris arrays
-	 */
-	public static void setAttributes(Map<String, Attribute> contextAttributes){
-		logger.info("change context attribute..");
-		UserContext.contextAttributes = contextAttributes;
-		
-		UserContext.aggregator.reset();
-		UserContext.aggregator.add(contextAttributes);
+		return aggregator.code(context);
 	}
 	
 	public static Map<String, Attribute> getAttributes(){

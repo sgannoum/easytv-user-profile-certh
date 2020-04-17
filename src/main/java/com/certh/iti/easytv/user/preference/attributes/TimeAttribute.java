@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Random;
 import java.util.regex.Pattern;
 
+import com.certh.iti.easytv.user.preference.attributes.discretization.NoDiscretization;
+
 public class TimeAttribute extends Attribute{
 	
 	private Date time;
@@ -17,24 +19,17 @@ public class TimeAttribute extends Attribute{
 
 	public TimeAttribute() {
 		super(new double[] {0.0, Instant.parse("1970-01-01T00:00:00Z").toEpochMilli()});
+		this.discretization = new NoDiscretization();
 	}
 	
 	public TimeAttribute(double[] range) {
 		super(range);
+		this.discretization = new NoDiscretization();
 	}
 	
 	public TimeAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
-	}
-	
-	/**
-	 * Fill out the bin label with the proper labels
-	 */
-	@Override
-	protected void init() {
-		bins = new Bin[0];
-		binSize = 0;
-		binsNum = 0;
+		this.discretization = new NoDiscretization();
 	}
 	
 	@Override

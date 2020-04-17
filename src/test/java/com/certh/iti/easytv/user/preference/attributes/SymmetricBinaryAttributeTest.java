@@ -1,6 +1,5 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -13,26 +12,11 @@ public class SymmetricBinaryAttributeTest {
 	@BeforeClass
 	public void beforTest() {
 		attr1 = new SymmetricBinaryAttribute();
-		
-		System.out.println("\n\nBefore Class");
-		System.out.println(attr1.toString());
-	}
-	
-	@AfterClass
-	public void afterClass() {
-		
-		System.out.println("\n\nAfter Class");
-		System.out.println(attr1.toString());
 	}
 	
 	@Test
 	public void test_BinNumber() {
 		Assert.assertEquals(2, attr1.getBinNumber());
-	}
-	
-	@Test
-	public void test_Binsize_remaining() {
-		Assert.assertEquals(0, attr1.getRemaining());  Assert.assertEquals(1, attr1.getBinSize());
 	}
 
 	@Test

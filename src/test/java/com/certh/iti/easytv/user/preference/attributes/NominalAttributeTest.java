@@ -1,6 +1,5 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -14,30 +13,12 @@ public class NominalAttributeTest {
 	public void beforTest() {
 		attr1 = new NominalAttribute(new String[] {"15", "20", "23"});
 		attr2 = new NominalAttribute(new String[] {"none", "gaze_control", "gesture_control"});
-		
-		System.out.println("\n\nBefore Class");
-		System.out.println(attr1.toString());
-		System.out.println(attr2.toString());
-	}
-	
-	@AfterClass
-	public void afterClass() {
-		
-		System.out.println("\n\nAfter Class");
-		System.out.println(attr1.toString());
-		System.out.println(attr2.toString());
 	}
 	
 	@Test
 	public void test_BinNumber() {
 		Assert.assertEquals(3, attr1.getBinNumber());
 		Assert.assertEquals(3, attr2.getBinNumber());
-	}
-	
-	@Test
-	public void test_Binsize_remaining() {
-		Assert.assertEquals(0, attr1.getRemaining());  Assert.assertEquals(1, attr1.getBinSize());
-		Assert.assertEquals(0, attr2.getRemaining()); Assert.assertEquals(1, attr2.getBinSize());
 	}
 	
 	@Test
@@ -87,12 +68,12 @@ public class NominalAttributeTest {
 		attr1.decode(-1);
 	}
 	
-	@Test(expectedExceptions = IllegalStateException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_code_outOfrange() {
 		attr1.code("Null");
 	}
 	
-	@Test(expectedExceptions = IllegalStateException.class)
+	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_handle_outOfRange() {
 		attr1.handle("Null");
 	}

@@ -3,14 +3,12 @@
 <suite name="User profile unit tests">
   <test name="User profile tests">
     <classes>
-      <class name="com.certh.iti.easytv.user.OnlyPreferenceProfileTest"/>
  	  <class name="com.certh.iti.easytv.user.ProfileTest"/>
       <class name="com.certh.iti.easytv.user.UserPreferencesTest"/>
       <class name="com.certh.iti.easytv.user.UserProfileTest"/>
       <class name="com.certh.iti.easytv.user.preference.ConditionPreferenceTest"/>
       <class name="com.certh.iti.easytv.user.preference.ConditionTest"/>
       <class name="com.certh.iti.easytv.user.preference.PreferenceTests"/>
-      <class name="com.certh.iti.easytv.user.preference.PreferenceItemsetTests"/>
     </classes>
   </test>
   <test name="Attributes tests">
@@ -19,6 +17,17 @@
       <class name="com.certh.iti.easytv.user.preference.attributes.DoubleAttributeTest"/>
       <class name="com.certh.iti.easytv.user.preference.attributes.NominalAttributeTest"/>
       <class name="com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttributeTest"/>
+      <class name="com.certh.iti.easytv.user.preference.attributes.ColorAttributeTest"/>
+      <class name="com.certh.iti.easytv.user.preference.attributes.AttributesAggregatorTest"/>      
     </classes>
   </test>
+  <test name="Discretization tests">
+    <classes>
+      <class name="com.certh.iti.easytv.user.preference.attributes.discretization.IntegerDiscretizationTest"/>
+      <class name="com.certh.iti.easytv.user.preference.attributes.discretization.DoubleDiscretizationTest"/>
+      <class name="com.certh.iti.easytv.user.preference.attributes.discretization.StringDiscretizationTest"/>
+      <class name="com.certh.iti.easytv.user.preference.attributes.discretization.BooleanDiscretizationTest"/>
+    </classes>
+  </test>
+  
 </suite>

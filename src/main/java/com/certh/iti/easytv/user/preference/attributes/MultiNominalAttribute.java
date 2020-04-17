@@ -4,34 +4,14 @@ import java.util.Random;
 
 import org.json.JSONArray;
 
+import com.certh.iti.easytv.user.preference.attributes.discretization.NoDiscretization;
+
 public class MultiNominalAttribute extends NominalAttribute {
 
 	public MultiNominalAttribute(String[] states) {
-		super(states);
+		super(states, new NoDiscretization());
 	}
 
-	public MultiNominalAttribute(double[] range, String[] states) {
-		super(range, states);
-	}
-
-	public MultiNominalAttribute(double operandMissingValue, String[] states) {
-		super(operandMissingValue, states);
-	}
-
-	public MultiNominalAttribute(double[] range, double operandMissingValue, String[] states) {
-		super(range, operandMissingValue, states);
-	}
-	
-	/**
-	 * Fill out the bin label with the proper labels
-	 */
-	@Override
-	protected void init() {
-		bins = new Bin[0];
-		binSize = 0;
-		binsNum = 0;
-	}
-	
 	@Override
 	public Object getRandomValue(Random rand) {
 		JSONArray values = new JSONArray();
@@ -78,7 +58,8 @@ public class MultiNominalAttribute extends NominalAttribute {
 				throw new IllegalStateException("Unknown state " + value);
 	
 			// increase counts
-			bins[state].counts++;
+			discretization.handle(value);
+			
 			n++;
 		}
 		return value;
