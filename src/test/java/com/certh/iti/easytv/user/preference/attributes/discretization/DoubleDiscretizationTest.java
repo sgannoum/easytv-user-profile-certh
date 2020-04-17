@@ -1,6 +1,7 @@
 package com.certh.iti.easytv.user.preference.attributes.discretization;
 
 import java.math.BigDecimal;
+import java.util.TreeMap;
 
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -334,6 +335,68 @@ public class DoubleDiscretizationTest {
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_decode_WrongBinID2() {
 		attr4.decode(-1);
+	}
+	
+	@Test
+	public void test_creation_from_histogram() {
+		TreeMap<Double, Long> values  =  new TreeMap<Double, Long>() {
+			private static final long serialVersionUID = 1L;
+		{
+			put(0.0, 1L);
+			put(1.0, 1L);
+			put(2.0, 1L);
+			put(3.0, 1L);
+			put(7.0, 1L);
+			put(8.0, 1L);
+			put(9.0, 1L);
+		}};
+		
+		DoubleDiscretization attr1 = new DoubleDiscretization(new double[] {0.0, 9.0}, 1.0, new Double[][] {new Double[]{0.0, 3.0}, 
+																										    new Double[]{4.0, 6.0},
+																											new Double[]{7.0, 9.0}}, values);
+		
+		Assert.assertEquals(2, attr1.getBinNumber());
+		Assert.assertEquals(4, attr1.getDiscreteSize(0)); Assert.assertEquals(3, attr1.getDiscreteSize(1));
+		Assert.assertEquals(0, attr1.code(0.0)); Assert.assertEquals(0, attr1.code(1.0)); Assert.assertEquals(0, attr1.code(2.0)); Assert.assertEquals(0, attr1.code(3.0));
+		Assert.assertEquals(1, attr1.code(7.0)); Assert.assertEquals(1, attr1.code(8.0)); Assert.assertEquals(1, attr1.code(9.0)); 
+		Assert.assertEquals(4 ,attr1.getBins()[0].getCounts());
+		Assert.assertEquals(3 ,attr1.getBins()[1].getCounts());
+		Assert.assertEquals(2.0, attr1.decode(0)); Assert.assertEquals(8.0, attr1.decode(1));
+		
+	}
+	
+	@Test
+	public void test_creation_from_histogram_1() {
+		TreeMap<Double, Long> values  =  new TreeMap<Double, Long>() {
+			private static final long serialVersionUID = 1L;
+		{
+			put(0.0, 1L);
+			put(1.0, 1L);
+			put(2.0, 1L);
+			put(3.0, 1L);
+			put(7.0, 1L);
+			put(8.0, 1L);
+			put(9.0, 1L);
+		}};
+		
+		DoubleDiscretization attr1 = new DoubleDiscretization(new double[] {0.0, 9.0}, 1.0, 3, values);
+				
+		//check bins number found
+		Assert.assertEquals(2, attr1.getBinNumber());
+		
+		//check the value range size of each one
+		Assert.assertEquals(4, attr1.getDiscreteSize(0)); Assert.assertEquals(3, attr1.getDiscreteSize(1));
+		
+		//check code values
+		Assert.assertEquals(0, attr1.code(0.0)); Assert.assertEquals(0, attr1.code(1.0)); Assert.assertEquals(0, attr1.code(2.0)); Assert.assertEquals(0, attr1.code(3.0));
+		Assert.assertEquals(1, attr1.code(7.0)); Assert.assertEquals(1, attr1.code(8.0)); Assert.assertEquals(1, attr1.code(9.0)); 
+		
+		//check the occurrences counts of each bin
+		Assert.assertEquals(4 ,attr1.getBins()[0].getCounts());
+		Assert.assertEquals(3 ,attr1.getBins()[1].getCounts());
+		
+		//check decode value
+		Assert.assertEquals(2.0, attr1.decode(0)); Assert.assertEquals(8.0, attr1.decode(1));
 	}
 	
 }

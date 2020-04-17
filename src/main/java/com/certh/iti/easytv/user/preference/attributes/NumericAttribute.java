@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.TreeMap;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
@@ -23,7 +24,7 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	
 	protected double step = 1.0;
 	
-	protected Map<Double, Long> frequencyHistogram = new HashMap<Double, Long>();
+	protected Map<Double, Long> frequencyHistogram = new TreeMap<Double, Long>();
 
 	public NumericAttribute(double[] range) {
 		super(range);

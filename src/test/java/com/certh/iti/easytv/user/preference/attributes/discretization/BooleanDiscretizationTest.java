@@ -1,5 +1,7 @@
 package com.certh.iti.easytv.user.preference.attributes.discretization;
 
+import java.util.TreeMap;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -54,6 +56,27 @@ public class BooleanDiscretizationTest {
 	@Test(expectedExceptions = IllegalArgumentException.class)
 	public void test_decode_WrongBinID2() {
 		attr1.decode(-1);
+	}
+	
+	@Test
+	public void test_creation_from_histogram() {
+		TreeMap<Boolean, Long> values  =  new TreeMap<Boolean, Long>() {
+			private static final long serialVersionUID = 1L;
+		{
+			put(false, 4L);
+			put(true, 3L);
+
+		}};
+		
+		BooleanDiscretization attr1 = new BooleanDiscretization(values);
+		
+		Assert.assertEquals(2, attr1.getBinNumber());
+		Assert.assertEquals(1, attr1.getDiscreteSize(0)); Assert.assertEquals(1, attr1.getDiscreteSize(1));
+		Assert.assertEquals(0, attr1.code(false)); Assert.assertEquals(1, attr1.code(true)); 
+		Assert.assertEquals(4 ,attr1.getBins()[0].getCounts());
+		Assert.assertEquals(3 ,attr1.getBins()[1].getCounts());
+		Assert.assertEquals(false, attr1.decode(0)); Assert.assertEquals(true, attr1.decode(1));
+		
 	}
 		
 }

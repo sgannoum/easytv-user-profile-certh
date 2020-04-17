@@ -3,6 +3,9 @@ package com.certh.iti.easytv.user.preference.attributes.discretization;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 public class StringDiscretization extends Discretization {
 		
@@ -80,6 +83,51 @@ public class StringDiscretization extends Discretization {
 			this.bins[i] = new StringDiscrete(bins[i]);
 	}
 	
+	public StringDiscretization(double[] range, String[][] discretes, TreeMap<String, Long> values) {
+		super(range);
+		
+		int[] counts = new int[discretes.length];
+		int found = 0;
+		for(Iterator<Entry<String, Long>> iterator = values.entrySet().iterator(); iterator.hasNext(); ) {
+			Entry<String, Long> entry = iterator.next();
+			
+			for(int i = 0; i < discretes.length; i++)
+				for(int j = 0; j < discretes[i].length; j++ )
+					if(discretes[i][j].equals(entry.getKey())) {
+						counts[i] += entry.getValue();
+						break;
+					} 
+		}
+		
+		for(int i = 0; i < discretes.length; i++) 
+			if(counts[i] != 0)  found++;
+		
+		this.bins = new Discrete[found];
+		int binIndex = 0;
+		for(int i = 0; i < discretes.length; i++) {
+			if(counts[i] != 0) {
+				StringDiscrete tmp = new StringDiscrete(discretes[i]);
+				tmp.counts = counts[i];
+				this.bins[binIndex++] = tmp;
+			}
+		}
+	}
+	
+	public StringDiscretization(double[] range, TreeMap<String, Long> values) {
+		super(range);
+		
+		this.bins = new Discrete[values.keySet().size()];
+		int binIndex = 0;
+		for(Iterator<Entry<String, Long>> iterator = values.entrySet().iterator(); iterator.hasNext(); ) {
+			Entry<String, Long> entry = iterator.next();
+			
+			this.bins[binIndex] = new StringDiscrete(new String[] {entry.getKey()});
+			this.bins[binIndex].counts += entry.getValue();
+			binIndex++;
+		}
+		
+	}
+	
 	/**
 	 * Runs over all bins to find the bin id
 	 */
@@ -93,6 +141,19 @@ public class StringDiscretization extends Discretization {
 				return i;
 		
 		return -1;
+	}
+	
+	/**
+	 * Return the size of a specific bin
+	 * @param index
+	 * @return
+	 */
+	@Override
+	public int getDiscreteSize(int index) {
+		if(index < 0 || index >= bins.length)
+			throw new IllegalArgumentException("Out of Range bin id: " + index+" ["+0+","+bins.length+"]");
+		
+		return bins[index].range.length;
 	}
 
 

@@ -3,6 +3,9 @@ package com.certh.iti.easytv.user.preference.attributes.discretization;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 
 public class IntegerDiscretization extends NumericDiscretization {
@@ -114,9 +117,45 @@ public class IntegerDiscretization extends NumericDiscretization {
 		super(range, step);
 		
 		this.bins = new Discrete[discretes.length];
-
 		for(int i = 0; i < discretes.length; i++)
 			this.bins[i] = new IntegerDiscrete(discretes[i], step);
 	}
+	
+	public IntegerDiscretization(double[] range, double step, int binNums,  TreeMap<Double, Long> values) {
+		super(range, step, binNums, values, new IntegerDiscretiationFactory());
+	}
+	
+	public IntegerDiscretization(double[] range, double step, Integer[][] discretes, TreeMap<Double, Long> values) {
+		super(range, step);
+		
+		int[] counts = new int[discretes.length];
+		int binIndex = 0, nonZeroCounters = 0;
+		boolean counted = false;
+		Iterator<Entry<Double, Long>> iterator = values.entrySet().iterator();
+		Entry<Double, Long> entry = iterator.next();
+		while(true) {
+			if(entry.getKey() >= discretes[binIndex][0] && entry.getKey() <= discretes[binIndex][1]) {
+				counts[binIndex] += entry.getValue();
+				if(!counted) { nonZeroCounters++; counted = true; }
+				if(!iterator.hasNext()) break;
+				entry = iterator.next();
+			} else {
+				counted = false;
+				binIndex++;
+			}
+		} 
+		
+		this.bins = new Discrete[nonZeroCounters];
+		binIndex = 0;
+		for(int i = 0; i < discretes.length; i++) {
+			if(counts[i] != 0) {
+				IntegerDiscrete tmp = new IntegerDiscrete(discretes[i], step);
+				tmp.counts = counts[i];
+				this.bins[binIndex++] = tmp;
+			}
+		}
+	}
+	
+
 
 }
