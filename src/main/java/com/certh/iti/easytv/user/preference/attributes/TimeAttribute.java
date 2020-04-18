@@ -77,21 +77,4 @@ public class TimeAttribute extends Attribute{
 		return time.getTime();
 	}
 
-	@Override
-	public int code(Object literal) {		
-		//TODO handle to item for time attribute
-		return 0;
-	}
-	
-	@Override
-	public boolean isInBinRange(Object literal, int binId) {	
-		return true;
-	}
-
-	@Override
-	public Object decode(int itemId) {
-		//TODO handle to value for time attribute
-		return null;
-	}
-
 }

@@ -2,7 +2,6 @@ package com.certh.iti.easytv.user.preference.attributes;
 
 import java.util.Random;
 
-import com.certh.iti.easytv.user.preference.attributes.discretization.Discrete;
 import com.certh.iti.easytv.user.preference.attributes.discretization.Discretization;
 import com.certh.iti.easytv.util.Table;
 import com.certh.iti.easytv.util.Table.Position;
@@ -43,60 +42,8 @@ public abstract class Attribute {
 		return new double[] {missingValue};
 	}
 	
-	public int getBinSize(int index) {
-		return discretization.getDiscreteSize(index);
-	}
-	
-	public int getBinNumber() {
-		return discretization.getBinNumber();
-	}
-	
-	public final Discrete[] getBins() {
-		return discretization.getBins();
-	}
-	
 	public abstract String getXMLDataTypeURI();
-	/**
-	 * Get an integer representation of the given value
-	 * 
-	 * @return
-	 */
-	public int code(Object literal) {
-		return discretization.code(literal);
-	}
-	
 
-	/**
-	 * Check whether the given object is in the given bin range
-	 * 
-	 * @param literal
-	 * @param binId
-	 * @return
-	 */
-	public boolean isInBinRange(Object literal, int binId) {
-		return discretization.inRange(literal, binId);
-	}
-	
-	
-	/**
-	 * Get the binId that the given number belongs to 
-	 * 
-	 * @param value
-	 * @return
-	 */
-	public int getBinId(boolean value) {
-		return discretization.getBinId(value);
-	}
-	
-	/**
-	 * Get the corresponding dimension value
-	 * 
-	 * @return
-	 */
-	public Object decode(int itemId) {
-		return discretization.decode(itemId);
-	}
-	
 	/**
 	 * Get the corresponding dimension value
 	 * 

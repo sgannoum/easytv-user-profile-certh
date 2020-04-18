@@ -211,11 +211,12 @@ public class AttributesAggregator {
 	
 	public void add(final Map<String, Attribute> attributesHandler) {		
 		for(Entry<String, Attribute> entry : attributesHandler.entrySet()) {
-			if(entry.getValue().getBinNumber() == 0) continue;
-			DiscretizationWrapper discretization = new DiscretizationWrapper(entry.getValue().getDiscretization(), lastBase);
-			discretizationHandlers.put(entry.getKey(), discretization);
+			Discretization discretization = entry.getValue().getDiscretization();
+			if(discretization.getBinNumber() == 0) continue;
+			DiscretizationWrapper wrapper = new DiscretizationWrapper(discretization, lastBase);
+			discretizationHandlers.put(entry.getKey(), wrapper);
 			attributesHandlers.put(entry.getKey(), entry.getValue());
-			lastBase += entry.getValue().getBinNumber();
+			lastBase += discretization.getBinNumber();
 		}
 	}
 	

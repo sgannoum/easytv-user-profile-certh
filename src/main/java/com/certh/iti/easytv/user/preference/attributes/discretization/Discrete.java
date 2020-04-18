@@ -60,5 +60,5 @@ public abstract class Discrete {
 	
 	public abstract int compare(Object item);
 	
-	public abstract boolean checkType(Object item);
+	protected abstract boolean checkType(Object item);
 }

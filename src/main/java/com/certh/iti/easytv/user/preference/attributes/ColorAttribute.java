@@ -3,6 +3,7 @@ package com.certh.iti.easytv.user.preference.attributes;
 import java.awt.Color;
 import java.util.Random;
 
+import com.certh.iti.easytv.user.preference.attributes.discretization.ColorDiscretization;
 import com.certh.iti.easytv.user.preference.attributes.discretization.NoDiscretization;
 
 public class ColorAttribute extends IntegerAttribute {
@@ -12,33 +13,26 @@ public class ColorAttribute extends IntegerAttribute {
 	private NumericAttribute blue =  new IntegerAttribute(new double[] {0.0, 255.0}, 1, 0, new NoDiscretization());
 	
 	private static int MAX_BIN_SIZE = 100;
+	private static double[] default_range = new double[] {0X000000, 0Xffffff};
 	
 	public ColorAttribute() {
-		super(new double[] {0X000000, 0Xffffff}, 1.0, MAX_BIN_SIZE, 0);
+		super(default_range, 1.0, 0, new ColorDiscretization(default_range, 1.0, MAX_BIN_SIZE));
 	}
 	
 	public ColorAttribute(double step, int binNum) {
-		super(new double[] {0X000000, 0Xffffff}, step, binNum, 0);
-	}
-
-	public ColorAttribute(double[] range) {
-		super(range, 1.0, MAX_BIN_SIZE, 0);
-	}
-	
-	public ColorAttribute(double[] range, double step) {
-		super(range, step, MAX_BIN_SIZE);
+		super(default_range, step, 0, new ColorDiscretization(default_range, step, binNum));
 	}
 	
 	public ColorAttribute(double[] range, double step, int binNum) {
-		super(range, step, binNum, 0);
+		super(range, step,  0, new ColorDiscretization(range, step, binNum));
 	}
 	
 	public ColorAttribute(double[] range, double step, Integer[][] discretes) {
-		super(range, step, discretes);
+		super(range, step, 0, new ColorDiscretization(range, step, discretes));
 	}
 	
 	public ColorAttribute(Integer[][] discretes) {
-		super(new double[] {0X000000, 0Xffffff}, 1.0, discretes);
+		super(default_range, 1.0, 0, new ColorDiscretization(default_range, 1.0, discretes));
 	}
 	
 	@Override
@@ -95,23 +89,6 @@ public class ColorAttribute extends IntegerAttribute {
 		n++;
 		
 		return value;
-	}
-	
-	@Override
-	public int code(Object literal) {	
-		
-		if(!String.class.isInstance(literal))
-			throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Color");
-		
-		Color color = Color.decode((String) literal);
-		
-		//remove alpha 8 bits value
-		return discretization.getBinId(color.getRGB() & 0x00ffffff);
-	}
-
-	@Override 
-	public Object decode(int itemId) {
-		return "#"+Integer.toHexString((int) super.decode(itemId));
 	}
 
 	@Override

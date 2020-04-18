@@ -1,7 +1,6 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
