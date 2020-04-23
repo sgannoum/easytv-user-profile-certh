@@ -89,7 +89,8 @@ public class NominalAttribute extends Attribute implements INominal {
 		frequencyHistogram.put(key, tmp);
 		
 		// increase counts
-		//discretization.handle(value);
+		if(discretization != null)
+			discretization.handle(value);
 		
 		n++;
 

@@ -16,6 +16,10 @@ public class SymmetricBinaryAttributeTest {
 	public void beforTest() {
 		attr1 = new SymmetricBinaryAttribute();
 		
+		//load values
+		attr1.handle(false);
+		attr1.handle(true);
+		
 		//get discretization
 		dist_attr1 = attr1.getDiscretization();
 	}

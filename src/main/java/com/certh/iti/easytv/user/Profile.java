@@ -210,6 +210,7 @@ public class Profile implements Clusterable {
 	}
 	
 	public static AttributesAggregator getAggregator() {	
+		aggregator = new AttributesAggregator();
 		aggregator.add(Preference.getAttributes());
 		aggregator.add(UserContext.getAttributes());
 		//aggregator.add(UserContent.getAttributes())

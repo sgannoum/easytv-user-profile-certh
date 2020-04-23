@@ -87,12 +87,13 @@ public class IntegerAttribute extends NumericAttribute {
 		if(numericValue % step != 0) 
 			throw new OutOfRangeException(new DummyLocalizable("Non compatible with step: " + step), numericValue, range[0], range[1]);
 
-		// Increate histogram counts
+		// Increase histogram counts
 		Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
 		frequencyHistogram.put(numericValue, tmp);
 		
 		//Increment the number of occurrences 
-		//discretization.handle(numericValue);
+		if(discretization != null)
+			discretization.handle(numericValue);
 
 		// Set Min Max vlaue
 		setMinMaxValue(numericValue);

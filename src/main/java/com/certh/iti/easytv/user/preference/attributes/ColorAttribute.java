@@ -85,7 +85,8 @@ public class ColorAttribute extends IntegerAttribute {
 		setMinMaxValue(numericValue);
 		
 		//Increment the number of occurrences 
-		//discretization.handle(numericValue);
+		if(discretization != null)
+			discretization.handle(numericValue);
 
 		//sum += numericValue;
 		n++;

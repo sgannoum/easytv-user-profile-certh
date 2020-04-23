@@ -145,7 +145,10 @@ public class AttributesAggregator {
 		
 		public DiscreteIterator() {
 			iterator = discretizationHandlers.entrySet().iterator();
-			currt = iterator.next().getValue().getBins();
+			Entry<String, DiscretizationWrapper> entry = iterator.next();
+			currt = entry.getValue().getBins();
+			System.out.println(entry.getKey());
+
 		}
 		
 		@Override
@@ -157,7 +160,9 @@ public class AttributesAggregator {
 		public Discrete next() {
 			if(index == currt.length) {
 				index = 0;
-				currt = iterator.next().getValue().getBins();
+				Entry<String, DiscretizationWrapper> entry = iterator.next();
+				currt = entry.getValue().getBins();
+				System.out.println(entry.getKey());
 			}
 			return currt[index++];
 		}
@@ -211,14 +216,13 @@ public class AttributesAggregator {
 	
 	public void add(final Map<String, Attribute> attributesHandler) {		
 		for(Entry<String, Attribute> entry : attributesHandler.entrySet()) {
+			attributesHandlers.put(entry.getKey(), entry.getValue());
 			Discretization discretization = entry.getValue().getDiscretization();
-			if(discretization == null) {
-				System.out.println("Out "+entry.getKey());
-				continue;
-			}
+			
+			if(discretization == null) continue;
+			
 			DiscretizationWrapper wrapper = new DiscretizationWrapper(discretization, lastBase);
 			discretizationHandlers.put(entry.getKey(), wrapper);
-			attributesHandlers.put(entry.getKey(), entry.getValue());
 			lastBase += discretization.getBinNumber();
 		}
 	}
@@ -369,88 +373,5 @@ public class AttributesAggregator {
 		//some items are excluded, throw an exception
 		throw new OutOfRangeException(item, 0, lastBase - 1);
 	}
-	
-
-/*	*//**
-	 * 
-	 * @param item
-	 * @return
-	 *//*
-	public Association<String, Object> decode(int item) {
-		
-		int base = 0;
-		for(Iterator<Entry<String, DiscretizationWrapper>> iter = attributesHandlers.entrySet().iterator(); iter.hasNext(); ){
-			Entry<String, DiscretizationWrapper> currt = iter.next();
-			int binSize = currt.getValue().getBinNumber();
-			
-			//it is in the bin range value
-			if(item < base + binSize)
-				return new Association<String, Object>(currt.getKey(), currt.getValue().decode(item));
-
-			base += binSize;
-		}
-
-		throw new OutOfRangeException(item, 0, lastBase - 1);
-	}
-	
-	*//**
-	 * 
-	 * @param items
-	 * @return
-	 *//*
-	public Map<String, Object> decode(int[] items) {
-		Map<String, Object> associations = new HashMap<String, Object>();
-		
-		//sort out items
-		Arrays.sort(items);
-		
-		int base = 0, index = 0, item = items[index++];
-		for(Iterator<Entry<String, DiscretizationWrapper>> iter = attributesHandlers.entrySet().iterator(); iter.hasNext(); ){
-			Entry<String, DiscretizationWrapper> currt = iter.next();
-			int binSize = currt.getValue().getBinNumber();
-			
-			//it is in the bin range value
-			if(item < base + binSize) {
-				associations.put(currt.getKey(), currt.getValue().decode(item));
-				if(index == items.length) return associations;
-				item = items[index++];
-			} 
-			base += binSize;
-		}
-		
-		//some items are excluded, throw an exception
-		throw new OutOfRangeException(item, 0, lastBase - 1);
-	}*/
-	
-
-	
-/*	*//**
-	 * 
-	 * @param items
-	 * @return
-	 *//*
-	public Discrete[] getDiscrete(int[] items) {
-		Discrete[] discretes = new Discrete[items.length];
-		
-		//sort out items
-		Arrays.sort(items);
-		
-		int base = 0, index = 0, item = items[index];
-		for(Iterator<Entry<String, DiscretizationWrapper>> iter = attributesHandlers.entrySet().iterator(); iter.hasNext(); ){
-			Entry<String, DiscretizationWrapper> currt = iter.next();
-			int binSize = currt.getValue().getBinNumber();
-			
-			//it is in the bin range value
-			if(item < base + binSize) {
-				discretes[index] = currt.getValue().getBins()[item - base];
-				if(index == items.length - 1) return discretes;
-				item = items[++index];
-			} 
-			base += binSize;
-		}
-		
-		//some items are excluded, throw an exception
-		throw new IllegalArgumentException("Wrong itemset "+ items);
-	}*/
 
 }

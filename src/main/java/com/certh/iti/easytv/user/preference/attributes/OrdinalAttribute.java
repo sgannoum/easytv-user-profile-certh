@@ -105,7 +105,8 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		setMinMaxValue(state);
 
 		// increase counts
-		//discretization.handle(value);
+		if(discretization != null)
+			discretization.handle(value);
 
 		sum += state;
 

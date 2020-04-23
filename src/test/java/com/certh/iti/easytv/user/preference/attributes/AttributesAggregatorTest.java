@@ -53,7 +53,8 @@ public class AttributesAggregatorTest {
 		attr.handle("1"); attr.handle("2"); attr.handle("3");
     	attr = attributes.get("Ordinal");
 		attr.handle("15"); attr.handle("20"); attr.handle("23");
-
+		attr = attributes.get("Boolean");
+		attr.handle(false); attr.handle(true);
 		
     	attr = attributes1.get("Integer1");
     	for(int i = 0; i < 101; i++) attr.handle(i);
@@ -63,6 +64,8 @@ public class AttributesAggregatorTest {
 		attr.handle("1"); attr.handle("2"); attr.handle("3");
     	attr = attributes1.get("Ordinal1");
 		attr.handle("15"); attr.handle("20"); attr.handle("23");
+		attr = attributes1.get("Boolean1");
+		attr.handle(false); attr.handle(true);
 
     	
     	aggregator1.add(attributes);

@@ -86,15 +86,16 @@ public class DoubleAttribute extends NumericAttribute {
 			throw new OutOfRangeException(new DummyLocalizable(value+" Non compatible with step: " + step), numericValue, range[0], range[1]);
 		
 		
-		// Increate histogram counts
+		// Increase histogram counts
 		Double key = new Double(numericValue);
 		Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
 		frequencyHistogram.put(key, tmp);
 		
 		//Increment the number of occurrences 
-		//discretization.handle(numericValue);
+		if(discretization != null)
+			discretization.handle(numericValue);
 		
-		// Set Min Max vlaue
+		// Set Min Max value
 		setMinMaxValue(numericValue);
 
 		sum += numericValue;

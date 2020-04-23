@@ -1,21 +1,29 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import com.certh.iti.easytv.user.preference.attributes.discretization.BooleanDiscretization;
+import com.certh.iti.easytv.user.preference.attributes.discretization.Discretization;
 
 public abstract class BinaryAttribute extends Attribute {
 	
+	protected Map<Boolean, Long> frequencyHistogram = new HashMap<Boolean, Long>();
+	
 	public BinaryAttribute(double[] range) {
 		super(range);
-		
-		discretization = new BooleanDiscretization();
+		discretization = null;
 	}
 	
 	public BinaryAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
-		
-		discretization = new BooleanDiscretization();
+		discretization = null;
+	}
+	
+	public BinaryAttribute(double[] range, double operandMissingValue, BooleanDiscretization discretization) {
+		super(range, operandMissingValue);
+		this.discretization = discretization;
 	}
 	
 	@Override
@@ -36,10 +44,27 @@ public abstract class BinaryAttribute extends Attribute {
 		
 
 		Boolean literal = (Boolean) value;
+		
+		// Increase histogram counts
+		Long tmp = (tmp = frequencyHistogram.get(literal)) == null ? 1L : (tmp + 1L);
+		frequencyHistogram.put(literal, tmp);
 			
 		//increase bin counter
-		discretization.handle(literal);
+		if(discretization != null)
+			discretization.handle(literal);
 		
 		return value;
+	}
+	
+	@Override
+	public Discretization getDiscretization() {
+		if(discretization == null) {
+			if(!frequencyHistogram.isEmpty()) 
+				return new BooleanDiscretization(frequencyHistogram);
+			else 
+				return null;
+		}
+		else 
+			return discretization;
 	}
 }

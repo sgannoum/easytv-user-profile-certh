@@ -1,6 +1,6 @@
 package com.certh.iti.easytv.user.preference.attributes.discretization;
 
-import java.util.TreeMap;
+import java.util.Map;
 
 public class BooleanDiscretization extends Discretization {
 	
@@ -43,12 +43,12 @@ public class BooleanDiscretization extends Discretization {
 		this.bins = new Discrete[] {new BooleanDiscrete(false), new BooleanDiscrete(true)};
 	}
 	
-	public BooleanDiscretization(TreeMap<Boolean, Long> values) {
+	public BooleanDiscretization(Map<Boolean, Long> values) {
 		super(new double[] {0.0, 1.0});
 		
 		this.bins = new Discrete[] {new BooleanDiscrete(false), new BooleanDiscrete(true)};
-		this.bins[0].counts += values.get(false); 
-		this.bins[1].counts += values.get(true); 
+		this.bins[0].counts += values.getOrDefault(false, (long) 0);
+		this.bins[1].counts += values.getOrDefault(true, (long) 0);
 	}
 	
 	@Override
