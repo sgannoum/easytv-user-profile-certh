@@ -1,5 +1,6 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
@@ -16,16 +17,31 @@ public class DoubleAttributeTest {
 	Discretization dist_attr1, dist_attr2, dist_attr3, dist_attr4, dist_qFactor, dist_qFactor_equals_bins, dist_qFactor_not_equals_bins;
 	
 	@BeforeClass
-	public void beforTest() {
+	public void beforTest() throws IOException {
 		
 		attr1 = new DoubleAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1);
-		attr2 = new DoubleAttribute(new double[] {1.0, 8.0}, -1);
+		attr2 = new DoubleAttribute(new double[] {1.0, 8.0}, 1.0, 0.0);
 		attr3 = new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, -1);
 		attr4 = new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, -1);
 		qFactor = new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, -1.0);
 		qFactor_equals_bins = new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, 38, -1.0);
 		qFactor_not_equals_bins = new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, 28, -1.0);
 		
+		//Load values
+		for(double i = 0; i < 101; i++) attr1.handle(i);
+		for(double i = 1; i < 9; i++) attr2.handle(i);
+		for(double i = 1.0; i < 2.5; i+= 0.5) attr3.handle(i);
+		for(double i = 1.5; i < 4.0; i+= 0.5) attr4.handle(i);
+		
+		BigDecimal value = new BigDecimal(String.valueOf("0.6"));
+		BigDecimal add = new BigDecimal(String.valueOf("0.1"));
+		for(double i = 0.7; i < 12.0; i+= 0.1) {
+			value = value.add(add);
+			qFactor.handle(value.doubleValue());
+			qFactor_equals_bins.handle(value.doubleValue());
+			qFactor_not_equals_bins.handle(value.doubleValue());
+		}
+
 		//get discretization
 		dist_attr1 = attr1.getDiscretization();
 		dist_attr2 = attr2.getDiscretization();
@@ -370,10 +386,7 @@ public class DoubleAttributeTest {
 	
 	@Test
 	public void test_handle() {
-
-		for(int i = 0; i <= attr1.getRange()[1]; i++) 
-			attr1.handle(i * 1.0);
-		
+	
 		Assert.assertEquals(100.0 ,attr1.getMaxValue());
 		Assert.assertEquals(0.0 ,attr1.getMinValue());
 		Assert.assertEquals(101 ,attr1.getCounts());

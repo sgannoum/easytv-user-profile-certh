@@ -26,12 +26,6 @@ public class Profile implements Clusterable {
 	protected static long num_profiles = 0;
 	private static AttributesAggregator aggregator = new AttributesAggregator();
 	
-	static {
-		aggregator.add(Preference.getAttributes());
-		aggregator.add(UserContext.getAttributes());
-		//aggregator.add(UserContent.getAttributes());
-	}
-	
 	protected double[] points = null;
 	protected int userId = -1;
 	protected UserContext userContext = new UserContext();
@@ -215,7 +209,11 @@ public class Profile implements Clusterable {
 		return num_profiles;
 	}
 	
-	public static AttributesAggregator getAggregator() {
+	public static AttributesAggregator getAggregator() {	
+		aggregator.add(Preference.getAttributes());
+		aggregator.add(UserContext.getAttributes());
+		//aggregator.add(UserContent.getAttributes())
+		
 		return aggregator;
 	}
 	

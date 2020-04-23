@@ -1,49 +1,51 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
 import java.util.Random;
+import java.util.TreeMap;
+import java.util.Map.Entry;
 
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
 import com.certh.iti.easytv.user.preference.attributes.discretization.Discretization;
 import com.certh.iti.easytv.user.preference.attributes.discretization.IntegerDiscretization;
+import com.certh.iti.easytv.util.Table;
+import com.certh.iti.easytv.util.Table.Position;
 
 public class IntegerAttribute extends NumericAttribute {	
 		
+	protected int binsNum;
+	protected Integer[][] discretes = null;
+	protected TreeMap<Integer, Long> frequencyHistogram = new TreeMap<Integer, Long>();
+	
 	public IntegerAttribute(double[] range) {
 		super(range);
-		
-		discretization = new IntegerDiscretization(range);
+		this.binsNum = -1;
 	}
 
 	public IntegerAttribute(double[] range, double operandMissingValue) {
 		super(range, operandMissingValue);
-		
-		discretization = new IntegerDiscretization(range);
+		this.binsNum = -1;
 	}
 	
 	public IntegerAttribute(double[] range, double step, double operandMissingValue) {
 		super(range, step, operandMissingValue);
-		
-		discretization = new IntegerDiscretization(range, step);
+		this.binsNum = -1;
 	}
 	
 	public IntegerAttribute(double[] range, double step, int binsNum, double operandMissingValue) {
 		super(range, step, operandMissingValue);
-		
-		discretization = new IntegerDiscretization(range, step, binsNum);
+		this.binsNum = binsNum;
 	}
 	
 	public IntegerAttribute(double[] range, double step, double operandMissingValue, Discretization discretization) {
 		super(range, step, operandMissingValue);
-		
 		this.discretization = discretization;
 	}
 	
 	public IntegerAttribute(double[] range, double step, Integer[][] discretes) {
 		super(range, step);
-		
-		this.discretization = new IntegerDiscretization(range, step, discretes);
+		this.discretes = discretes;
 	}
 	
 	
@@ -86,12 +88,11 @@ public class IntegerAttribute extends NumericAttribute {
 			throw new OutOfRangeException(new DummyLocalizable("Non compatible with step: " + step), numericValue, range[0], range[1]);
 
 		// Increate histogram counts
-		Double key = new Double(numericValue);
-		Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
-		frequencyHistogram.put(key, tmp);
+		Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
+		frequencyHistogram.put(numericValue, tmp);
 		
 		//Increment the number of occurrences 
-		discretization.handle(numericValue);
+		//discretization.handle(numericValue);
 
 		// Set Min Max vlaue
 		setMinMaxValue(numericValue);
@@ -103,5 +104,51 @@ public class IntegerAttribute extends NumericAttribute {
 		return value;
 	}
 	
-
+	@Override
+	public double getStandardDeviation() {
+		if(n == 0)
+			return 0.0;
+		
+		if(standard_deviation == -1.0) {
+			
+			double var = 0.0;
+			double mean = sum/n;
+			
+			for(Entry<Integer, Long> entry : frequencyHistogram.entrySet()) 
+				var += entry.getValue() * Math.pow(entry.getKey() - mean, 2);
+			
+			standard_deviation = Math.sqrt(var/n);
+		}
+		
+		return standard_deviation; 
+	}
+	
+	@Override
+	protected String getValueshistogram() {
+		
+		//Histogram table
+		Table histTable = new Table(2, 11);
+		Table.Row headerRow = histTable.createRow(1, Position.CENTER);		
+		headerRow.addCell("Values histogram");
+		histTable.addRow(headerRow);
+		histTable.addRow(new Object[] {" Value", " Frequency"}, Position.CENTER);			
+		for(Entry<Integer, Long> entry : frequencyHistogram.entrySet()) 
+			histTable.addRow(new Object[] {entry.getKey().intValue(), entry.getValue().intValue()});
+		
+		return histTable.toString() +" \r\n";
+	}
+	
+	@Override
+	public Discretization getDiscretization() {
+		if(discretization == null) {
+			if(frequencyHistogram.isEmpty()) return null;
+			else if(discretes == null)
+				return new IntegerDiscretization(range, step, binsNum, frequencyHistogram);
+			else
+				return new IntegerDiscretization(range, step, discretes, frequencyHistogram);
+		}
+		else 
+			return discretization;
+	}
+	
 }

@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContextParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
-import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.DoubleAttribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
@@ -26,7 +25,6 @@ public class UserContext implements Clusterable{
     private Map<String, Object> context  =  new HashMap<String, Object>();
     private JSONObject jsonObj = null;
     
-	private static AttributesAggregator aggregator = new AttributesAggregator();
 	protected static Map<String, Attribute> contextAttributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
 	{
@@ -68,11 +66,6 @@ public class UserContext implements Clusterable{
     }};
 	
 	
-	
-	static {
-		aggregator.add(UserContext.contextAttributes);
-	}
-    
 	public UserContext() {}
 	
 	public UserContext(Random rand) {	
@@ -192,15 +185,6 @@ public class UserContext implements Clusterable{
 			
 			points[index++] = handler.getPoints(prefValue);
 		}
-	}
-	
-	/**
-	 * Get context as a set of itemset 
-	 * 
-	 * @return
-	 */
-	public int[] getAsItemSet() {
-		return aggregator.code(context);
 	}
 	
 	public static Map<String, Attribute> getAttributes(){

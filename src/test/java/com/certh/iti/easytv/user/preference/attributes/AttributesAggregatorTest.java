@@ -42,6 +42,29 @@ public class AttributesAggregatorTest {
     
     @BeforeClass
     public void beforeClass() {
+    	Attribute attr;
+    	
+    	//load values
+    	attr = attributes.get("Integer");
+    	for(int i = 0; i < 101; i++) attr.handle(i);
+    	attr = attributes.get("Double");
+		for(double i = 1.0; i < 2.5; i+= 0.5) attr.handle(i);
+    	attr = attributes.get("Nominal");
+		attr.handle("1"); attr.handle("2"); attr.handle("3");
+    	attr = attributes.get("Ordinal");
+		attr.handle("15"); attr.handle("20"); attr.handle("23");
+
+		
+    	attr = attributes1.get("Integer1");
+    	for(int i = 0; i < 101; i++) attr.handle(i);
+    	attr = attributes1.get("Double1");
+		for(double i = 1.0; i < 2.5; i+= 0.5) attr.handle(i);
+    	attr = attributes1.get("Nominal1");
+		attr.handle("1"); attr.handle("2"); attr.handle("3");
+    	attr = attributes1.get("Ordinal1");
+		attr.handle("15"); attr.handle("20"); attr.handle("23");
+
+    	
     	aggregator1.add(attributes);
     	aggregator2.add(attributes1);
     	aggregator3.add(aggregator1);
@@ -65,22 +88,6 @@ public class AttributesAggregatorTest {
 		
 		Assert.assertEquals(aggregator1.getBinNumber(), counts);
 	}
-	
-/*	@Test
-	public void test_getDiscrete() {
-		int[] items = new int[] {1, 26, 29, 32, 34};
-		Discrete[] actual = aggregator1.getDiscrete(items);
-		Discrete[] expected = new Discrete[] {
-				attributes.get("Integer").getBins()[items[0]],
-				attributes.get("Double").getBins()[items[1] - 25],
-				attributes.get("Nominal").getBins()[items[2] - 28],
-				attributes.get("Ordinal").getBins()[items[3] - 31],
-				attributes.get("Boolean").getBins()[items[4] - 34]
-		};
-		
-		Assert.assertEquals(actual, expected);
-	}
-*/
     
 	@Test
 	public void test_code1() {

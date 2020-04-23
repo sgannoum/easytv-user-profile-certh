@@ -61,4 +61,21 @@ public abstract class Discrete {
 	public abstract int compare(Object item);
 	
 	protected abstract boolean checkType(Object item);
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == this) return true;
+		if(!(obj instanceof Discrete)) return false;
+		
+		Discrete tmp = (Discrete) obj;
+		
+		if(range.length != tmp.range.length) return false;
+		
+		for(int i = 0; i < range.length; i++)
+			if(!range[i].equals(tmp.range[i])) return false;
+		
+		return center.equals(tmp.center) && 
+				 type.equals(tmp.type); 
+		
+	}
 }

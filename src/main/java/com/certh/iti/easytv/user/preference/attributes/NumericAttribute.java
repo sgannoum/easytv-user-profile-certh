@@ -1,12 +1,7 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
-import java.util.TreeMap;
-
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.commons.math3.exception.util.DummyLocalizable;
 
@@ -23,8 +18,6 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	
 	protected double step = 1.0;
 	
-	protected Map<Double, Long> frequencyHistogram = new TreeMap<Double, Long>();
-
 	public NumericAttribute(double[] range) {
 		super(range);
 	}
@@ -69,41 +62,17 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		return n!= 0 ? sum/n : 0;
 	}
 	
-	public double[][] getEntriesCounts() {
-		int size = frequencyHistogram.keySet().size();
-		int index = 0;
-		double[][] entriesCounts = new double[size][2];
-		
-		Iterator<Entry<Double, Long>> iter = frequencyHistogram.entrySet().iterator();
-		while(iter.hasNext()) {
-			Entry<Double, Long> entry = iter.next();
-			entriesCounts[index][0] = entry.getKey().doubleValue();
-			entriesCounts[index][1] = entry.getValue().doubleValue();
-			index++;
-		}
-		return entriesCounts;
-	}
+	/**
+	 * Get standard deviation
+	 */
+	public abstract double getStandardDeviation();
 	
-	public double getStandardDeviation() {
-		if(n == 0)
-			return 0.0;
-		
-		if(standard_deviation == -1.0) {
-			
-			double var = 0.0;
-			double mean = sum/n;
-			
-			Iterator<Entry<Double, Long>> iter = frequencyHistogram.entrySet().iterator();
-			while(iter.hasNext()) {
-				Entry<Double, Long> entry = iter.next();
-				var += entry.getValue() * Math.pow(entry.getKey() - mean, 2);
-			}
-			
-			standard_deviation = Math.sqrt(var/n);
-		}
-		
-		return standard_deviation; 
-	}
+	/**
+	 * Print out histogram values
+	 * 
+	 * @return
+	 */
+	protected abstract String getValueshistogram();
 	
 	/**
 	 * Generate a random value 
@@ -135,7 +104,6 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	@Override
 	public String toString() {
 
-		
 		//Statistical table
 		Table statTable = new Table(6, 10);
 		Table.Row headerRow = statTable.createRow(1, Position.CENTER);		
@@ -144,31 +112,7 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 		statTable.addRow(new Object[] {"Total", "sum", "Stand dev", "Mean",  "Min", "Max"}, Position.CENTER);
 		statTable.addRow(new Object[] {n, sum, getStandardDeviation(), getMean(), getMinValue(), getMaxValue() });	
 		
-		
-		//Histogram table
-		Table distTable = new Table(4, 11);
-		headerRow = distTable.createRow(1, Position.CENTER);		
-		headerRow.addCell("Discretization properties");
-		distTable.addRow(headerRow);
-		distTable.addRow(new Object[] {"Bins number", "Bin Size", "Step"}, Position.CENTER);
-		distTable.addRow(new Object[] {discretization.getBinNumber(), discretization.getDiscreteSize(0), step});
-		
-		
-		return super.toString() + statTable.toString()+ "\r\n" + distTable.toString() + "\r\n" + getValueshistogram();
+		return super.toString() + statTable.toString() + "\r\n" + getValueshistogram();
 	}
 	
-	protected String getValueshistogram() {
-		
-		//Histogram table
-		Table histTable = new Table(2, 11);
-		Table.Row headerRow = histTable.createRow(1, Position.CENTER);		
-		headerRow.addCell("Values histogram");
-		histTable.addRow(headerRow);
-		histTable.addRow(new Object[] {" Value", " Frequency"}, Position.CENTER);
-		double[][] entriesCounts = getEntriesCounts();
-		for(int i = 0 ; i < entriesCounts.length; i++)
-			histTable.addRow(new Object[] {entriesCounts[i][0], (int) entriesCounts[i][1]});
-		
-		return histTable.toString() +" \r\n";
-	}
 }

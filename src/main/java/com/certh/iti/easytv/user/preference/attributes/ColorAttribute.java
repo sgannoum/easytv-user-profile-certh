@@ -2,8 +2,8 @@ package com.certh.iti.easytv.user.preference.attributes;
 
 import java.awt.Color;
 import java.util.Random;
-
 import com.certh.iti.easytv.user.preference.attributes.discretization.ColorDiscretization;
+import com.certh.iti.easytv.user.preference.attributes.discretization.Discretization;
 import com.certh.iti.easytv.user.preference.attributes.discretization.NoDiscretization;
 
 public class ColorAttribute extends IntegerAttribute {
@@ -12,27 +12,30 @@ public class ColorAttribute extends IntegerAttribute {
 	private NumericAttribute green = new IntegerAttribute(new double[] {0.0, 255.0}, 1, 0, new NoDiscretization());
 	private NumericAttribute blue =  new IntegerAttribute(new double[] {0.0, 255.0}, 1, 0, new NoDiscretization());
 	
-	private static int MAX_BIN_SIZE = 100;
 	private static double[] default_range = new double[] {0X000000, 0Xffffff};
 	
 	public ColorAttribute() {
-		super(default_range, 1.0, 0, new ColorDiscretization(default_range, 1.0, MAX_BIN_SIZE));
+		super(default_range, 1.0, -1);
+	}
+	
+	public ColorAttribute(int binNum) {
+		super(default_range, 1.0, binNum, 0X000000);
 	}
 	
 	public ColorAttribute(double step, int binNum) {
-		super(default_range, step, 0, new ColorDiscretization(default_range, step, binNum));
+		super(default_range, step, binNum, 0X000000);
 	}
 	
 	public ColorAttribute(double[] range, double step, int binNum) {
-		super(range, step,  0, new ColorDiscretization(range, step, binNum));
+		super(range, step,  binNum, 0X000000);
 	}
 	
 	public ColorAttribute(double[] range, double step, Integer[][] discretes) {
-		super(range, step, 0, new ColorDiscretization(range, step, discretes));
+		super(range, step, discretes);
 	}
 	
 	public ColorAttribute(Integer[][] discretes) {
-		super(default_range, 1.0, 0, new ColorDiscretization(default_range, 1.0, discretes));
+		super(default_range, 1.0, discretes);
 	}
 	
 	@Override
@@ -63,12 +66,11 @@ public class ColorAttribute extends IntegerAttribute {
 
 		Color color = Color.decode((String) value);
 		
-		int numericValue = color.getRGB() & 0X00ffff;
+		int numericValue = color.getRGB() & 0x00ffffff;
 
 		// Increase histogram counts
-		Double key = new Double(numericValue);
-		Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
-		frequencyHistogram.put(key, tmp);
+		Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
+		frequencyHistogram.put(numericValue, tmp);
 		
 		//handle red dimension
 		red.handle(color.getRed());
@@ -83,7 +85,7 @@ public class ColorAttribute extends IntegerAttribute {
 		setMinMaxValue(numericValue);
 		
 		//Increment the number of occurrences 
-		discretization.handle(numericValue);
+		//discretization.handle(numericValue);
 
 		//sum += numericValue;
 		n++;
@@ -95,4 +97,23 @@ public class ColorAttribute extends IntegerAttribute {
 	protected String getValueshistogram() {
 		return "";
 	}
+	
+	@Override
+	public double getStandardDeviation() {
+		return 0.0;
+	}
+	
+	@Override
+	public Discretization getDiscretization() {
+		if(discretization == null) {
+			if(frequencyHistogram.isEmpty()) return null;
+			else if(discretes == null)
+				return new ColorDiscretization(range, step, binsNum, frequencyHistogram);
+			else
+				return new ColorDiscretization(range, step, discretes, frequencyHistogram);
+		}
+		else 
+			return discretization;
+	}
+	
 }

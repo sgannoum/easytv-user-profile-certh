@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserContentParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
-import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.MultiNominalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
 
@@ -22,7 +21,6 @@ public class UserContent implements Clusterable {
 	protected Map<String, Object> content  =  new HashMap<String, Object>();
     private JSONObject jsonObj = null;
     
-	private static AttributesAggregator aggregator = new AttributesAggregator();
 	protected static Map<String, Attribute> content_attributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
  
@@ -34,10 +32,6 @@ public class UserContent implements Clusterable {
 	    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
 	    put("http://registry.easytv.eu/application/cs/audio/track", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
     }};
-	
-	static {
-		aggregator.add(UserContent.content_attributes);
-	}
     
 	public UserContent() {
 		this.setPoint();
@@ -179,15 +173,6 @@ public class UserContent implements Clusterable {
 			
 			points[index++] = handler.getPoints(prefValue);
 		}
-	}
-	
-	/**
-	 * Get context as a set of itemset 
-	 * 
-	 * @return
-	 */
-	public int[] getAsItemSet() {
-		return aggregator.code(content);
 	}
 	
 	public static Map<String, Attribute> getAttributes(){

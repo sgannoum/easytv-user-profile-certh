@@ -14,12 +14,23 @@ public class NominalAttributeTest {
 	
 	@BeforeClass
 	public void beforTest() {
-		attr1 = new NominalAttribute(new String[] {"15", "20", "23"});
-		attr2 = new NominalAttribute(new String[] {"none", "gaze_control", "gesture_control"});
+		
+		String[] states_1 = new String[] {"15", "20", "23"};
+		String[] states_2 = new String[] {"none", "gaze_control", "gesture_control"};
+		
+		attr1 = new NominalAttribute(states_1);
+		attr2 = new NominalAttribute(states_2);
+		
+		//Load values
+		for(int i = 0; i < states_1.length; i++)
+			attr1.handle(states_1[i]);
+		
+		for(int i = 0; i < states_2.length; i++)
+			attr2.handle(states_2[i]);
 		
 		//get discretization
 		dist_attr1 = attr1.getDiscretization();
-		dist_attr2 = attr2.getDiscretization();
+		dist_attr2 = attr2.getDiscretization();	
 	}
 	
 	@Test

@@ -5,7 +5,9 @@ import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Iterator;
 import java.util.Map.Entry;
+
 import java.util.TreeMap;
+import java.util.Vector;
 
 
 public class IntegerDiscretization extends NumericDiscretization {
@@ -121,18 +123,14 @@ public class IntegerDiscretization extends NumericDiscretization {
 			this.bins[i] = new IntegerDiscrete(discretes[i], step);
 	}
 	
-	public IntegerDiscretization(double[] range, double step, int binNums,  TreeMap<Double, Long> values) {
-		super(range, step, binNums, values, new IntegerDiscretiationFactory());
-	}
-	
-	public IntegerDiscretization(double[] range, double step, Integer[][] discretes, TreeMap<Double, Long> values) {
+	public IntegerDiscretization(double[] range, double step, Integer[][] discretes, TreeMap<Integer, Long> values) {
 		super(range, step);
 		
 		int[] counts = new int[discretes.length];
 		int binIndex = 0, nonZeroCounters = 0;
 		boolean counted = false;
-		Iterator<Entry<Double, Long>> iterator = values.entrySet().iterator();
-		Entry<Double, Long> entry = iterator.next();
+		Iterator<Entry<Integer, Long>> iterator = values.entrySet().iterator();
+		Entry<Integer, Long> entry = iterator.next();
 		while(true) {
 			if(entry.getKey() >= discretes[binIndex][0] && entry.getKey() <= discretes[binIndex][1]) {
 				counts[binIndex] += entry.getValue();
@@ -154,6 +152,71 @@ public class IntegerDiscretization extends NumericDiscretization {
 				this.bins[binIndex++] = tmp;
 			}
 		}
+	}
+	
+	public IntegerDiscretization(double[] range, double step, int binsNum, TreeMap<Integer, Long> values) {
+		super(range, step);
+		
+		valueRange = ((range[1] - range[0]) / step) + 1;
+		if(binsNum == -1) binsNum = (int) valueRange;
+		remaining = (int) (valueRange % binsNum);
+		mostBinsSize = (int) ((valueRange - remaining)  / binsNum);
+		int currentBinSize = mostBinsSize;
+		if(remaining > 0 ) currentBinSize++;
+		double initialRange = 0;
+		
+		int binIndex = 0;
+		//calculate the lower and upper bounds of the first discrete
+		BigDecimal firstValue = getDiscreteLowerValue(binIndex, currentBinSize, initialRange);
+		BigDecimal lastValue =  getDiscreteUpperValue(binIndex, currentBinSize, initialRange);	
+		
+		Vector<Discrete> tmps = new Vector<Discrete>();
+		Discrete currt = null;
+		Iterator<Entry<Integer, Long>> iterator = values.entrySet().iterator();
+		Entry<Integer, Long> entry = iterator.next();
+		while(true) {
+			
+			if(entry.getKey() >= firstValue.intValue() && entry.getKey() <= lastValue.intValue()) {
+				
+				//first time, create discrete
+				if(currt == null) { 
+					if(firstValue.intValue() != lastValue.intValue())
+						currt = new IntegerDiscrete(firstValue, lastValue, step);
+					else 
+						currt = new IntegerDiscrete(firstValue);
+					tmps.add(currt);
+				} 
+				
+				//add counts
+				currt.counts += entry.getValue();
+				
+				//get next
+				if(!iterator.hasNext()) break;
+				entry = iterator.next();
+				
+			} else {
+				//No match, inspect next possible discrete
+				
+				currt = null;
+				binIndex++;
+				
+				//check which size the bin must take
+				if(binIndex == remaining) {
+					currentBinSize = mostBinsSize;
+					initialRange = remaining * step ;
+				}
+				
+				
+				//calculate the lower and upper bounds of the discrete
+				firstValue = getDiscreteLowerValue(binIndex, currentBinSize, initialRange);
+				lastValue =  getDiscreteUpperValue(binIndex, currentBinSize, initialRange);
+			}
+		}
+		
+		//fill up the bins arrays
+		this.bins = new Discrete[tmps.size()];
+		for(int i = 0; i < tmps.size(); i++)
+			this.bins[i] = tmps.get(i);
 	}
 	
 

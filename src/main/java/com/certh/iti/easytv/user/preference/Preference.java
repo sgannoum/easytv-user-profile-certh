@@ -14,7 +14,6 @@ import org.json.JSONObject;
 
 import com.certh.iti.easytv.user.exceptions.UserProfileParsingException;
 import com.certh.iti.easytv.user.preference.attributes.Attribute;
-import com.certh.iti.easytv.user.preference.attributes.AttributesAggregator;
 import com.certh.iti.easytv.user.preference.attributes.BinaryAttribute;
 import com.certh.iti.easytv.user.preference.attributes.ColorAttribute;
 import com.certh.iti.easytv.user.preference.attributes.DoubleAttribute;
@@ -26,7 +25,6 @@ import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
 
 public class Preference implements Clusterable, Comparable<Preference> {
 
-	private static AttributesAggregator aggregator = new AttributesAggregator();
 	protected static Map<String, Attribute> preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
 		private static final long serialVersionUID = 1L;
  
@@ -96,10 +94,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/background",  new SymmetricBinaryAttribute());
 		
     }};
-    
-	static {
-		aggregator.add(Preference.preferencesAttributes);
-	}
 	
     protected double[] points;
 	protected String name = new String();
@@ -167,15 +161,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	@Override
 	public double[] getPoint() {	
 		return points;
-	}
-	
-	/**
-	 * Get an item set representation of the user profile 
-	 * 
-	 * @return
-	 */
-	public int[] getAsItemSet() {
-		return aggregator.code(preferences);
 	}
 
 	public Map<String, Object> getPreferences() {

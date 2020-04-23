@@ -290,9 +290,7 @@ public class ConditionTest {
 		
 		Condition condition1 = new Condition(jsonCondition1);
 		Condition condition2 = new Condition(condition1.getType(), condition1.getOperands());
-		
-		System.out.println(condition2.geJSONObject().toString(4));
-		
+				
 		Assert.assertTrue(condition2.geJSONObject().similar(jsonCondition1));
 	}
 	
@@ -338,9 +336,7 @@ public class ConditionTest {
 													+ "}");
 		
 		List<Object> list = jsonCondition1.getJSONArray("conditions").toList();
-		System.out.println(list.toString());
 		HashMap<String, Object> map = (HashMap<String, Object>) list.get(0);
-		System.out.println(map.get("operands"));
 	}
 
 }

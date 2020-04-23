@@ -75,10 +75,6 @@ public class UserProfile implements Clusterable {
 	public double[] getPoint() {
 		return userPreferences.getPoint();
 	}
-	
-	public int[] getAsItemSet() {
-		return this.userPreferences.getAsItemSet();
-	}
 
 	public JSONObject getJSONObject() {
 		if(jsonObj == null) {

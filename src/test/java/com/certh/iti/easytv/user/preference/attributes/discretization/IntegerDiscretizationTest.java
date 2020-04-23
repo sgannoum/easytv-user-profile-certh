@@ -218,16 +218,16 @@ public class IntegerDiscretizationTest {
 	
 	@Test
 	public void test_creation_from_histogram() {
-		TreeMap<Double, Long> values  =  new TreeMap<Double, Long>() {
+		TreeMap<Integer, Long> values  =  new TreeMap<Integer, Long>() {
 			private static final long serialVersionUID = 1L;
 		{
-			put(0.0, 1L);
-			put(1.0, 1L);
-			put(2.0, 1L);
-			put(3.0, 1L);
-			put(7.0, 1L);
-			put(8.0, 1L);
-			put(9.0, 1L);
+			put(0, 1L);
+			put(1, 1L);
+			put(2, 1L);
+			put(3, 1L);
+			put(7, 1L);
+			put(8, 1L);
+			put(9, 1L);
 		}};
 		
 		IntegerDiscretization attr1 = new IntegerDiscretization(new double[] {0.0, 9.0}, 1.0, new Integer[][] {new Integer[]{0, 3}, 
@@ -253,16 +253,16 @@ public class IntegerDiscretizationTest {
 	
 	@Test
 	public void test_creation_from_histogram_1() {
-		TreeMap<Double, Long> values  =  new TreeMap<Double, Long>() {
+		TreeMap<Integer, Long> values  =  new TreeMap<Integer, Long>() {
 			private static final long serialVersionUID = 1L;
 		{
-			put(0.0, 1L);
-			put(1.0, 1L);
-			put(2.0, 1L);
-			put(3.0, 1L);
-			put(7.0, 1L);
-			put(8.0, 1L);
-			put(9.0, 1L);
+			put(0, 1L);
+			put(1, 1L);
+			put(2, 1L);
+			put(3, 1L);
+			put(7, 1L);
+			put(8, 1L);
+			put(9, 1L);
 		}};
 		
 		IntegerDiscretization attr1 = new IntegerDiscretization(new double[] {0.0, 9.0}, 1.0, 3, values);

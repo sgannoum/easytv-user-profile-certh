@@ -1,5 +1,6 @@
 package com.certh.iti.easytv.user.preference.attributes;
 
+import com.certh.iti.easytv.user.preference.attributes.discretization.Discretization;
 import com.certh.iti.easytv.user.preference.attributes.discretization.StringDiscretization;
 
 public class OrdinalAttribute extends NominalAttribute implements INumeric, INominal {
@@ -11,19 +12,21 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 	public OrdinalAttribute(String[] states) {
 		super(states);
 		this.states = states;
-		discretization = new StringDiscretization(states);
 	}
 
 	public OrdinalAttribute(double[] range, String[] states) {
 		super(range, states);
 		this.states = states;
-		discretization = new StringDiscretization(states);
 	}
 
 	public OrdinalAttribute(double[] range, double operandMissingValue, String[] states) {
 		super(range, operandMissingValue, states);
 		this.states = states;
-		discretization = new StringDiscretization(states);
+	}
+	public OrdinalAttribute(double[] range, double operandMissingValue, String[] states, String[][] discretes) {
+		super(range, operandMissingValue, states);
+		this.states = states;
+		this.discretes = discretes;
 	}
 
 	private void setMinMaxValue(double value) {
@@ -61,17 +64,6 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 	}
 
 	@Override
-	public double[][] getEntriesCounts() {
-
-		double[][] statesCounts = new double[states.length][1];
-
-		for (int i = 0; i < states.length; i++)
-			statesCounts[i][0] = discretization.getBins()[i].getCounts();
-
-		return statesCounts;
-	}
-
-	@Override
 	public double getStandardDeviation() {
 		double var = 0.0;
 		double mean = sum / n;
@@ -103,16 +95,35 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		int state = orderOf(str);
 		if (state == -1)
 			throw new IllegalStateException("Unknown state " + value);
+		
+		// Increase histogram counts
+		String key = (String) value;
+		Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
+		frequencyHistogram.put(key, tmp);
 
 		// set Min Max value
 		setMinMaxValue(state);
 
 		// increase counts
-		discretization.handle(value);
+		//discretization.handle(value);
 
 		sum += state;
 
 		return value;
 	}
+	
+	@Override
+	public Discretization getDiscretization() {
+		if(discretization == null) {
+			if(frequencyHistogram.isEmpty()) return null;
+			else if(discretes == null)
+				return new StringDiscretization(range, frequencyHistogram);
+			else
+				return new StringDiscretization(range, discretes, frequencyHistogram);
+		}
+		else 
+			return discretization;
+	}
+
 
 }

@@ -4,8 +4,8 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
 public class StringDiscretization extends Discretization {
 		
@@ -83,7 +83,7 @@ public class StringDiscretization extends Discretization {
 			this.bins[i] = new StringDiscrete(bins[i]);
 	}
 	
-	public StringDiscretization(double[] range, String[][] discretes, TreeMap<String, Long> values) {
+	public StringDiscretization(double[] range, String[][] discretes, Map<String, Long> values) {
 		super(range);
 		
 		int[] counts = new int[discretes.length];
@@ -113,7 +113,7 @@ public class StringDiscretization extends Discretization {
 		}
 	}
 	
-	public StringDiscretization(double[] range, TreeMap<String, Long> values) {
+	public StringDiscretization(double[] range, Map<String, Long> values) {
 		super(range);
 		
 		this.bins = new Discrete[values.keySet().size()];

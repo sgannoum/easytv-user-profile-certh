@@ -8,7 +8,9 @@ import java.util.Vector;
 
 public abstract class NumericDiscretization extends Discretization {
 	
-	private int remaining = 0;
+	protected int remaining = 0;
+	protected double valueRange;
+	protected int mostBinsSize = 1;
 	
 	public interface NumericDiscreteFactory {
 		public abstract Discrete createInstance(BigDecimal firstValue);
@@ -22,9 +24,8 @@ public abstract class NumericDiscretization extends Discretization {
 	public NumericDiscretization(double[] range, double step, NumericDiscreteFactory factory){
 		super(range, step);
 		
-		double valueRange = ((range[1] - range[0]) / step) + 1;
-		int binsNum = (int) (valueRange);
-		this.bins = new Discrete[binsNum];
+		valueRange = ((range[1] - range[0]) / step) + 1;
+		this.bins = new Discrete[(int) (valueRange)];
 		for(int i = 0; i < bins.length; i++) {
 			
 			//calculate the only bound of the discrete
@@ -39,9 +40,9 @@ public abstract class NumericDiscretization extends Discretization {
 	public NumericDiscretization(double[] range, double step, int binsNum, NumericDiscreteFactory factory) {
 		super(range, step);
 		
-		double valueRange = ((range[1] - range[0]) / step) + 1;
+		valueRange = ((range[1] - range[0]) / step) + 1;
 		remaining = (int) (valueRange % binsNum);
-		int mostBinsSize = (int) ((valueRange - remaining)  / binsNum);
+		mostBinsSize = (int) ((valueRange - remaining)  / binsNum);
 		this.bins = new Discrete[binsNum];
 	
 		int currentBinSize = mostBinsSize + 1;
@@ -55,26 +56,14 @@ public abstract class NumericDiscretization extends Discretization {
 				initialRange = remaining * step ;
 			}
 			
-			//calculate the lower bound of the discrete
-			BigDecimal firstValue = new BigDecimal(String.valueOf(i))
-									.multiply(new BigDecimal(String.valueOf(currentBinSize)))
-									.multiply(new BigDecimal(String.valueOf(step)))
-									.add(new BigDecimal(String.valueOf(initialRange)))
-									.add(new BigDecimal(String.valueOf(range[0])));
-			
 			if(currentBinSize == 1) {
+				//calculate the lower bound of the discrete
+				BigDecimal firstValue = getDiscreteLowerValue(i, currentBinSize, initialRange);
 				bins[i] = factory.createInstance(firstValue);
-
 			} else {
-				//calculate the upper bounds of the discrete
-				BigDecimal lastValue =  new BigDecimal(String.valueOf(i))
-										.add(new BigDecimal(String.valueOf(1)))
-										.multiply(new BigDecimal(String.valueOf(currentBinSize)))
-										.multiply(new BigDecimal(String.valueOf(step)))
-										.add(new BigDecimal(String.valueOf(initialRange)))
-										.add(new BigDecimal(String.valueOf(range[0])))
-										.subtract(new BigDecimal(String.valueOf(step)));	
-				
+				//calculate the lower and upper bounds of the discrete
+				BigDecimal firstValue = getDiscreteLowerValue(i, currentBinSize, initialRange);
+				BigDecimal lastValue =  getDiscreteUpperValue(i, currentBinSize, initialRange);		
 				bins[i] = factory.createInstance(firstValue, lastValue, step);
 			}
 		}
@@ -83,28 +72,18 @@ public abstract class NumericDiscretization extends Discretization {
 	public NumericDiscretization(double[] range, double step, int binsNum, TreeMap<Double, Long> values, NumericDiscreteFactory factory) {
 		super(range, step);
 		
-		double valueRange = ((range[1] - range[0]) / step) + 1;
+		valueRange = ((range[1] - range[0]) / step) + 1;
+		if(binsNum == -1) binsNum = (int) valueRange;
 		remaining = (int) (valueRange % binsNum);
-		int mostBinsSize = (int) ((valueRange - remaining)  / binsNum);
-		int currentBinSize = mostBinsSize + 1;
+		mostBinsSize = (int) ((valueRange - remaining)  / binsNum);
+		int currentBinSize = mostBinsSize;
+		if(remaining > 0 ) currentBinSize++;
 		double initialRange = 0;
 		
 		int binIndex = 0;
 		//calculate the lower and upper bounds of the first discrete
-		BigDecimal firstValue = new BigDecimal(String.valueOf(binIndex))
-								.multiply(new BigDecimal(String.valueOf(currentBinSize)))
-								.multiply(new BigDecimal(String.valueOf(step)))
-								.add(new BigDecimal(String.valueOf(initialRange)))
-								.add(new BigDecimal(String.valueOf(range[0])));
-		
-
-		BigDecimal lastValue =  new BigDecimal(String.valueOf(binIndex))
-								.add(new BigDecimal(String.valueOf(1)))
-								.multiply(new BigDecimal(String.valueOf(currentBinSize)))
-								.multiply(new BigDecimal(String.valueOf(step)))
-								.add(new BigDecimal(String.valueOf(initialRange)))
-								.add(new BigDecimal(String.valueOf(range[0])))
-								.subtract(new BigDecimal(String.valueOf(step)));	
+		BigDecimal firstValue = getDiscreteLowerValue(binIndex, currentBinSize, initialRange);
+		BigDecimal lastValue =  getDiscreteUpperValue(binIndex, currentBinSize, initialRange);	
 		
 		Vector<Discrete> tmps = new Vector<Discrete>();
 		Discrete currt = null;
@@ -116,7 +95,10 @@ public abstract class NumericDiscretization extends Discretization {
 				
 				//first time, create discrete
 				if(currt == null) { 
-					currt = factory.createInstance(firstValue, lastValue, step);
+					if(firstValue.doubleValue() != lastValue.doubleValue())
+						currt = factory.createInstance(firstValue, lastValue, step);
+					else 
+						currt = factory.createInstance(firstValue);
 					tmps.add(currt);
 				} 
 				
@@ -141,20 +123,8 @@ public abstract class NumericDiscretization extends Discretization {
 				
 				
 				//calculate the lower and upper bounds of the discrete
-				firstValue = new BigDecimal(String.valueOf(binIndex))
-										.multiply(new BigDecimal(String.valueOf(currentBinSize)))
-										.multiply(new BigDecimal(String.valueOf(step)))
-										.add(new BigDecimal(String.valueOf(initialRange)))
-										.add(new BigDecimal(String.valueOf(range[0])));
-				
-
-				lastValue =  new BigDecimal(String.valueOf(binIndex))
-										.add(new BigDecimal(String.valueOf(1)))
-										.multiply(new BigDecimal(String.valueOf(currentBinSize)))
-										.multiply(new BigDecimal(String.valueOf(step)))
-										.add(new BigDecimal(String.valueOf(initialRange)))
-										.add(new BigDecimal(String.valueOf(range[0])))
-										.subtract(new BigDecimal(String.valueOf(step)));
+				firstValue = getDiscreteLowerValue(binIndex, currentBinSize, initialRange);
+				lastValue =  getDiscreteUpperValue(binIndex, currentBinSize, initialRange);
 			}
 		}
 		
@@ -164,10 +134,26 @@ public abstract class NumericDiscretization extends Discretization {
 			this.bins[i] = tmps.get(i);
 	}
 	
+	protected BigDecimal getDiscreteLowerValue(int binIndex, int currentBinSize, double initialRange) {
+		return new BigDecimal(String.valueOf(binIndex))
+				.multiply(new BigDecimal(String.valueOf(currentBinSize)))
+				.multiply(new BigDecimal(String.valueOf(step)))
+				.add(new BigDecimal(String.valueOf(initialRange)))
+				.add(new BigDecimal(String.valueOf(range[0])));
+	}
+	
+	protected BigDecimal getDiscreteUpperValue(int binIndex, int currentBinSize, double initialRange) {
+		return new BigDecimal(String.valueOf(binIndex))
+				.add(new BigDecimal(String.valueOf(1)))
+				.multiply(new BigDecimal(String.valueOf(currentBinSize)))
+				.multiply(new BigDecimal(String.valueOf(step)))
+				.add(new BigDecimal(String.valueOf(initialRange)))
+				.add(new BigDecimal(String.valueOf(range[0])))
+				.subtract(new BigDecimal(String.valueOf(step)));
+	}
+	
 	public int getRemaining() {
 		return remaining;
 	}
 	
-
-
 }

@@ -16,15 +16,27 @@ public class ColorAttributeTest {
 	
 	@BeforeClass
 	public void beforClass() {
-		attr1 = new ColorAttribute();
+		attr1 = new ColorAttribute(100);
 		attr2 = new ColorAttribute(new Integer[][] { new Integer[] {0x000000, 0x0000ff }, //blue 
 													 new Integer[] {0x0001ff, 0x00ffff }, //green
 													 new Integer[] {0x01ffff, 0xffffff }  //red
 												   });
+		//load values from all bins
+		int binSize = (int) (Math.pow(2, 24) / 100);
+		for(int i = 0; i < 101; i++)
+			attr1.handle("#"+Integer.toHexString(0x000000 + (binSize * i)));
+		
+		//load values for other bins
+		attr2.handle("#000000");
+		attr2.handle("#ff1000");
+		attr2.handle("#0001ff");
+		attr2.handle("#0000ff");
+		attr2.handle("#ffffff");
 		
 		//get discretization
 		dist_attr1 = attr1.getDiscretization();
 		dist_attr2 = attr2.getDiscretization();
+		
 	}
 	
 	@Test
@@ -36,16 +48,16 @@ public class ColorAttributeTest {
 	@Test
 	public void test_code_attribute1() {
 		Assert.assertEquals(0, dist_attr1.code("#"+Integer.toHexString(Color.BLACK.getRGB() & 0x00ffffff )));
-		Assert.assertEquals(0, dist_attr1.code("#"+Integer.toHexString(167771)));
-		Assert.assertEquals(0, dist_attr1.code("#"+Integer.toHexString(167772)));
+		Assert.assertEquals(0, dist_attr1.code("#"+Integer.toHexString(0x28f5b)));
+		Assert.assertEquals(0, dist_attr1.code("#"+Integer.toHexString(0x28f5c)));
 
-		Assert.assertEquals(1, dist_attr1.code("#"+Integer.toHexString(167773)));
-		Assert.assertEquals(1, dist_attr1.code("#"+Integer.toHexString(167780)));
-		Assert.assertEquals(1, dist_attr1.code("#"+Integer.toHexString(335545)));
+		Assert.assertEquals(1, dist_attr1.code("#"+Integer.toHexString(0x28f5d)));
+		Assert.assertEquals(1, dist_attr1.code("#"+Integer.toHexString(0x28f64)));
+		Assert.assertEquals(1, dist_attr1.code("#"+Integer.toHexString(0x51eb9)));
 		
-		Assert.assertEquals(99, dist_attr1.code("#"+Integer.toHexString(16609444)));
-		Assert.assertEquals(99, dist_attr1.code("#"+Integer.toHexString(16609450)));
-		Assert.assertEquals(99, dist_attr1.code("#"+Integer.toHexString(16777215))); 
+		Assert.assertEquals(99, dist_attr1.code("#"+Integer.toHexString(0xfd70a4)));
+		Assert.assertEquals(99, dist_attr1.code("#"+Integer.toHexString(0xfd70aa)));
+		Assert.assertEquals(99, dist_attr1.code("#"+Integer.toHexString(0xffffff))); 
 		
 		Assert.assertEquals(99, dist_attr1.code("#"+Integer.toHexString(Color.WHITE.getRGB() & 0x00ffffff )));
 	}

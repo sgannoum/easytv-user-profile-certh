@@ -11,9 +11,7 @@ public interface INumeric {
 	public double getSum();
 	
 	public double getMean();
-	
-	public double[][] getEntriesCounts();
-	
+		
 	public double getStandardDeviation();
 
 }
