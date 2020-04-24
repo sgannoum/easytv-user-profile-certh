@@ -338,7 +338,7 @@ public class DoubleDiscretizationTest {
 	}
 	
 	@Test
-	public void test_creation_from_histogram() {
+	public void test_dynamic_discretization_from_histogram() {
 		TreeMap<Double, Long> values  =  new TreeMap<Double, Long>() {
 			private static final long serialVersionUID = 1L;
 		{
@@ -366,7 +366,7 @@ public class DoubleDiscretizationTest {
 	}
 	
 	@Test
-	public void test_creation_from_histogram_1() {
+	public void test_dynamic_discretization_from_histogram_and_bins_number() {
 		TreeMap<Double, Long> values  =  new TreeMap<Double, Long>() {
 			private static final long serialVersionUID = 1L;
 		{
@@ -397,6 +397,41 @@ public class DoubleDiscretizationTest {
 		
 		//check decode value
 		Assert.assertEquals(2.0, attr1.decode(0)); Assert.assertEquals(8.0, attr1.decode(1));
+	}
+	
+	@Test
+	public void test_dynamic_discretization_from_histogram_only() {
+		TreeMap<Double, Long> values  =  new TreeMap<Double, Long>() {
+			private static final long serialVersionUID = 1L;
+		{
+			put(0.0, 1L);
+			put(1.0, 1L);
+			put(2.0, 1L);
+			put(3.0, 1L);
+			put(7.0, 1L);
+			put(8.0, 1L);
+			put(9.0, 1L);
+		}};
+		
+		DoubleDiscretization attr1 = new DoubleDiscretization(new double[] {0.0, 9.0}, 1.0, -1, values);
+				
+		//check bins number found
+		Assert.assertEquals(7, attr1.getBinNumber());
+		
+		//check the value range size of each one
+		Assert.assertEquals(1, attr1.getDiscreteSize(0)); Assert.assertEquals(1, attr1.getDiscreteSize(1));
+		
+		//check code values
+		Assert.assertEquals(0, attr1.code(0.0)); Assert.assertEquals(1, attr1.code(1.0)); Assert.assertEquals(2, attr1.code(2.0)); Assert.assertEquals(3, attr1.code(3.0));
+		Assert.assertEquals(4, attr1.code(7.0)); Assert.assertEquals(5, attr1.code(8.0)); Assert.assertEquals(6, attr1.code(9.0)); 
+		
+		//check the occurrences counts of each bin
+		Assert.assertEquals(1 ,attr1.getBins()[0].getCounts());
+		Assert.assertEquals(1 ,attr1.getBins()[1].getCounts());
+		
+		//check decode value
+		Assert.assertEquals(0.0, attr1.decode(0)); Assert.assertEquals(1.0, attr1.decode(1)); Assert.assertEquals(2.0, attr1.decode(2)); Assert.assertEquals(3.0, attr1.decode(3));
+		Assert.assertEquals(7.0, attr1.decode(4)); Assert.assertEquals(8.0, attr1.decode(5)); Assert.assertEquals(9.0, attr1.decode(6));
 	}
 	
 }

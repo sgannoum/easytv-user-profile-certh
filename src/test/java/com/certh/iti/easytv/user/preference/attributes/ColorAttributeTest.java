@@ -64,9 +64,9 @@ public class ColorAttributeTest {
 	
 	@Test
 	public void test_decode_attribute1() {
-		Assert.assertEquals("#"+Integer.toHexString(80000), dist_attr1.decode(0));
-		Assert.assertEquals("#"+Integer.toHexString(247773), dist_attr1.decode(1));
-		Assert.assertEquals("#"+Integer.toHexString(415546), dist_attr1.decode(2));
+		Assert.assertEquals("#013880", dist_attr1.decode(0));
+		Assert.assertEquals("#03c7dd", dist_attr1.decode(1));
+		Assert.assertEquals("#06573a", dist_attr1.decode(2));
 	}
 	
 	@Test
@@ -81,9 +81,9 @@ public class ColorAttributeTest {
 	
 	@Test
 	public void test_decode_attribute2() {
-		Assert.assertEquals("#"+Integer.toHexString(100), dist_attr2.decode(0));
-		Assert.assertEquals("#"+Integer.toHexString(30511), dist_attr2.decode(1));
-		Assert.assertEquals("#"+Integer.toHexString(8131071), dist_attr2.decode(2));
+		Assert.assertEquals("#000064", dist_attr2.decode(0));
+		Assert.assertEquals("#00772f", dist_attr2.decode(1));
+		Assert.assertEquals("#7c11ff", dist_attr2.decode(2));
 	}
 	
 }

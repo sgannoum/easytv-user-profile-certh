@@ -27,6 +27,7 @@
       <class name="com.certh.iti.easytv.user.preference.attributes.discretization.DoubleDiscretizationTest"/>
       <class name="com.certh.iti.easytv.user.preference.attributes.discretization.StringDiscretizationTest"/>
       <class name="com.certh.iti.easytv.user.preference.attributes.discretization.BooleanDiscretizationTest"/>
+      <class name="com.certh.iti.easytv.user.preference.attributes.discretization.ColorDiscretizationTest"/>
     </classes>
   </test>
   

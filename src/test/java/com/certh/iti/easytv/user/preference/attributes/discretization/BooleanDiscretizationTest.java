@@ -59,7 +59,7 @@ public class BooleanDiscretizationTest {
 	}
 	
 	@Test
-	public void test_creation_from_histogram() {
+	public void test_dynamic_discretization_from_histogram() {
 		TreeMap<Boolean, Long> values  =  new TreeMap<Boolean, Long>() {
 			private static final long serialVersionUID = 1L;
 		{

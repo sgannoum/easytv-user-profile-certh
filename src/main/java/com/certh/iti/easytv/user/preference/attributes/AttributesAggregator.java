@@ -109,7 +109,7 @@ public class AttributesAggregator {
 			if(obj == this) return true;
 			if(!(obj instanceof Association)) return false;
 			
-			Association tmp = (Association) obj;
+			Association<?, ?> tmp = (Association<?, ?>) obj;
 			
 			return uri.equals(tmp.uri) && value.equals(tmp.value);
 		}

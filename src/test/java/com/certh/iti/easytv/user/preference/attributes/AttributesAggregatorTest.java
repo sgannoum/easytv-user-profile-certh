@@ -16,6 +16,7 @@ public class AttributesAggregatorTest {
 	private AttributesAggregator aggregator1 = new AttributesAggregator();
 	private AttributesAggregator aggregator2 = new AttributesAggregator();
 	private AttributesAggregator aggregator3 = new AttributesAggregator();
+	private AttributesAggregator aggregator4 = new AttributesAggregator();
 
 	
 	protected static Map<String, Attribute> attributes  =  new LinkedHashMap<String, Attribute>() {
@@ -40,11 +41,22 @@ public class AttributesAggregatorTest {
 
     }};
     
+	protected static Map<String, Attribute> attributes2  =  new LinkedHashMap<String, Attribute>() {
+		private static final long serialVersionUID = 1L;
+	{
+		put("Integer2", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
+	    put("Double2", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, -1));
+	    put("Nominal2", new NominalAttribute(new String[] {"1", "2", "3"}));
+	    put("Ordinal2", new OrdinalAttribute(new String[] {"15", "20", "23"}));					
+	    put("Boolean2", new SymmetricBinaryAttribute());
+
+    }};
+    
     @BeforeClass
     public void beforeClass() {
     	Attribute attr;
     	
-    	//load values
+    	//load all values
     	attr = attributes.get("Integer");
     	for(int i = 0; i < 101; i++) attr.handle(i);
     	attr = attributes.get("Double");
@@ -56,6 +68,7 @@ public class AttributesAggregatorTest {
 		attr = attributes.get("Boolean");
 		attr.handle(false); attr.handle(true);
 		
+    	//load all values
     	attr = attributes1.get("Integer1");
     	for(int i = 0; i < 101; i++) attr.handle(i);
     	attr = attributes1.get("Double1");
@@ -66,13 +79,24 @@ public class AttributesAggregatorTest {
 		attr.handle("15"); attr.handle("20"); attr.handle("23");
 		attr = attributes1.get("Boolean1");
 		attr.handle(false); attr.handle(true);
+		
+    	//load reduced values
+    	attr = attributes2.get("Integer2");
+    	attr.handle(0); attr.handle(20); attr.handle(50);
+    	attr = attributes2.get("Double2");
+		attr.handle(1.0); attr.handle(2.0);
+    	attr = attributes2.get("Nominal2");
+		attr.handle("1"); attr.handle("3");
+    	attr = attributes2.get("Ordinal2");
+		attr.handle("15"); attr.handle("23");
+		attr = attributes2.get("Boolean2");
+		attr.handle(true);
 
-    	
     	aggregator1.add(attributes);
     	aggregator2.add(attributes1);
     	aggregator3.add(aggregator1);
     	aggregator3.add(aggregator2);
-
+    	aggregator4.add(attributes2);
     }
 	
 	@Test
@@ -80,6 +104,7 @@ public class AttributesAggregatorTest {
 		Assert.assertEquals(36, aggregator1.getBinNumber());
 		Assert.assertEquals(36, aggregator2.getBinNumber());
 		Assert.assertEquals(36 * 2, aggregator3.getBinNumber());
+		Assert.assertEquals(11, aggregator4.getBinNumber());
 	}
 	
 	@Test
@@ -273,6 +298,28 @@ public class AttributesAggregatorTest {
 	}
 	
 	@Test
+	public void test_code4() {
+		
+		Assert.assertEquals(0, aggregator4.code("Integer2", 0));
+		Assert.assertEquals(0, aggregator4.code("Integer2", 4));
+		Assert.assertEquals(1, aggregator4.code("Integer2", 19));
+		Assert.assertEquals(1, aggregator4.code("Integer2", 20));
+		Assert.assertEquals(2, aggregator4.code("Integer2", 50));
+		
+		Assert.assertEquals(3, aggregator4.code("Double2", 1.0));
+		Assert.assertEquals(4, aggregator4.code("Double2", 2.0));
+
+		Assert.assertEquals(5, aggregator4.code("Nominal2", "1"));
+		Assert.assertEquals(6, aggregator4.code("Nominal2", "3"));
+		
+		Assert.assertEquals(7, aggregator4.code("Ordinal2", "15"));
+		Assert.assertEquals(8, aggregator4.code("Ordinal2", "23"));
+		
+		Assert.assertEquals(9, aggregator4.code("Boolean2", false));
+		Assert.assertEquals(10, aggregator4.code("Boolean2", true));
+	}
+	
+	@Test
 	public void test_decode3() {
 		
 		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Integer", attributes.get("Integer").getDiscretization().getBins()[0]), aggregator3.decode(0));
@@ -318,6 +365,30 @@ public class AttributesAggregatorTest {
 		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Boolean1", attributes1.get("Boolean1").getDiscretization().getBins()[0]), aggregator3.decode(36 + 34));
 		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Boolean1", attributes1.get("Boolean1").getDiscretization().getBins()[1]), aggregator3.decode(36 + 35));
 
+	}
+	
+	/**
+	 * test that decoding would actually return the right bin and attribute
+	 */
+	@Test
+	public void test_decode4() {
+		
+		//bins of the first dimension "Integer"
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Integer2", attributes2.get("Integer2").getDiscretization().getBins()[0]), aggregator4.decode(0));
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Integer2", attributes2.get("Integer2").getDiscretization().getBins()[1]), aggregator4.decode(1));
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Integer2", attributes2.get("Integer2").getDiscretization().getBins()[2]), aggregator4.decode(2));
+		
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Double2", attributes2.get("Double2").getDiscretization().getBins()[0]), aggregator4.decode(3));
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Double2", attributes2.get("Double2").getDiscretization().getBins()[1]), aggregator4.decode(4));
+	
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Nominal2", attributes2.get("Nominal2").getDiscretization().getBins()[0]), aggregator4.decode(5));
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Nominal2", attributes2.get("Nominal2").getDiscretization().getBins()[1]), aggregator4.decode(6));
+		
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Ordinal2", attributes2.get("Ordinal2").getDiscretization().getBins()[0]), aggregator4.decode(7));
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Ordinal2", attributes2.get("Ordinal2").getDiscretization().getBins()[1]), aggregator4.decode(8));
+
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Boolean2", attributes2.get("Boolean2").getDiscretization().getBins()[0]), aggregator4.decode(9));
+		Assert.assertEquals(new AttributesAggregator.Association<String, Object>("Boolean2", attributes2.get("Boolean2").getDiscretization().getBins()[1]), aggregator4.decode(10));
 	}
 	
 	

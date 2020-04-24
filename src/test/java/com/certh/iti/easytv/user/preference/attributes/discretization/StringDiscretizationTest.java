@@ -108,7 +108,7 @@ public class StringDiscretizationTest {
 	}
 	
 	@Test
-	public void test_creation_from_histogram() {
+	public void test_dynamic_discretization_from_histogram() {
 		TreeMap<String, Long> values  =  new TreeMap<String, Long>() {
 			private static final long serialVersionUID = 1L;
 		{
@@ -137,7 +137,7 @@ public class StringDiscretizationTest {
 	}
 	
 	@Test
-	public void test_creation_from_histogram_1() {
+	public void test_dynamic_discretization_from_histogram_and_bins_number() {
 		TreeMap<String, Long> values  =  new TreeMap<String, Long>() {
 			private static final long serialVersionUID = 1L;
 		{

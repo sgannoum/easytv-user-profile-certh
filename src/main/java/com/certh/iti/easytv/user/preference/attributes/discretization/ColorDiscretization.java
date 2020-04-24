@@ -43,7 +43,7 @@ public class ColorDiscretization extends IntegerDiscretization{
 
 	@Override 
 	public Object decode(int itemId) {
-		return "#"+Integer.toHexString((int) super.decode(itemId));
+		return String.format("#%06x", super.decode(itemId));
 	}
 
 }
