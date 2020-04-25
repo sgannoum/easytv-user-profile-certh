@@ -21,6 +21,10 @@ public class ColorDiscretization extends IntegerDiscretization{
 		super(range, step, discretes);
 	}
 	
+	public ColorDiscretization(double[] range, double step,  TreeMap<Integer, Long> values) {
+		super(range, step, values);
+	}
+	
 	public ColorDiscretization(double[] range, double step, int binNums,  TreeMap<Integer, Long> values) {
 		super(range, step, binNums, values);
 	}

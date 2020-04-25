@@ -300,7 +300,7 @@ public class IntegerDiscretizationTest {
 		}};
 		
 		IntegerDiscretization attr1 = new IntegerDiscretization(new double[] {0.0, 9.0}, 1.0, -1, values);
-				
+						
 		//check bins number found
 		Assert.assertEquals(7, attr1.getBinNumber());
 		

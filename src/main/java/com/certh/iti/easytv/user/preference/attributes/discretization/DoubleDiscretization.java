@@ -120,6 +120,10 @@ public class DoubleDiscretization extends NumericDiscretization {
 			this.bins[i] = new DoubleDiscrete(discretes[i], step);
 	}
 	
+	public DoubleDiscretization(double[] range, double step,  TreeMap<Double, Long> values) {
+		super(range, step, values, new DoubleDiscretiationFactory());
+	}
+	
 	public DoubleDiscretization(double[] range, double step, int binNums,  TreeMap<Double, Long> values) {
 		super(range, step, binNums, values, new DoubleDiscretiationFactory());
 	}

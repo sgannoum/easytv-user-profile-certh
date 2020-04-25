@@ -45,6 +45,7 @@ public class IntegerAttribute extends NumericAttribute {
 	
 	public IntegerAttribute(double[] range, double step, Integer[][] discretes) {
 		super(range, step);
+		this.binsNum = -1;
 		this.discretes = discretes;
 	}
 	
@@ -143,10 +144,12 @@ public class IntegerAttribute extends NumericAttribute {
 	public Discretization getDiscretization() {
 		if(discretization == null) {
 			if(frequencyHistogram.isEmpty()) return null;
-			else if(discretes == null)
+			else if(binsNum != -1)
 				return new IntegerDiscretization(range, step, binsNum, frequencyHistogram);
-			else
+			else if(discretes != null)
 				return new IntegerDiscretization(range, step, discretes, frequencyHistogram);
+			else
+				return new IntegerDiscretization(range, step, frequencyHistogram);
 		}
 		else 
 			return discretization;

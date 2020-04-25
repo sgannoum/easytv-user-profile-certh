@@ -108,10 +108,12 @@ public class ColorAttribute extends IntegerAttribute {
 	public Discretization getDiscretization() {
 		if(discretization == null) {
 			if(frequencyHistogram.isEmpty()) return null;
-			else if(discretes == null)
+			else if(binsNum != -1)
 				return new ColorDiscretization(range, step, binsNum, frequencyHistogram);
-			else
+			else if(discretes != null)
 				return new ColorDiscretization(range, step, discretes, frequencyHistogram);
+			else 
+				return new ColorDiscretization(range, step, frequencyHistogram);
 		}
 		else 
 			return discretization;

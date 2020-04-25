@@ -11,11 +11,12 @@ import junit.framework.Assert;
 
 public class ColorAttributeTest {
 	
-	ColorAttribute attr1, attr2; 
-	Discretization dist_attr1, dist_attr2;
+	ColorAttribute attr1, attr2, attr3; 
+	Discretization dist_attr1, dist_attr2, dist_attr3;
 	
 	@BeforeClass
 	public void beforClass() {
+		attr3 = new ColorAttribute(); 
 		attr1 = new ColorAttribute(100);
 		attr2 = new ColorAttribute(new Integer[][] { new Integer[] {0x000000, 0x0000ff }, //blue 
 													 new Integer[] {0x0001ff, 0x00ffff }, //green
@@ -33,10 +34,18 @@ public class ColorAttributeTest {
 		attr2.handle("#0000ff");
 		attr2.handle("#ffffff");
 		
+		//load values 
+		attr3.handle("#000000");
+		attr3.handle("#ff1000");
+		attr3.handle("#0001ff");
+		attr3.handle("#0000ff");
+		attr3.handle("#ffffff");
+		
 		//get discretization
 		dist_attr1 = attr1.getDiscretization();
 		dist_attr2 = attr2.getDiscretization();
-		
+		dist_attr3 = attr3.getDiscretization();
+
 	}
 	
 	@Test
@@ -86,4 +95,21 @@ public class ColorAttributeTest {
 		Assert.assertEquals("#7c11ff", dist_attr2.decode(2));
 	}
 	
+	@Test
+	public void test_code_attribute3() {
+		Assert.assertEquals(0, dist_attr3.code("#000000"));
+		Assert.assertEquals(1, dist_attr3.code("#0000ff"));
+		Assert.assertEquals(2, dist_attr3.code("#0001ff"));
+		Assert.assertEquals(3, dist_attr3.code("#ff1000"));
+		Assert.assertEquals(4, dist_attr3.code("#ffffff"));
+	}
+	
+	@Test
+	public void test_decode_attribute3() {
+		Assert.assertEquals("#000000", dist_attr3.decode(0));
+		Assert.assertEquals("#0000ff", dist_attr3.decode(1));
+		Assert.assertEquals("#0001ff", dist_attr3.decode(2));
+		Assert.assertEquals("#ff1000", dist_attr3.decode(3));
+		Assert.assertEquals("#ffffff", dist_attr3.decode(4));
+	}
 }

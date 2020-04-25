@@ -143,10 +143,12 @@ public class DoubleAttribute extends NumericAttribute {
 	public Discretization getDiscretization() {
 		if(discretization == null) {
 			if(frequencyHistogram.isEmpty()) return null;
-			else if(discretes == null)
+			else if(binsNum != -1)
 				return new DoubleDiscretization(range, step, binsNum, frequencyHistogram);
-			else
+			else if(discretes != null)
 				return new DoubleDiscretization(range, step, discretes, frequencyHistogram);
+			else 
+				return new DoubleDiscretization(range, step, frequencyHistogram);
 		}
 		else 
 			return discretization;
