@@ -13,6 +13,10 @@ public abstract class Attribute {
 
 	protected Discretization discretization = null;
 	
+	
+	protected Attribute() {
+	}
+	
 	public Attribute(double[] range) {
 		this.range = range;
 	}

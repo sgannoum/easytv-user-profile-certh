@@ -2,17 +2,50 @@ package com.certh.iti.easytv.user.preference.attributes;
 
 import java.awt.Color;
 import java.util.Random;
+import java.util.regex.Pattern;
+
 import com.certh.iti.easytv.user.preference.attributes.discretization.ColorDiscretization;
 import com.certh.iti.easytv.user.preference.attributes.discretization.Discretization;
 import com.certh.iti.easytv.user.preference.attributes.discretization.NoDiscretization;
 
 public class ColorAttribute extends IntegerAttribute {
 	
+	private static double[] default_range = new double[] {0X000000, 0Xffffff};
+
 	private NumericAttribute red = new IntegerAttribute(new double[] {0.0, 255.0}, 1, 0, new NoDiscretization());
 	private NumericAttribute green = new IntegerAttribute(new double[] {0.0, 255.0}, 1, 0, new NoDiscretization());
 	private NumericAttribute blue =  new IntegerAttribute(new double[] {0.0, 255.0}, 1, 0, new NoDiscretization());
+	protected IntegerConverter converter = new IntegerConverter() {
+		
+		private Pattern colorPatter = Pattern.compile("#[0-9a-fA-F]{1,6}");
+
+		@Override
+		public boolean isInstance(Object obj) {
+			if(!String.class.isInstance(obj))
+				return false;
+			
+			return colorPatter.matcher((CharSequence) obj).matches();
+		}
+
+		@Override
+		public Integer valueOf(Object obj) {
+			Color color = Color.decode((String) obj);	
+			return color.getRGB() & 0x00ffffff;
+		}
+		
+	};
 	
-	private static double[] default_range = new double[] {0X000000, 0Xffffff};
+	public static class ColorBuilder extends IntegerBuilder {
+		
+		public ColorBuilder() {
+			super(new ColorAttribute());
+		}
+
+		@Override
+		public Attribute build() {
+			return instance;
+		}
+	}
 	
 	public ColorAttribute() {
 		super(default_range, 1.0, -1);
@@ -53,8 +86,7 @@ public class ColorAttribute extends IntegerAttribute {
 		if(literal == null) 
 			return missingValue;
 		
-		Color color = Color.decode((String) literal);
-		return color.getRGB();
+		return converter.valueOf(literal);
 	}
 	
 	public NumericAttribute[] getDimensions() {
@@ -63,23 +95,24 @@ public class ColorAttribute extends IntegerAttribute {
 	
 	@Override
 	public Object handle(Object value) {
-
-		Color color = Color.decode((String) value);
 		
-		int numericValue = color.getRGB() & 0x00ffffff;
+		if(!converter.isInstance(value)) 
+			throw new IllegalArgumentException("Value " + value + " can't not be converted into Color");
+		
+		int numericValue = converter.valueOf(value);
 
 		// Increase histogram counts
 		Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
 		frequencyHistogram.put(numericValue, tmp);
 		
 		//handle red dimension
-		red.handle(color.getRed());
+		red.handle((numericValue & 0x00ff0000) >> 16);
 
 		//handle alpha dimension
-		green.handle(color.getGreen());
+		green.handle((numericValue & 0x0000ff00) >> 8);
 		
 		//handle blue dimension
-		blue.handle(color.getBlue());
+		blue.handle(numericValue & 0x000000ff);
 
 		// Set Min Max vlaue
 		setMinMaxValue(numericValue);
@@ -117,6 +150,10 @@ public class ColorAttribute extends IntegerAttribute {
 		}
 		else 
 			return discretization;
+	}
+	
+	public static ColorBuilder Builder() {
+		return new ColorBuilder();
 	}
 	
 }

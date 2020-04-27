@@ -17,7 +17,73 @@ public class DoubleAttribute extends NumericAttribute {
 	private int binsNum;
 	private Double[][] discretes = null;
 	protected TreeMap<Double, Long> frequencyHistogram = new TreeMap<Double, Long>();
+	protected DoubleConverter converter = new DoubleConverter() {
 
+		@Override
+		public boolean isInstance(Object obj) {
+			return Number.class.isInstance(obj);
+		}
+
+		@Override
+		public Double valueOf(Object obj) {
+			Number num = Number.class.cast(obj);
+			return num.doubleValue();
+		}
+	};
+	
+	public interface DoubleConverter {
+		public boolean isInstance(Object obj);
+		public Double valueOf(Object obj);
+	}
+	
+	public static class DoubleBuilder{
+				
+		DoubleAttribute instance;
+		
+		public DoubleBuilder() {
+			instance = new DoubleAttribute();
+		}
+		
+		public DoubleBuilder setRange(double[] range) {
+			instance.range = range;
+			return this;
+		}
+		
+		public DoubleBuilder setMissingValue(double missingValue) {
+			instance.missingValue = missingValue;
+			return this;
+		}
+		
+		public DoubleBuilder setStep(double step) {
+			instance.step = step;
+			return this;
+		}
+		
+		public DoubleBuilder setDiscretization(Discretization distrectization) {
+			instance.discretization = distrectization;
+			return this;
+		}
+		
+		public DoubleBuilder setDiscretes(Double[][] discretes) {
+			instance.discretes = discretes;
+			return this;
+		}
+		
+		public DoubleBuilder setConverter(DoubleConverter converter) {
+			instance.converter = converter;
+			return this;
+		}
+		
+		public Attribute build() {
+			return instance;
+		}
+	}
+	
+	
+	protected DoubleAttribute() {
+		super();
+	}
+	
 	public DoubleAttribute(double[] range) {
 		super(range);
 		this.binsNum = -1;
@@ -54,8 +120,7 @@ public class DoubleAttribute extends NumericAttribute {
 			return missingValue;
 		}
 
-		double value = (double) literal;
-		return value;
+		return converter.valueOf(literal);
 	}
 	
 	@Override
@@ -66,15 +131,11 @@ public class DoubleAttribute extends NumericAttribute {
 	@Override
 	public Object handle(Object value) {
 
-		double numericValue;
-		
-		if(Integer.class.isInstance(value)) {
-			numericValue = Integer.class.cast(value);
-		} else if(Double.class.isInstance(value)) { 
-			numericValue = Double.class.cast(value);
-		} else
+		if(!converter.isInstance(value)) 
 			throw new IllegalArgumentException("Value of type " + value.getClass().getName() + " can't not be converted into Double");
 			
+		
+		double numericValue = converter.valueOf(value);
 		
 		if(numericValue < range[0] || numericValue > range[1])
 			throw new OutOfRangeException(numericValue, range[0], range[1]);
@@ -152,6 +213,10 @@ public class DoubleAttribute extends NumericAttribute {
 		}
 		else 
 			return discretization;
+	}
+	
+	public static DoubleBuilder Builder() {
+		return new DoubleBuilder();
 	}
 
 }

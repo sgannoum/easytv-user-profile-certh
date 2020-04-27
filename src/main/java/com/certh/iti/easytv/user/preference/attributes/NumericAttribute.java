@@ -15,8 +15,12 @@ public abstract class NumericAttribute extends Attribute implements INumeric {
 	protected double standard_deviation = -1.0;
 	protected double Maxvalue = Double.MIN_VALUE;
 	protected double Minvalue = Double.MAX_VALUE;
-	
 	protected double step = 1.0;
+
+	
+	protected NumericAttribute() {
+		super();
+	}
 	
 	public NumericAttribute(double[] range) {
 		super(range);

@@ -25,7 +25,7 @@ public class ColorAttributeTest {
 		//load values from all bins
 		int binSize = (int) (Math.pow(2, 24) / 100);
 		for(int i = 0; i < 101; i++)
-			attr1.handle("#"+Integer.toHexString(0x000000 + (binSize * i)));
+			attr1.handle(String.format("#%06x", 0x000000 + (binSize * i)));
 		
 		//load values for other bins
 		attr2.handle("#000000");

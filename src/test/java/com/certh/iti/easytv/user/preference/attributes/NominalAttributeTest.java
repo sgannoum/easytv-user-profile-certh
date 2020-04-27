@@ -3,13 +3,14 @@ package com.certh.iti.easytv.user.preference.attributes;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.certh.iti.easytv.user.preference.attributes.NominalAttribute.StringConverter;
 import com.certh.iti.easytv.user.preference.attributes.discretization.Discretization;
 
 import junit.framework.Assert;
 
 public class NominalAttributeTest {
 	
-	NominalAttribute attr1, attr2; 
+	NominalAttribute attr1, attr2, attr3; 
 	Discretization dist_attr1, dist_attr2;
 	
 	@BeforeClass
@@ -20,6 +21,22 @@ public class NominalAttributeTest {
 		
 		attr1 = new NominalAttribute(states_1);
 		attr2 = new NominalAttribute(states_2);
+		attr3 = (NominalAttribute) NominalAttribute
+				.Builder()
+	    		.setState(new String[] { "0.75", "1.0", "1.5", "2.0", "3.0", "4.0"})
+	    		.setConverter(new StringConverter() {
+	    			
+	    			@Override
+	    			public String valueOf(Object obj) {
+	    				return String.valueOf(obj);
+	    			}
+	    			
+	    			@Override
+	    			public boolean isInstance(Object obj) {
+	    				return Double.class.isInstance(obj);
+	    			}
+	    		})
+	    		.build();
 		
 		//Load values
 		for(int i = 0; i < states_1.length; i++)
@@ -100,6 +117,26 @@ public class NominalAttributeTest {
 	public void test_isInBinRange() {
 		dist_attr1.inRange("15", -1);
 		dist_attr1.inRange("15", 26);
+	}
+	
+	@Test
+	public void test_handel_attr3() {
+		Assert.assertEquals(0.75, attr3.handle(0.75));
+		Assert.assertEquals(1.0, attr3.handle(1.0));
+		Assert.assertEquals(1.5, attr3.handle(1.5));
+		Assert.assertEquals(2.0, attr3.handle(2.0));
+		Assert.assertEquals(3.0, attr3.handle(3.0));
+		Assert.assertEquals(4.0, attr3.handle(4.0));
+	}
+	
+	@Test(expectedExceptions = IllegalArgumentException.class)
+	public void test_wrong_type_handel_attr3() {
+		attr3.handle(75);
+	}
+	
+	@Test(expectedExceptions = IllegalStateException.class)
+	public void test_wrong_value_handel_attr3() {
+		attr3.handle(0.80);
 	}
 	
 }

@@ -17,7 +17,78 @@ public class IntegerAttribute extends NumericAttribute {
 	protected int binsNum;
 	protected Integer[][] discretes = null;
 	protected TreeMap<Integer, Long> frequencyHistogram = new TreeMap<Integer, Long>();
+	protected IntegerConverter converter = new IntegerConverter() {
+
+		@Override
+		public boolean isInstance(Object obj) {
+			return Integer.class.isInstance(obj);
+		}
+
+		@Override
+		public Integer valueOf(Object obj) {
+			return (Integer) obj;
+		}
+		
+	};
 	
+	public interface IntegerConverter {
+		public boolean isInstance(Object obj);
+		public Integer valueOf(Object obj);
+	}
+	
+	public static class IntegerBuilder {
+		
+		IntegerAttribute instance;
+		
+		public IntegerBuilder() {
+			instance = new IntegerAttribute();
+		}
+		
+		protected IntegerBuilder(IntegerAttribute instance) {
+			this.instance = instance;
+		}
+		
+		public IntegerBuilder setRange(double[] range) {
+			instance.range = range;
+			return this;
+		}
+		
+		public IntegerBuilder setMissingValue(double missingValue) {
+			instance.missingValue = missingValue;
+			return this;
+		}
+		
+		public IntegerBuilder setStep(double step) {
+			instance.step = step;
+			return this;
+		}
+		
+		public IntegerBuilder setDiscretization(Discretization distrectization) {
+			instance.discretization = distrectization;
+			return this;
+		}
+		
+		public IntegerBuilder setDiscretes(Integer[][] discretes) {
+			instance.discretes = discretes;
+			return this;
+		}
+		
+		public IntegerBuilder setConverter(IntegerConverter converter) {
+			instance.converter = converter;
+			return this;
+		}
+		
+		public Attribute build() {
+	
+			return instance;
+		}
+	}
+
+
+	protected IntegerAttribute() {
+		super();
+	}
+
 	public IntegerAttribute(double[] range) {
 		super(range);
 		this.binsNum = -1;
@@ -67,20 +138,16 @@ public class IntegerAttribute extends NumericAttribute {
 			return missingValue;
 		}
 
-		int value = (int) literal;
-		return value;
+		return converter.valueOf(literal);
 	}
 
 	@Override
 	public Object handle(Object value) {
-		
-		int numericValue ;
-		
-		if(Integer.class.isInstance(value)) {
-			numericValue = Integer.class.cast(value);
-		} else
+				
+		if(!converter.isInstance(value)) 
 			throw new IllegalArgumentException("Value of type " + value.getClass().getName() + " can't not be converted into Integer");
 			
+		int numericValue = converter.valueOf(value);
 		
 		if(numericValue < range[0] || numericValue > range[1])
 			throw new OutOfRangeException(numericValue, range[0], range[1]);
@@ -153,6 +220,10 @@ public class IntegerAttribute extends NumericAttribute {
 		}
 		else 
 			return discretization;
+	}
+	
+	public static IntegerBuilder Builder() {
+		return new IntegerBuilder();
 	}
 	
 }

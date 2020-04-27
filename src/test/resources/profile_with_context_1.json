@@ -34,9 +34,18 @@
     "user_context": {
 	    "http://registry.easytv.eu/context/device": "pc",
 	    "http://registry.easytv.eu/context/light": "dark",
-	    "http://registry.easytv.eu/context/proximity": 20,
-        "http://registry.easytv.eu/context/location": "es",
-        "http://registry.easytv.eu/context/time": "09:47:00"
+	    "http://registry.easytv.eu/context/device/soundMeter": "Breathing",
+	    "http://registry.easytv.eu/context/proximity": 20,        	
+        "http://registry.easytv.eu/context/device/screenSize/width": 720,
+        "http://registry.easytv.eu/context/device/screenSize/height": 1344,
+        "http://registry.easytv.eu/context/device/screenSize/diameter": 5.5,
+        "http://registry.easytv.eu/context/device/screenSize/xdpi": 257.5769958496094,
+        "http://registry.easytv.eu/context/device/screenSize/ydpi": 283.53399658203125,
+        "http://registry.easytv.eu/context/device/screenSize/densityValue": 2,
+        "http://registry.easytv.eu/context/device/screenSize/densityBucket": "xhdpi",
+        "http://registry.easytv.eu/context/time": "18:40:59",
+        "http://registry.easytv.eu/context/location": "gr"
+        	
     },
     "user_content": {
         "http://registry.easytv.eu/application/cs/accessibility/detection/text": true,

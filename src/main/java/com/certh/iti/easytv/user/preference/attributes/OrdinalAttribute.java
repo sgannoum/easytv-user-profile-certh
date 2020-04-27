@@ -8,7 +8,18 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 	private double sum = 0.0;
 	private double Maxvalue = Double.MIN_VALUE;
 	private double Minvalue = Double.MAX_VALUE;
+	
+	public static class OrdinalBuilder extends NominalBuilder{
+		
+		public OrdinalBuilder() {
+			super(new OrdinalAttribute());
+		}
+	}
 
+	protected OrdinalAttribute() {
+		super();
+	}
+	
 	public OrdinalAttribute(String[] states) {
 		super(states);
 		this.states = states;
@@ -80,7 +91,9 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 			return missingValue;
 		}
 
-		int state = orderOf((String) literal);
+		String convertedValue = converter.valueOf(literal);
+
+		int state = orderOf(convertedValue);
 		if (state == -1)
 			throw new IllegalStateException("Unknown state " + literal);
 
@@ -90,9 +103,13 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 
 	@Override
 	public Object handle(Object value) {
-		String str = String.valueOf(value);
+		
+		if(!converter.isInstance(value))
+			throw new IllegalArgumentException("Value of type " + value.getClass().getName() + " can't not be converted into String");
+		
+		String convertedValue = converter.valueOf(value);
 
-		int state = orderOf(str);
+		int state = orderOf(convertedValue);
 		if (state == -1)
 			throw new IllegalStateException("Unknown state " + value);
 		
@@ -125,6 +142,9 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 		else 
 			return discretization;
 	}
-
+	
+	public static OrdinalBuilder Builder() {
+		return new OrdinalBuilder();
+	}
 
 }
