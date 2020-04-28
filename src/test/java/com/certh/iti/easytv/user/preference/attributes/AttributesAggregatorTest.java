@@ -92,11 +92,11 @@ public class AttributesAggregatorTest {
 		attr = attributes2.get("Boolean2");
 		attr.handle(true);
 
-    	aggregator1.add(attributes);
-    	aggregator2.add(attributes1);
+    	aggregator1.add(attributes, "first group");
+    	aggregator2.add(attributes1, "second group");
     	aggregator3.add(aggregator1);
     	aggregator3.add(aggregator2);
-    	aggregator4.add(attributes2);
+    	aggregator4.add(attributes2, "first group");
     }
 	
 	@Test

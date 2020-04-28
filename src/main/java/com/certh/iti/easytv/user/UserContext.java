@@ -146,12 +146,12 @@ public class UserContext implements Clusterable{
 				.setConverter(new IntegerConverter() {
 					@Override
 					public Integer valueOf(Object obj) {
-						return ((Double) obj).intValue();
+						return ((Number) obj).intValue();
 					}
 					
 					@Override
 					public boolean isInstance(Object obj) {
-						return Double.class.isInstance(obj);
+						return Number.class.isInstance(obj);
 					}
 				})
 				.build());			
@@ -165,12 +165,12 @@ public class UserContext implements Clusterable{
 				.setConverter(new IntegerConverter() {
 					@Override
 					public Integer valueOf(Object obj) {
-						return ((Double) obj).intValue();
+						return ((Number) obj).intValue();
 					}
 					
 					@Override
 					public boolean isInstance(Object obj) {
-						return Double.class.isInstance(obj);
+						return Number.class.isInstance(obj);
 					}
 				})
 				.build());

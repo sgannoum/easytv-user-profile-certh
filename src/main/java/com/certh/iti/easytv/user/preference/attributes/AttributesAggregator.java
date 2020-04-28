@@ -210,11 +210,18 @@ public class AttributesAggregator {
 
 	
 	private int lastBase = 0;
+	private Map<String, Integer> groupsBase = new HashMap<String, Integer>(); 
 	
 	public AttributesAggregator() {
 	}
 	
-	public void add(final Map<String, Attribute> attributesHandler) {		
+	public void add(final Map<String, Attribute> attributesHandler, String label) {
+		
+		//associate group label with their base number
+		if(!groupsBase.containsKey(label))
+			groupsBase.put(label, lastBase);
+		
+		//add elements
 		for(Entry<String, Attribute> entry : attributesHandler.entrySet()) {
 			attributesHandlers.put(entry.getKey(), entry.getValue());
 			Discretization discretization = entry.getValue().getDiscretization();
@@ -229,6 +236,11 @@ public class AttributesAggregator {
 	
 	public void add(AttributesAggregator aggregator) {		
 		
+		//add group
+		for(Entry<String, Integer> entry : aggregator.groupsBase.entrySet())
+			if(!groupsBase.containsKey(entry.getKey()))
+				groupsBase.put(entry.getKey(), entry.getValue() + lastBase);
+		
 		for(Entry<String, DiscretizationWrapper> entry : aggregator.discretizationHandlers.entrySet()) {
 			DiscretizationWrapper discretization = new DiscretizationWrapper(entry.getValue().discrete, lastBase);
 			discretizationHandlers.put(entry.getKey(), discretization);
@@ -237,6 +249,7 @@ public class AttributesAggregator {
 		
 		for(Entry<String, Attribute> entry : aggregator.attributesHandlers.entrySet()) 
 			attributesHandlers.put(entry.getKey(), entry.getValue());
+		
 	}
 	
 	public Map<String, Attribute> getAttributes() {
@@ -261,6 +274,10 @@ public class AttributesAggregator {
 	
 	public int getBase(String uri) {
 		return discretizationHandlers.get(uri).base;
+	}
+	
+	public int getGroupBase(String lable) {
+		return groupsBase.get(lable);
 	}
 		
 	public int getBinNumber() {
