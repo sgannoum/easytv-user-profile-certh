@@ -55,10 +55,10 @@ public class DoubleDiscretization extends NumericDiscretization {
 		
 		public boolean inRange(Object literal) {
 			
-			if(!Double.class.isInstance(literal))
+			if(!Number.class.isInstance(literal))
 				throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into Double");
 			
-			double value = (double) literal;
+			double value = Number.class.cast(literal).doubleValue();
 			if(range.length == 2)
 				return (value >= (double) range[0] && value <= (double) range[1]);
 			else 
@@ -67,10 +67,10 @@ public class DoubleDiscretization extends NumericDiscretization {
 		
 		@Override
 		public int compare(Object item) {
-			if(!Double.class.isInstance(item))
+			if(!Number.class.isInstance(item))
 				throw new IllegalArgumentException("Value of type " + item.getClass().getName() + " can't not be converted into Double");
 			
-			double value = (double) item;
+			double value = Number.class.cast(item).doubleValue();
 			if(value > (double) range[range.length - 1]) 
 				return 1;
 			else if(value < (double) range[0]) 
@@ -81,7 +81,12 @@ public class DoubleDiscretization extends NumericDiscretization {
 
 		@Override
 		public boolean checkType(Object item) {
-			return Double.class.isInstance(item);
+			return Number.class.isInstance(item);
+		}
+		
+		@Override
+		public Object convert(Object obj) {
+			return Number.class.cast(obj).doubleValue();
 		}
 	}
 	

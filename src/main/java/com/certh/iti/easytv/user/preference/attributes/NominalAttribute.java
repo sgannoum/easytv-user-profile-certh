@@ -10,7 +10,7 @@ public class NominalAttribute extends Attribute implements INominal {
 
 	protected int state;
 	protected long n = 0;
-	protected String[] states;
+	protected String[] states = null;
 	protected String[][] discretes = null;
 	protected LinkedHashMap<String, Long> frequencyHistogram = new LinkedHashMap<String, Long>();
 	protected StringConverter converter = new StringConverter() {

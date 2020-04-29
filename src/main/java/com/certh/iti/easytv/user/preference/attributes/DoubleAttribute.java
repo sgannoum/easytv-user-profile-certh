@@ -69,6 +69,11 @@ public class DoubleAttribute extends NumericAttribute {
 			return this;
 		}
 		
+		public DoubleBuilder setDiscreteNumber(int n) {
+			instance.binsNum = n;
+			return this;
+		}
+		
 		public DoubleBuilder setConverter(DoubleConverter converter) {
 			instance.converter = converter;
 			return this;
@@ -82,6 +87,8 @@ public class DoubleAttribute extends NumericAttribute {
 	
 	protected DoubleAttribute() {
 		super();
+		this.binsNum = -1;
+		this.discretes = null;
 	}
 	
 	public DoubleAttribute(double[] range) {
@@ -163,7 +170,7 @@ public class DoubleAttribute extends NumericAttribute {
 
 		n++;
 		
-		return numericValue;
+		return value;
 	}
 	
 	@Override

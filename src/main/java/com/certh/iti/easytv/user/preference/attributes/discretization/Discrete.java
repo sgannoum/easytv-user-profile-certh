@@ -56,10 +56,34 @@ public abstract class Discrete {
 		return 1;
 	}
 	
+	/**
+	 * Check that the given value is in the discrete range
+	 * @param literal
+	 * @return
+	 */
 	public abstract boolean inRange(Object literal);
 	
+	/**
+	 * 
+	 * @param item
+	 * @return
+	 */
 	public abstract int compare(Object item);
 	
+	/**
+	 * Allow subclasses to do proper conversion if needed
+	 * @param obj
+	 * @return
+	 */
+	public Object convert(Object obj) {
+		return obj;
+	}
+	
+	/**
+	 * Check that the item given type is an expected one
+	 * @param item
+	 * @return
+	 */
 	protected abstract boolean checkType(Object item);
 	
 	@Override

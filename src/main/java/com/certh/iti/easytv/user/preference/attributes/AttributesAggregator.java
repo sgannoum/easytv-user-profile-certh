@@ -147,8 +147,6 @@ public class AttributesAggregator {
 			iterator = discretizationHandlers.entrySet().iterator();
 			Entry<String, DiscretizationWrapper> entry = iterator.next();
 			currt = entry.getValue().getBins();
-			System.out.println(entry.getKey());
-
 		}
 		
 		@Override
@@ -162,7 +160,6 @@ public class AttributesAggregator {
 				index = 0;
 				Entry<String, DiscretizationWrapper> entry = iterator.next();
 				currt = entry.getValue().getBins();
-				System.out.println(entry.getKey());
 			}
 			return currt[index++];
 		}
@@ -311,7 +308,8 @@ public class AttributesAggregator {
 		int[] itemSet = new int[associations.size()];
 		
 		for(Entry<String, Object> entry : associations.entrySet()) 
-			itemSet[index++] = code(entry.getKey(), entry.getValue());
+			if(discretizationHandlers.containsKey(entry.getKey()))
+				itemSet[index++] = code(entry.getKey(), entry.getValue());
 		
 		return itemSet;
 	}
@@ -331,7 +329,8 @@ public class AttributesAggregator {
 		int[] itemSet = new int[size];
 		for(Map<String, Object> map : associations)
 			for(Entry<String, Object> entry : map.entrySet()) 
-				itemSet[index++] = code(entry.getKey(), entry.getValue());
+				if(discretizationHandlers.containsKey(entry.getKey()))	
+					itemSet[index++] = code(entry.getKey(), entry.getValue());
 			
 		return itemSet;
 	}

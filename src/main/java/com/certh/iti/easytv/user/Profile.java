@@ -127,10 +127,9 @@ public class Profile implements Clusterable {
 	 */
 	public int[] getAsItemSet() {
 		
-		Vector<Map<String, Object>> all = new Vector<Map<String, Object>>(3);
+		Vector<Map<String, Object>> all = new Vector<Map<String, Object>>(2);
 		all.add(userProfile.getUserPreferences().getDefaultPreference().getPreferences());
 		all.add(userContext.getContext());
-		all.add(userContent.getContent());
 
 		return aggregator.code(all);
 	}

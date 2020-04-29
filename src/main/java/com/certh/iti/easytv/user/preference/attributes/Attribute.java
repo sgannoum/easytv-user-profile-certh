@@ -9,10 +9,8 @@ import com.certh.iti.easytv.util.Table.Position;
 public abstract class Attribute {
 			
 	protected double missingValue = -1.0;
-	protected double[] range;
-
+	protected double[] range = null;
 	protected Discretization discretization = null;
-	
 	
 	protected Attribute() {
 	}

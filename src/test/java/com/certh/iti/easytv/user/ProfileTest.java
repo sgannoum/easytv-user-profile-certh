@@ -124,6 +124,12 @@ public class ProfileTest {
 			index++;
 		}
 	}
-
-
+	
+	/**
+	 * Test that the user profile points corresponds to those produced by preference attributes
+	 */
+	@Test
+	public void test_getItemset_1() throws IOException, UserProfileParsingException {
+		profile1.getAsItemSet();
+	}
 }

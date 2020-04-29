@@ -57,10 +57,10 @@ public class IntegerDiscretization extends NumericDiscretization {
 		@Override
 		public boolean inRange(Object literal) {
 			
-			if(!Integer.class.isInstance(literal))
+			if(!Number.class.isInstance(literal))
 				throw new IllegalArgumentException("Value of type " + literal.getClass().getName() + " can't not be converted into integer");
 			
-			int value = (int) literal;
+			int value = Number.class.cast(literal).intValue();
 			if(range.length == 2)
 				return (value >= (int) range[0] && value <= (int) range[1]);
 			else 
@@ -69,10 +69,10 @@ public class IntegerDiscretization extends NumericDiscretization {
 
 		@Override
 		public int compare(Object item) {
-			if(!Integer.class.isInstance(item))
+			if(!Number.class.isInstance(item))
 				throw new IllegalArgumentException("Value of type " + item.getClass().getName() + " can't not be converted into integer");
 			
-			int value = (int) item;
+			int value = Number.class.cast(item).intValue();
 			if(value > (int) range[range.length - 1]) 
 				return 1;
 			else if(value < (int) range[0]) 
@@ -83,7 +83,12 @@ public class IntegerDiscretization extends NumericDiscretization {
 
 		@Override
 		public boolean checkType(Object item) {
-			return Integer.class.isInstance(item);
+			return Number.class.isInstance(item);
+		}
+		
+		@Override
+		public Object convert(Object obj) {
+			return Number.class.cast(obj).intValue();
 		}
 	}
 	

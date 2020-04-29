@@ -119,16 +119,19 @@ public abstract class Discretization {
 		if(!bins[0].checkType(value))
 			throw new IllegalArgumentException("Value of type " + value.getClass().getName() + " is not compatible with "+ this.getClass().getName());
 		
+		//convert value
+		Object convertedValue = bins[0].convert(value);
+		
 		//check compatibility with step
-	    BigDecimal x = new BigDecimal( String.valueOf(value) );
+	    BigDecimal x = new BigDecimal( String.valueOf(convertedValue) );
 	    BigDecimal bdVal = x.remainder( new BigDecimal( String.valueOf(step) ) ) ;
 		if (bdVal.doubleValue() != 0)
-			throw new IllegalArgumentException("The value " + value + " is not compatible with step: " + step);
+			throw new IllegalArgumentException("Converted value " + convertedValue + " is not compatible with step: " + step);
 		
 		int begin = 0, last = bins.length - 1;
 		while(begin <= last) {
 			int mid = ((begin + last) / 2);
-			int res = bins[mid].compare(value);
+			int res = bins[mid].compare(convertedValue);
 			
 			if(res > 0) 
 				begin = mid + 1;

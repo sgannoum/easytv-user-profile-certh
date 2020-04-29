@@ -73,6 +73,11 @@ public class IntegerAttribute extends NumericAttribute {
 			return this;
 		}
 		
+		public IntegerBuilder setDiscreteNumber(int n) {
+			instance.binsNum = n;
+			return this;
+		}
+		
 		public IntegerBuilder setConverter(IntegerConverter converter) {
 			instance.converter = converter;
 			return this;
@@ -87,6 +92,8 @@ public class IntegerAttribute extends NumericAttribute {
 
 	protected IntegerAttribute() {
 		super();
+		this.binsNum = -1;
+		this.discretes = null;
 	}
 
 	public IntegerAttribute(double[] range) {

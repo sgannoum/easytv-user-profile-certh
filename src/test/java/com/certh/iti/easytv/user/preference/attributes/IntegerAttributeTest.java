@@ -6,6 +6,7 @@ import org.apache.commons.math3.exception.OutOfRangeException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.certh.iti.easytv.user.UserContext;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute.IntegerConverter;
 import com.certh.iti.easytv.user.preference.attributes.discretization.Discretization;
 
@@ -13,8 +14,8 @@ import junit.framework.Assert;
 
 public class IntegerAttributeTest {
 	
-	IntegerAttribute attr1, attr2, attr3, attr4, attr5; 
-	Discretization dist_attr1, dist_attr2, dist_attr3, dist_attr4;
+	IntegerAttribute attr1, attr2, attr3, attr4, attr5, attr6; 
+	Discretization dist_attr1, dist_attr2, dist_attr3, dist_attr4, dist_attr6;
 
 	@BeforeClass
 	public void beforClass() throws IOException {
@@ -34,12 +35,32 @@ public class IntegerAttributeTest {
 				.setConverter(new IntegerConverter() {
 					@Override
 					public Integer valueOf(Object obj) {
-						return ((Double) obj).intValue();
+						return Number.class.cast(obj).intValue();
 					}
 					
 					@Override
 					public boolean isInstance(Object obj) {
-						return Double.class.isInstance(obj);
+						return Number.class.isInstance(obj);
+					}
+				})
+				.build();
+		
+		
+		/*case http://registry.easytv.eu/context/device/screenSize/xdpi*/
+		attr6 =  (IntegerAttribute) IntegerAttribute
+				.Builder()
+				.setRange(new double[] {150.0, 640.0})
+				.setStep(1.0)
+				.setDiscretes(UserContext.DENSITY_DISCRET)
+				.setConverter(new IntegerConverter() {
+					@Override
+					public Integer valueOf(Object obj) {
+						return Number.class.cast(obj).intValue();
+					}
+					
+					@Override
+					public boolean isInstance(Object obj) {
+						return Number.class.isInstance(obj);
 					}
 				})
 				.build();
@@ -50,11 +71,16 @@ public class IntegerAttributeTest {
 		for(int i = -15; i < 16; i++) attr3.handle(i);
 		for(int i = 0; i < 101; i+= 2) attr4.handle(i);
 		
+		//handle the only value
+		attr6.handle(257.5769958496094);
+		
 		//get discretization
 		dist_attr1 = attr1.getDiscretization();
 		dist_attr2 = attr2.getDiscretization();
 		dist_attr3 = attr3.getDiscretization();
 		dist_attr4 = attr4.getDiscretization();
+		dist_attr6 = attr6.getDiscretization();
+		
 	}
 	
 	@Test
@@ -286,6 +312,16 @@ public class IntegerAttributeTest {
 		Assert.assertEquals(2.0 ,attr5.handle(2.0));
 		Assert.assertEquals(3.0 ,attr5.handle(3.0));
 		Assert.assertEquals(4.0 ,attr5.handle(4.0));
+	}
+	
+	@Test
+	public void test_code_attr6() {
+		Assert.assertEquals(0 , dist_attr6.code(257.5769958496094));
+	}
+	
+	@Test
+	public void test_decode_attr6() {
+		Assert.assertEquals(251 , dist_attr6.decode(0));
 	}
 	
 }

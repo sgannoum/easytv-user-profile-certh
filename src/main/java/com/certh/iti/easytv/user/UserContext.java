@@ -15,7 +15,6 @@ import com.certh.iti.easytv.user.preference.attributes.DoubleAttribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute;
 import com.certh.iti.easytv.user.preference.attributes.IntegerAttribute.IntegerConverter;
 import com.certh.iti.easytv.user.preference.attributes.NominalAttribute;
-import com.certh.iti.easytv.user.preference.attributes.NominalAttribute.StringConverter;
 import com.certh.iti.easytv.user.preference.attributes.OrdinalAttribute;
 import com.certh.iti.easytv.user.preference.attributes.TimeAttribute;
 
@@ -25,7 +24,7 @@ public class UserContext implements Clusterable{
     private double[] points = new double[] {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}; 
     private Map<String, Object> context  =  new HashMap<String, Object>();
     private JSONObject jsonObj = null;
-    private static final Integer[][] SCREEN_WIDTH_HEIGHT_DISCRET = 
+    public static final Integer[][] SCREEN_WIDTH_HEIGHT_DISCRET = 
     new Integer[][] {  
     	new  Integer[] {1,94},
     	new  Integer[] {95,109},
@@ -85,12 +84,12 @@ public class UserContext implements Clusterable{
     	new  Integer[] {4097,5120}
     };
     
-    private static final Integer[][] DENSITY_DISCRET = 
+    public static final Integer[][] DENSITY_DISCRET = 
     new Integer[][] {
     	new  Integer[] {121,140},
     	new  Integer[] {141,160},
-    	new  Integer[] {161,160},
-    	new  Integer[] {161,180},
+    	new  Integer[] {161,170},
+    	new  Integer[] {171,180},
     	new  Integer[] {181,200},
     	new  Integer[] {201,220},
     	new  Integer[] {221,231},
@@ -146,7 +145,7 @@ public class UserContext implements Clusterable{
 				.setConverter(new IntegerConverter() {
 					@Override
 					public Integer valueOf(Object obj) {
-						return ((Number) obj).intValue();
+						return Number.class.cast(obj).intValue();
 					}
 					
 					@Override
@@ -165,7 +164,7 @@ public class UserContext implements Clusterable{
 				.setConverter(new IntegerConverter() {
 					@Override
 					public Integer valueOf(Object obj) {
-						return ((Number) obj).intValue();
+						return Number.class.cast(obj).intValue();
 					}
 					
 					@Override
@@ -179,23 +178,11 @@ public class UserContext implements Clusterable{
 	    		new DoubleAttribute(new double[] {2.5, 31.0}, 0.5, -1));
 	    
 	    put("http://registry.easytv.eu/context/device/screenSize/densityValue", 
-	    		NominalAttribute
+	    		DoubleAttribute
 				.Builder()
-	    		.setState(new String[] { "0.75", "1.0", "1.5", "2.0", "3.0", "4.0"})
-	    		.setConverter(new StringConverter() {
-	    				    			
-	    			@Override
-	    			public String valueOf(Object obj) {
-	    				String tmp = obj.toString();
-	    				if(!tmp.contains(".")) tmp += ".0";
-	    				return tmp;
-	    			}
-	    			
-	    			@Override
-	    			public boolean isInstance(Object obj) {
-	    				return Number.class.isInstance(obj);
-	    			}
-	    		})
+	    		.setRange(new double[] {0.75, 4.0})
+	    		.setStep(0.25)
+	    		.setMissingValue(0.0)
 	    		.build());
 	    
 	    put("http://registry.easytv.eu/context/device/screenSize/densityBucket", 
