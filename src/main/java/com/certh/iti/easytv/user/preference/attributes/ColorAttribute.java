@@ -102,8 +102,10 @@ public class ColorAttribute extends IntegerAttribute {
 		int numericValue = converter.valueOf(value);
 
 		// Increase histogram counts
-		Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
-		frequencyHistogram.put(numericValue, tmp);
+		if(enableFrequencyHistogram) {
+			Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
+			frequencyHistogram.put(numericValue, tmp);
+		}
 		
 		//handle red dimension
 		red.handle((numericValue & 0x00ff0000) >> 16);
@@ -139,6 +141,9 @@ public class ColorAttribute extends IntegerAttribute {
 	
 	@Override
 	public Discretization getDiscretization() {
+		if(!enableDiscretization) 
+			return null;
+		
 		if(discretization == null) {
 			if(frequencyHistogram.isEmpty()) return null;
 			else if(binsNum != -1)

@@ -69,6 +69,16 @@ public class NominalAttribute extends Attribute implements INominal {
 			return this;
 		}
 		
+		public NominalBuilder enableDiscretization(boolean enable) {
+			instance.enableDiscretization = enable;
+			return this;
+		}
+		
+		public NominalBuilder enableFrequencyHistogram(boolean enable) {
+			instance.enableFrequencyHistogram = enable;
+			return this;
+		}
+		
 		public Attribute build() {
 			if(instance.states == null) 
 				throw new IllegalArgumentException("No states defined");
@@ -161,9 +171,11 @@ public class NominalAttribute extends Attribute implements INominal {
 			throw new IllegalStateException("Unknown state " + convertedValue);
 		
 		// Increase histogram counts
-		String key = convertedValue;
-		Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
-		frequencyHistogram.put(key, tmp);
+		if(enableFrequencyHistogram) {
+			String key = convertedValue;
+			Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
+			frequencyHistogram.put(key, tmp);
+		}
 		
 		// increase counts
 		if(discretization != null)
@@ -192,6 +204,9 @@ public class NominalAttribute extends Attribute implements INominal {
 	
 	@Override
 	public Discretization getDiscretization() {
+		if(!enableDiscretization) 
+			return null;
+		
 		if(discretization == null) {
 			if(frequencyHistogram.isEmpty()) return null;
 			else if(discretes == null)

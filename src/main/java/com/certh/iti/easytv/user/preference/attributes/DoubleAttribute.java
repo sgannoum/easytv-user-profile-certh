@@ -79,6 +79,16 @@ public class DoubleAttribute extends NumericAttribute {
 			return this;
 		}
 		
+		public DoubleBuilder enableDiscretization(boolean enable) {
+			instance.enableDiscretization = enable;
+			return this;
+		}
+		
+		public DoubleBuilder enableFrequencyHistogram(boolean enable) {
+			instance.enableFrequencyHistogram = enable;
+			return this;
+		}
+		
 		public Attribute build() {
 			return instance;
 		}
@@ -155,9 +165,11 @@ public class DoubleAttribute extends NumericAttribute {
 		
 		
 		// Increase histogram counts
-		Double key = new Double(numericValue);
-		Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
-		frequencyHistogram.put(key, tmp);
+		if(enableFrequencyHistogram) {
+			Double key = new Double(numericValue);
+			Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
+			frequencyHistogram.put(key, tmp);
+		}
 		
 		//Increment the number of occurrences 
 		if(discretization != null)
@@ -209,6 +221,9 @@ public class DoubleAttribute extends NumericAttribute {
 	
 	@Override
 	public Discretization getDiscretization() {
+		if(!enableDiscretization) 
+			return null;
+		
 		if(discretization == null) {
 			if(frequencyHistogram.isEmpty()) return null;
 			else if(binsNum != -1)

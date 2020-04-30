@@ -132,6 +132,9 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 	
 	@Override
 	public Discretization getDiscretization() {
+		if(!enableDiscretization) 
+			return null;
+		
 		if(discretization == null) {
 			if(frequencyHistogram.isEmpty()) return null;
 			else if(discretes == null)

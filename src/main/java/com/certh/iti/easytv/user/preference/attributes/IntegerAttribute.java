@@ -83,6 +83,16 @@ public class IntegerAttribute extends NumericAttribute {
 			return this;
 		}
 		
+		public IntegerBuilder enableDiscretization(boolean enable) {
+			instance.enableDiscretization = enable;
+			return this;
+		}
+		
+		public IntegerBuilder enableFrequencyHistogram(boolean enable) {
+			instance.enableFrequencyHistogram = enable;
+			return this;
+		}
+		
 		public Attribute build() {
 	
 			return instance;
@@ -163,8 +173,10 @@ public class IntegerAttribute extends NumericAttribute {
 			throw new OutOfRangeException(new DummyLocalizable("Non compatible with step: " + step), numericValue, range[0], range[1]);
 
 		// Increase histogram counts
-		Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
-		frequencyHistogram.put(numericValue, tmp);
+		if(enableFrequencyHistogram) {
+			Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
+			frequencyHistogram.put(numericValue, tmp);
+		}
 		
 		//Increment the number of occurrences 
 		if(discretization != null)
@@ -216,6 +228,9 @@ public class IntegerAttribute extends NumericAttribute {
 	
 	@Override
 	public Discretization getDiscretization() {
+		if(!enableDiscretization) 
+			return null;
+		
 		if(discretization == null) {
 			if(frequencyHistogram.isEmpty()) return null;
 			else if(binsNum != -1)

@@ -131,10 +131,20 @@ public class UserContext implements Clusterable{
 	    		}));
 	    
 	    put("http://registry.easytv.eu/context/device/screenSize/width", 
-	    		new IntegerAttribute(new double[] {1.0, 5120.0}, 1.0, SCREEN_WIDTH_HEIGHT_DISCRET));
+				IntegerAttribute
+				.Builder()
+				.setRange(new double[] {1.0, 5120.0})
+				.setDiscretes(SCREEN_WIDTH_HEIGHT_DISCRET)
+				.enableDiscretization(false)
+				.build());	
 	    
 	    put("http://registry.easytv.eu/context/device/screenSize/height", 
-	    		new IntegerAttribute(new double[] {1.0, 5120.0}, 1.0, SCREEN_WIDTH_HEIGHT_DISCRET));
+				IntegerAttribute
+				.Builder()
+				.setRange(new double[] {1.0, 5120.0})
+				.setDiscretes(SCREEN_WIDTH_HEIGHT_DISCRET)
+				.enableDiscretization(false)
+				.build());	
 	    
 	    //The exact physical pixels per inch of the screen in the X dimension.
 	    put("http://registry.easytv.eu/context/device/screenSize/xdpi", 		
@@ -142,6 +152,7 @@ public class UserContext implements Clusterable{
 				.Builder()
 				.setRange(new double[] {150.0, 640.0})
 				.setDiscretes(DENSITY_DISCRET)
+				.enableDiscretization(false)
 				.setConverter(new IntegerConverter() {
 					@Override
 					public Integer valueOf(Object obj) {
@@ -161,6 +172,7 @@ public class UserContext implements Clusterable{
 				.Builder()
 				.setRange(new double[] {150.0, 640.0})
 				.setDiscretes(DENSITY_DISCRET)
+				.enableDiscretization(false)
 				.setConverter(new IntegerConverter() {
 					@Override
 					public Integer valueOf(Object obj) {

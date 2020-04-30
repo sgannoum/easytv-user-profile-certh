@@ -32,6 +32,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		//common
      	put("http://registry.easytv.eu/common/volume", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
 		put("http://registry.easytv.eu/common/contrast", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
+		put("http://registry.easytv.eu/common/brightness", new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, -1));
 	    put("http://registry.easytv.eu/common/content/audio/language", new LanguageAttribute());
 	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size", new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, -1));
 	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color", new ColorAttribute());
@@ -69,8 +70,8 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	    
 	    //control
 	    put("http://registry.easytv.eu/application/control/voice", new SymmetricBinaryAttribute());
-	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlType", new NominalAttribute(new String[] {"none", "gaze_control", "gesture_control"}));
-	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize",  new DoubleAttribute(new double[] {0.0, 3.0}, 1.0, -1));
+	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlType", new NominalAttribute(new String[] {"none", "cursor_control", "gaze_control", "gesture_control", "mouse_control"}));
+	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize",  new DoubleAttribute(new double[] {0.0, 3.0}, 0.5, -1));
 	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage", new LanguageAttribute());
 	    
 	    //accessibility

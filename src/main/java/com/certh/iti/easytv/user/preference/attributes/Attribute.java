@@ -11,6 +11,8 @@ public abstract class Attribute {
 	protected double missingValue = -1.0;
 	protected double[] range = null;
 	protected Discretization discretization = null;
+	protected boolean enableDiscretization = true;
+	protected boolean enableFrequencyHistogram = true;
 	
 	protected Attribute() {
 	}
@@ -52,6 +54,9 @@ public abstract class Attribute {
 	 * @return
 	 */
 	public Discretization getDiscretization() {
+		if(!enableDiscretization) 
+			return null;
+		
 		return discretization;
 	}
 
@@ -95,17 +100,8 @@ public abstract class Attribute {
 		table.addRow(new String[] {"Range", "Missing Value"}, Position.CENTER);
 		table.addRow(new Object[] {String.format("[%-8.1f, %-8.1f]", range[0], range[1]), missingValue}, Position.CENTER);
 		
-		if(discretization.getBinNumber() > 0 ) return table.toString() + "\r\n" + getBinsHistogram() + "\r\n";
+		if(discretization != null && discretization.getBinNumber() > 0 ) return table.toString() + "\r\n" + discretization.getBinsHistogram() + "\r\n";
 		else return table.toString() + "\r\n" ;
-	}
-	
-	/**
-	 * Print in the form of table the bins histogram
-	 * 
-	 * @return
-	 */
-	protected String getBinsHistogram() {
-		return discretization.getBinsHistogram();
 	}
 
 }
