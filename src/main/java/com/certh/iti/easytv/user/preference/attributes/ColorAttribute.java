@@ -40,15 +40,10 @@ public class ColorAttribute extends IntegerAttribute {
 		public ColorBuilder() {
 			super(new ColorAttribute());
 		}
-
-		@Override
-		public Attribute build() {
-			return instance;
-		}
 	}
 	
 	public ColorAttribute() {
-		super(default_range, 1.0, -1);
+		super(default_range, 1.0, 0X000000);
 	}
 	
 	public ColorAttribute(int binNum) {

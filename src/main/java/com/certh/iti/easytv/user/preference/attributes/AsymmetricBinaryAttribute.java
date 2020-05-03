@@ -12,6 +12,14 @@ public class AsymmetricBinaryAttribute extends BinaryAttribute {
 		super(new double[] {0.0, 1.0 }, 0.0, discretization);
 	}
 	
+	public static class AsymmetricBinaryBuilder extends BirnaryBuilder {
+		
+		public AsymmetricBinaryBuilder() {
+			super(new AsymmetricBinaryAttribute());
+		}
+		
+	}
+	
 	@Override
 	public double getPoints(Object literal) {
 		if(literal == null) {
@@ -20,5 +28,9 @@ public class AsymmetricBinaryAttribute extends BinaryAttribute {
 		
 		double value = ((boolean) literal) == true ? 1.0 : 0.0;
 		return value;
+	}
+	
+	public static AsymmetricBinaryBuilder Builder() {
+		return new AsymmetricBinaryBuilder();
 	}
 }

@@ -12,6 +12,14 @@ public class SymmetricBinaryAttribute extends BinaryAttribute {
 		super(new double[] {0.0, 1.0 }, 0.0, discretization);
 	}
 	
+	public static class SymmetricBinaryBuilder extends BirnaryBuilder {
+		
+		public SymmetricBinaryBuilder() {
+			super(new SymmetricBinaryAttribute());
+		}
+		
+	}
+	
 	@Override
 	public double getPoints(Object literal) {
 		if(literal == null) {
@@ -20,6 +28,10 @@ public class SymmetricBinaryAttribute extends BinaryAttribute {
 		
 		double value = ((boolean) literal) == true ? 1.0 : 0.0;
 		return value;
+	}
+	
+	public static SymmetricBinaryBuilder Builder() {
+		return new SymmetricBinaryBuilder();
 	}
 
 }

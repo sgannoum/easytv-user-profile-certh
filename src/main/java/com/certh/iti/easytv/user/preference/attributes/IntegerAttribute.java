@@ -213,6 +213,8 @@ public class IntegerAttribute extends NumericAttribute {
 	
 	@Override
 	protected String getValueshistogram() {
+		if(!enableFrequencyHistogram)
+			return "";
 		
 		//Histogram table
 		Table histTable = new Table(2, 11);

@@ -19,10 +19,9 @@ public class NominalAttributeTest {
 		String[] states_1 = new String[] {"15", "20", "23"};
 		String[] states_2 = new String[] {"none", "gaze_control", "gesture_control"};
 		
-		attr1 = new NominalAttribute(states_1);
-		attr2 = new NominalAttribute(states_2);
-		attr3 = (NominalAttribute) NominalAttribute
-				.Builder()
+		attr1 = (NominalAttribute) NominalAttribute.Builder().setState(states_1).build();
+		attr2 = (NominalAttribute) NominalAttribute.Builder().setState(states_2).build();
+		attr3 = (NominalAttribute) NominalAttribute.Builder()
 	    		.setState(new String[] { "0.75", "1.0", "1.5", "2.0", "3.0", "4.0"})
 	    		.setConverter(new StringConverter() {
 	    			

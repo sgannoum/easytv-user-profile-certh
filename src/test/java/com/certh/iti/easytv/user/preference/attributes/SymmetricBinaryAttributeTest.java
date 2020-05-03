@@ -14,7 +14,7 @@ public class SymmetricBinaryAttributeTest {
 	
 	@BeforeClass
 	public void beforTest() {
-		attr1 = new SymmetricBinaryAttribute();
+		attr1 = (SymmetricBinaryAttribute) SymmetricBinaryAttribute.Builder().build();
 		
 		//load values
 		attr1.handle(false);

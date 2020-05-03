@@ -11,6 +11,35 @@ public abstract class BinaryAttribute extends Attribute {
 	
 	protected Map<Boolean, Long> frequencyHistogram = new HashMap<Boolean, Long>();
 	
+	
+	public static class BirnaryBuilder {
+		BinaryAttribute instance;
+		
+		protected BirnaryBuilder(BinaryAttribute instance) {
+			this.instance = instance;
+		}
+		
+		public BirnaryBuilder setDiscreatization(BooleanDiscretization discretization) {
+			instance.discretization = discretization;
+			return this;
+		}
+		
+		public BirnaryBuilder enableDiscretization(boolean enable) {
+			instance.enableDiscretization = enable;
+			return this;
+		}
+		
+		public BirnaryBuilder enableFrequencyHistogram(boolean enable) {
+			instance.enableFrequencyHistogram = enable;
+			return this;
+		}
+		
+		public Attribute build() {
+			return instance;
+		}
+	}
+	
+	
 	public BinaryAttribute(double[] range) {
 		super(range);
 		discretization = null;
@@ -46,8 +75,10 @@ public abstract class BinaryAttribute extends Attribute {
 		Boolean literal = (Boolean) value;
 		
 		// Increase histogram counts
-		Long tmp = (tmp = frequencyHistogram.get(literal)) == null ? 1L : (tmp + 1L);
-		frequencyHistogram.put(literal, tmp);
+		if(enableFrequencyHistogram) {
+			Long tmp = (tmp = frequencyHistogram.get(literal)) == null ? 1L : (tmp + 1L);
+			frequencyHistogram.put(literal, tmp);
+		}
 			
 		//increase bin counter
 		if(discretization != null)
@@ -67,4 +98,5 @@ public abstract class BinaryAttribute extends Attribute {
 		else 
 			return discretization;
 	}
+
 }

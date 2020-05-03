@@ -19,13 +19,13 @@ public class DoubleAttributeTest {
 	@BeforeClass
 	public void beforTest() throws IOException {
 		
-		attr1 = new DoubleAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1);
-		attr2 = new DoubleAttribute(new double[] {1.0, 8.0}, 1.0, 0.0);
-		attr3 = new DoubleAttribute(new double[] {1.0, 2.0}, 0.5, -1);
-		attr4 = new DoubleAttribute(new double[] {1.5, 3.5}, 0.5, -1);
-		qFactor = new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, -1.0);
-		qFactor_equals_bins = new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, 38, -1.0);
-		qFactor_not_equals_bins = new DoubleAttribute(new double[] {0.7, 12.0}, 0.1, 28, -1.0);
+		attr1 = (DoubleAttribute) DoubleAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).setDiscreteNumber(25).setMissingValue(-1).build();
+		attr2 = (DoubleAttribute) DoubleAttribute.Builder().setRange(new double[] {1.0, 8.0}).setStep(1.0).setMissingValue(0.0).build();
+		attr3 = (DoubleAttribute) DoubleAttribute.Builder().setRange(new double[] {1.0, 2.0}).setStep(0.5).setMissingValue(-1).build();
+		attr4 = (DoubleAttribute) DoubleAttribute.Builder().setRange(new double[] {1.5, 3.5}).setStep(0.5).setMissingValue(-1).build();
+		qFactor = (DoubleAttribute) DoubleAttribute.Builder().setRange(new double[] {0.7, 12.0}).setStep(0.1).setMissingValue(-1.0).build();
+		qFactor_equals_bins = (DoubleAttribute) DoubleAttribute.Builder().setRange(new double[] {0.7, 12.0}).setStep(0.1).setDiscreteNumber(38).setMissingValue(-1.0).build();
+		qFactor_not_equals_bins = (DoubleAttribute) DoubleAttribute.Builder().setRange(new double[] {0.7, 12.0}).setStep(0.1).setDiscreteNumber(28).setMissingValue(-1.0).build();
 		
 		//Load values
 		for(double i = 0; i < 101; i++) attr1.handle(i);

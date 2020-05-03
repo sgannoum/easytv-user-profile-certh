@@ -16,12 +16,15 @@ public class ColorAttributeTest {
 	
 	@BeforeClass
 	public void beforClass() {
-		attr3 = new ColorAttribute(); 
-		attr1 = new ColorAttribute(100);
-		attr2 = new ColorAttribute(new Integer[][] { new Integer[] {0x000000, 0x0000ff }, //blue 
-													 new Integer[] {0x0001ff, 0x00ffff }, //green
-													 new Integer[] {0x01ffff, 0xffffff }  //red
-												   });
+		attr3 = (ColorAttribute) ColorAttribute.Builder().build(); 
+		attr1 = (ColorAttribute) ColorAttribute.Builder().setDiscreteNumber(100).build();
+		attr2 = (ColorAttribute) ColorAttribute.Builder()
+				.setDiscretes(new Integer[][] { new Integer[] {0x000000, 0x0000ff }, //blue 
+												new Integer[] {0x0001ff, 0x00ffff }, //green
+												new Integer[] {0x01ffff, 0xffffff }  //red
+											  })
+				.build();
+		
 		//load values from all bins
 		int binSize = (int) (Math.pow(2, 24) / 100);
 		for(int i = 0; i < 101; i++)

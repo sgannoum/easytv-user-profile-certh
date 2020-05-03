@@ -14,18 +14,17 @@ import junit.framework.Assert;
 
 public class IntegerAttributeTest {
 	
-	IntegerAttribute attr1, attr2, attr3, attr4, attr5, attr6; 
+	IntegerAttribute attr1, attr2, attr3, attr4, attr5, attr6, attr7; 
 	Discretization dist_attr1, dist_attr2, dist_attr3, dist_attr4, dist_attr6;
 
 	@BeforeClass
 	public void beforClass() throws IOException {
 
-		attr1 = new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, 0);
-		attr2 = new IntegerAttribute(new double[] {1.0, 8.0}, 1.0, 0.0);
-		attr3 = new IntegerAttribute(new double[] {-15.0, 15.0}, 1.0, 10, 0);
-		attr4 = new IntegerAttribute(new double[] {0.0, 100.0}, 2.0, 25, 0);
-		attr5 = (IntegerAttribute) IntegerAttribute
-				.Builder()
+		attr1 = (IntegerAttribute) IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).setDiscreteNumber(25).setMissingValue(0).build();
+		attr2 = (IntegerAttribute) IntegerAttribute.Builder().setRange(new double[] {1.0, 8.0}).setStep(1.0).setMissingValue(0.0).build();
+		attr3 = (IntegerAttribute) IntegerAttribute.Builder().setRange(new double[] {-15.0, 15.0}).setStep(1.0).setDiscreteNumber(10).setMissingValue(0).build();
+		attr4 = (IntegerAttribute) IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(2.0).setDiscreteNumber(25).setMissingValue(0).build();
+		attr5 = (IntegerAttribute) IntegerAttribute.Builder()
 				.setRange(new double[] {0.0, 10.0})
 				.setDiscretes(new Integer[][] {
 			    	new  Integer[] {0, 3},
@@ -80,7 +79,7 @@ public class IntegerAttributeTest {
 		dist_attr3 = attr3.getDiscretization();
 		dist_attr4 = attr4.getDiscretization();
 		dist_attr6 = attr6.getDiscretization();
-		
+				
 	}
 	
 	@Test
