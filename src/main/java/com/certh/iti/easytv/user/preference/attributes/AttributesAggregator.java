@@ -311,7 +311,7 @@ public class AttributesAggregator {
 			if(discretizationHandlers.containsKey(entry.getKey()))
 				itemSet[index++] = code(entry.getKey(), entry.getValue());
 		
-		return itemSet;
+		return Arrays.copyOfRange(itemSet, 0, index);
 	}
 	
 	/**
@@ -332,7 +332,7 @@ public class AttributesAggregator {
 				if(discretizationHandlers.containsKey(entry.getKey()))	
 					itemSet[index++] = code(entry.getKey(), entry.getValue());
 			
-		return itemSet;
+		return Arrays.copyOfRange(itemSet, 0, index);
 	}
 	
 	
