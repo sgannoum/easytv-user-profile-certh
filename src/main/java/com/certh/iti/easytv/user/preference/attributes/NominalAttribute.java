@@ -175,6 +175,11 @@ public class NominalAttribute extends Attribute implements INominal {
 			String key = convertedValue;
 			Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
 			frequencyHistogram.put(key, tmp);
+			
+			if(tmp > mostFrequentCount) {
+				mostFrequentCount = tmp;
+				mostFrequentValue = value;
+			}
 		}
 		
 		// increase counts

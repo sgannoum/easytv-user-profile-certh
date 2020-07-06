@@ -21,17 +21,27 @@ public class UserContent implements Clusterable {
 	protected Map<String, Object> content  =  new HashMap<String, Object>();
     private JSONObject jsonObj = null;
     
-	protected static Map<String, Attribute> content_attributes  =  new LinkedHashMap<String, Attribute>() {
-		private static final long serialVersionUID = 1L;
- 
-	{
-	    put("http://registry.easytv.eu/application/cs/accessibility/detection/face",  new SymmetricBinaryAttribute());
-		put("http://registry.easytv.eu/application/cs/accessibility/detection/text",  new SymmetricBinaryAttribute());
-		put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  new SymmetricBinaryAttribute());
-	    put("http://registry.easytv.eu/application/cs/accessibility/detection/character",  new SymmetricBinaryAttribute());
-	    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
-	    put("http://registry.easytv.eu/application/cs/audio/track", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
-    }};
+	protected static Map<String, Attribute> content_attributes;
+	
+	static {
+		init();
+	}
+    
+	public static void init() {
+		content_attributes  =  new LinkedHashMap<String, Attribute>() {
+			private static final long serialVersionUID = 1L;
+	 
+		{
+		    put("http://registry.easytv.eu/application/cs/accessibility/detection/face",  new SymmetricBinaryAttribute());
+			put("http://registry.easytv.eu/application/cs/accessibility/detection/text",  new SymmetricBinaryAttribute());
+			put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  new SymmetricBinaryAttribute());
+		    put("http://registry.easytv.eu/application/cs/accessibility/detection/character",  new SymmetricBinaryAttribute());
+		    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
+		    put("http://registry.easytv.eu/application/cs/audio/track", new MultiNominalAttribute(new String[] {"ca", "gr", "it", "es"}));
+	    }};
+		
+	}
+    
     
 	public UserContent() {
 		this.setPoint();
@@ -178,5 +188,6 @@ public class UserContent implements Clusterable {
 	public static Map<String, Attribute> getAttributes(){
 		return Collections.unmodifiableMap(content_attributes);
 	}
+
 	
 }

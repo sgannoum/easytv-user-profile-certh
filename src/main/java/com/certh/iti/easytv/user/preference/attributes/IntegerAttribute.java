@@ -157,6 +157,10 @@ public class IntegerAttribute extends NumericAttribute {
 
 		return converter.valueOf(literal);
 	}
+	
+	public TreeMap<Integer, Long> getFrequencyHistogram() {
+		return frequencyHistogram;
+	}
 
 	@Override
 	public Object handle(Object value) {
@@ -176,6 +180,12 @@ public class IntegerAttribute extends NumericAttribute {
 		if(enableFrequencyHistogram) {
 			Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
 			frequencyHistogram.put(numericValue, tmp);
+			
+			if(tmp > mostFrequentCount) {
+				mostFrequentCount = tmp;
+				mostFrequentValue = value;
+			}
+			
 		}
 		
 		//Increment the number of occurrences 

@@ -25,80 +25,90 @@ import com.certh.iti.easytv.user.preference.attributes.SymmetricBinaryAttribute;
 
 public class Preference implements Clusterable, Comparable<Preference> {
 
-	protected static Map<String, Attribute> preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
-		private static final long serialVersionUID = 1L;
- 
-	{	
-		//common
-     	put("http://registry.easytv.eu/common/volume", 									IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
-		put("http://registry.easytv.eu/common/contrast", 								IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
-		put("http://registry.easytv.eu/common/brightness", 								IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
-	    put("http://registry.easytv.eu/common/content/audio/language", 					LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
-	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size", 	DoubleAttribute.Builder().setRange(new double[] {1.0, 2.0}).setStep(0.5).build());
-	    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color", ColorAttribute.Builder().build());
-	    
-	    //cs
-	    put("http://registry.easytv.eu/application/tts/audio/language", 				LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
-	    put("http://registry.easytv.eu/application/tts/audio/speed", 					IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
-	    put("http://registry.easytv.eu/application/tts/audio/volume", 					IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
-	    put("http://registry.easytv.eu/application/tts/audio/voice", 					NominalAttribute.Builder().setState(new String[] {"male", "female"}).build());
-		put("http://registry.easytv.eu/application/tts/audio/quality", 					IntegerAttribute.Builder().setRange(new double[] {1.0, 8.0}).setMissingValue(-1).build()); 
-	    put("http://registry.easytv.eu/application/cs/cc/subtitles", 					SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", 			LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
-	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/size", 			IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
-	    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/color", 		ColorAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/cc/subtitles/background/color",	ColorAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/cc/audio/subtitle",  				SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS", 	SymmetricBinaryAttribute.Builder().build());	
-	    put("http://registry.easytv.eu/application/cs/ui/text/size", 					OrdinalAttribute.Builder().setState(new String[] {"15", "20", "23"}).build());					
-	    put("http://registry.easytv.eu/application/cs/ui/language", 					LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());	
-	    put("http://registry.easytv.eu/application/cs/ui/vibration/touch", 				SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/ui/text/magnification/scale", 	SymmetricBinaryAttribute.Builder().build()); 				
-	    
-	    //audio equalizer
-	    put("http://registry.easytv.eu/application/cs/audio/eq",  						SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/audio/eq/low/shelf/frequency", 	IntegerAttribute.Builder().setRange(new double[] {35.0,	 220.0}).build());
-	    put("http://registry.easytv.eu/application/cs/audio/eq/low/shelf/gain", 		IntegerAttribute.Builder().setRange(new double[] {-50.0, 50.0}).setMissingValue(-51.0).build());
-	    put("http://registry.easytv.eu/application/cs/audio/eq/low/pass/frequency", 	IntegerAttribute.Builder().setRange(new double[] {80.0,  1600.0}).setStep(10.0).build());
-	    put("http://registry.easytv.eu/application/cs/audio/eq/low/pass/qFactor", 		DoubleAttribute.Builder().setRange(new double[]  {0.7,   12.0})	.setStep(0.1).build());
-	    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/frequency", 	IntegerAttribute.Builder().setRange(new double[] {800.0, 5900.0}).setStep(100.0).build());
-	    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/qFactor", 		DoubleAttribute.Builder().setRange(new double[]  {0.7,   12.0})	.setStep(0.1).build());
-	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/frequency", 	IntegerAttribute.Builder().setRange(new double[] {2200.0, 4700.0}).setStep(100.0).build());
-	    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/gain", 		IntegerAttribute.Builder().setRange(new double[] {-50.0,  50.0}).setMissingValue(-51.0).build());
-	  	put("http://registry.easytv.eu/application/cs/audio/volume", 					IntegerAttribute.Builder().setRange(new double[] {0.0,   100.0}).setStep(1.0).build());
-	    put("http://registry.easytv.eu/application/cs/audio/track", 					LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
-	    
-	    //control
-	    put("http://registry.easytv.eu/application/control/voice", 										SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlType", 				NominalAttribute.Builder().setState(new String[] {"none", "cursor_control", "gaze_control", "gesture_control", "mouse_control"}).build());
-	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize",  	DoubleAttribute.Builder().setRange(new double[] {0.0, 3.0}).setStep(0.5).build());
-	    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage", 	LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
-	    
-	    //accessibility
-	    put("http://registry.easytv.eu/application/cs/accessibility/audio/description",  	SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/accessibility/detection/text/reader", SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  		SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/accessibility/detection/face",  		SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/accessibility/detection/text",  		SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/accessibility/detection/character",  	SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/accessibility/magnification", 		SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/cs/accessibility/magnification/scale", 	DoubleAttribute.Builder().setRange(new double[] {1.5, 3.5}).setStep(0.5).build());
-	    put("http://registry.easytv.eu/application/cs/accessibility/sign/language", 		LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
-	    
-	    //HbbTV
-	    put("http://registry.easytv.eu/application/hbbtv/screen/reader",  				SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/hbbtv/screen/reader/speed",  		NominalAttribute.Builder().setState(new String[] {"slow", "normal", "fast"}).build());
-	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles",  				SymmetricBinaryAttribute.Builder().build());
-	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/position", 		NominalAttribute.Builder().setState(new String[] {"up", "down"}).build());
-	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/language",  		LanguageAttribute.Builder().setState(new String[] {"ca", "en", "ar", "es"}).enableDiscretization(false).enableFrequencyHistogram(false).build());
-	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/font/size", 		IntegerAttribute.Builder().setRange(new double[] {1.0, 50.0}).build());
-	    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/background",  	SymmetricBinaryAttribute.Builder().build());
-    }};
+	protected static Map<String, Attribute> preferencesAttributes;
+	
+	static {
+		init();
+	}
 	
     protected double[] points;
 	protected String name = new String();
 	protected Map<String, Object> preferences = new HashMap<String, Object>();
 	protected JSONObject jsonObj = null;
+	
+	
+	public static void init() {
+		preferencesAttributes  =  new LinkedHashMap<String, Attribute>() {
+			private static final long serialVersionUID = 1L;
+	 
+		{	
+			//common
+	     	put("http://registry.easytv.eu/common/volume", 									IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
+			put("http://registry.easytv.eu/common/contrast", 								IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
+			put("http://registry.easytv.eu/common/brightness", 								IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
+		    put("http://registry.easytv.eu/common/content/audio/language", 					LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
+		    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/Size", 	DoubleAttribute.Builder().setRange(new double[] {1.0, 2.0}).setStep(0.5).build());
+		    put("http://registry.easytv.eu/common/display/screen/enhancement/cursor/color", ColorAttribute.Builder().build());
+		    
+		    //cs
+		    put("http://registry.easytv.eu/application/tts/audio/language", 				LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
+		    put("http://registry.easytv.eu/application/tts/audio/speed", 					IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
+		    put("http://registry.easytv.eu/application/tts/audio/volume", 					IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
+		    put("http://registry.easytv.eu/application/tts/audio/voice", 					NominalAttribute.Builder().setState(new String[] {"male", "female"}).build());
+			put("http://registry.easytv.eu/application/tts/audio/quality", 					IntegerAttribute.Builder().setRange(new double[] {1.0, 8.0}).setMissingValue(-1).build()); 
+		    put("http://registry.easytv.eu/application/cs/cc/subtitles", 					SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", 			LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
+		    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/size", 			IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
+		    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/color", 		ColorAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/cc/subtitles/background/color",	ColorAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/cc/audio/subtitle",  				SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/ui/audioAssistanceBasedOnTTS", 	SymmetricBinaryAttribute.Builder().build());	
+		    put("http://registry.easytv.eu/application/cs/ui/text/size", 					OrdinalAttribute.Builder().setState(new String[] {"15", "20", "23"}).build());					
+		    put("http://registry.easytv.eu/application/cs/ui/language", 					LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());	
+		    put("http://registry.easytv.eu/application/cs/ui/vibration/touch", 				SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/ui/text/magnification/scale", 	SymmetricBinaryAttribute.Builder().build()); 				
+		    
+		    //audio equalizer
+		    put("http://registry.easytv.eu/application/cs/audio/eq",  						SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/audio/eq/low/shelf/frequency", 	IntegerAttribute.Builder().setRange(new double[] {35.0,	 220.0}).build());
+		    put("http://registry.easytv.eu/application/cs/audio/eq/low/shelf/gain", 		IntegerAttribute.Builder().setRange(new double[] {-50.0, 50.0}).setMissingValue(-51.0).build());
+		    put("http://registry.easytv.eu/application/cs/audio/eq/low/pass/frequency", 	IntegerAttribute.Builder().setRange(new double[] {80.0,  1600.0}).setStep(10.0).build());
+		    put("http://registry.easytv.eu/application/cs/audio/eq/low/pass/qFactor", 		DoubleAttribute.Builder().setRange(new double[]  {0.7,   12.0})	.setStep(0.1).build());
+		    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/frequency", 	IntegerAttribute.Builder().setRange(new double[] {800.0, 5900.0}).setStep(100.0).build());
+		    put("http://registry.easytv.eu/application/cs/audio/eq/high/pass/qFactor", 		DoubleAttribute.Builder().setRange(new double[]  {0.7,   12.0})	.setStep(0.1).build());
+		    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/frequency", 	IntegerAttribute.Builder().setRange(new double[] {2200.0, 4700.0}).setStep(100.0).build());
+		    put("http://registry.easytv.eu/application/cs/audio/eq/high/shelf/gain", 		IntegerAttribute.Builder().setRange(new double[] {-50.0,  50.0}).setMissingValue(-51.0).build());
+		  	put("http://registry.easytv.eu/application/cs/audio/volume", 					IntegerAttribute.Builder().setRange(new double[] {0.0,   100.0}).setStep(1.0).build());
+		    put("http://registry.easytv.eu/application/cs/audio/track", 					LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
+		    
+		    //control
+		    put("http://registry.easytv.eu/application/control/voice", 										SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlType", 				NominalAttribute.Builder().setState(new String[] {"none", "cursor_control", "gaze_control", "gesture_control", "mouse_control"}).build());
+		    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize",  	DoubleAttribute.Builder().setRange(new double[] {0.0, 3.0}).setStep(0.5).build());
+		    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage", 	LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
+		    
+		    //accessibility
+		    put("http://registry.easytv.eu/application/cs/accessibility/audio/description",  	SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/accessibility/detection/text/reader", SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/accessibility/detection/sound",  		SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/accessibility/detection/face",  		SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/accessibility/detection/text",  		SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/accessibility/detection/character",  	SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/accessibility/magnification", 		SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/cs/accessibility/magnification/scale", 	DoubleAttribute.Builder().setRange(new double[] {1.5, 3.5}).setStep(0.5).build());
+		    put("http://registry.easytv.eu/application/cs/accessibility/sign/language", 		LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
+		    
+		    //HbbTV
+		    put("http://registry.easytv.eu/application/hbbtv/screen/reader",  				SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/hbbtv/screen/reader/speed",  		NominalAttribute.Builder().setState(new String[] {"slow", "normal", "fast"}).build());
+		    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles",  				SymmetricBinaryAttribute.Builder().build());
+		    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/position", 		NominalAttribute.Builder().setState(new String[] {"up", "down"}).build());
+		    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/language",  		LanguageAttribute.Builder().setState(new String[] {"ca", "en", "ar", "es"}).enableDiscretization(false).enableFrequencyHistogram(false).build());
+		    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/font/size", 		IntegerAttribute.Builder().setRange(new double[] {1.0, 50.0}).build());
+		    put("http://registry.easytv.eu/application/hbbtv/cc/subtitles/background",  	SymmetricBinaryAttribute.Builder().build());
+	    }};
+		
+	}
 	
 	public Preference() {}
 	
@@ -311,5 +321,6 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	public static Map<String, Attribute> getAttributes(){
 		return Collections.unmodifiableMap(preferencesAttributes);
 	}
+
 
 }

@@ -110,107 +110,118 @@ public class UserContext implements Clusterable{
     	new  Integer[] {601,640}
     };
     
-	protected static Map<String, Attribute> contextAttributes  =  new LinkedHashMap<String, Attribute>() {
-		private static final long serialVersionUID = 1L;
-	{
-	    put("http://registry.easytv.eu/context/device", 
-	    		new NominalAttribute(new String[] {"pc", "mobile", "tablet"}));
-	    
-		put("http://registry.easytv.eu/context/proximity", 
-				new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
-		
-	    put("http://registry.easytv.eu/context/location", 
-	    		new NominalAttribute(new String[] {"ca", "gr", "it", "es"}));
-	    
-	    put("http://registry.easytv.eu/context/time", 
-	    		new TimeAttribute());
-	    
-	    put("http://registry.easytv.eu/context/device/soundMeter", 
-	    		new NominalAttribute(new String[] { 
-	    			"Breathing", "Mosquito", "Whisper", "Park", "Quiet office", "Normal conversation", "Busy traffic", "Red level"
-	    		}));
-	    
-	    put("http://registry.easytv.eu/context/device/screenSize/width", 
-				IntegerAttribute
-				.Builder()
-				.setRange(new double[] {1.0, 5120.0})
-				.setDiscretes(SCREEN_WIDTH_HEIGHT_DISCRET)
-				.enableDiscretization(false)
-				.build());	
-	    
-	    put("http://registry.easytv.eu/context/device/screenSize/height", 
-				IntegerAttribute
-				.Builder()
-				.setRange(new double[] {1.0, 5120.0})
-				.setDiscretes(SCREEN_WIDTH_HEIGHT_DISCRET)
-				.enableDiscretization(false)
-				.build());	
-	    
-	    //The exact physical pixels per inch of the screen in the X dimension.
-	    put("http://registry.easytv.eu/context/device/screenSize/xdpi", 		
-	    		IntegerAttribute
-				.Builder()
-				.setRange(new double[] {150.0, 640.0})
-				.setDiscretes(DENSITY_DISCRET)
-				.enableDiscretization(false)
-				.setConverter(new IntegerConverter() {
-					@Override
-					public Integer valueOf(Object obj) {
-						return Number.class.cast(obj).intValue();
-					}
-					
-					@Override
-					public boolean isInstance(Object obj) {
-						return Number.class.isInstance(obj);
-					}
-				})
-				.build());			
-
-	   //The exact physical pixels per inch of the screen in the Y dimension.
-	    put("http://registry.easytv.eu/context/device/screenSize/ydpi", 		
-	    		IntegerAttribute
-				.Builder()
-				.setRange(new double[] {150.0, 640.0})
-				.setDiscretes(DENSITY_DISCRET)
-				.enableDiscretization(false)
-				.setConverter(new IntegerConverter() {
-					@Override
-					public Integer valueOf(Object obj) {
-						return Number.class.cast(obj).intValue();
-					}
-					
-					@Override
-					public boolean isInstance(Object obj) {
-						return Number.class.isInstance(obj);
-					}
-				})
-				.build());
-	    
-	    put("http://registry.easytv.eu/context/device/screenSize/diameter", 
-	    		new DoubleAttribute(new double[] {2.5, 31.0}, 0.5, -1));
-	    
-	    put("http://registry.easytv.eu/context/device/screenSize/densityValue", 
-	    		DoubleAttribute
-				.Builder()
-	    		.setRange(new double[] {0.75, 4.0})
-	    		.setStep(0.25)
-	    		.setMissingValue(0.0)
-	    		.build());
-	    
-	    put("http://registry.easytv.eu/context/device/screenSize/densityBucket", 
-	    		new NominalAttribute(new String[] { 
-	    			"ldpi", "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
-	    		}));
-	    
-		put("http://registry.easytv.eu/context/light", 
-				new OrdinalAttribute(new String[] {
-					"dark", "dark surroundings", "living room", "hallway", "overcast day",
-					"home", "class", "workplace", "sunrise", "grocery", "supermarket",
-					"theater", "detailed work", "visual task", "demanding visual task",
-					"full daylight", "direct sun"
-				}));
-    }};
+	protected static Map<String, Attribute> contextAttributes;
 	
+	static {
+		init();
+	}
+    
+
+	public static void init() {
+		contextAttributes  =  new LinkedHashMap<String, Attribute>() {
+			private static final long serialVersionUID = 1L;
+		{
+		    put("http://registry.easytv.eu/context/device", 
+		    		new NominalAttribute(new String[] {"pc", "mobile", "tablet"}));
+		    
+			put("http://registry.easytv.eu/context/proximity", 
+					new IntegerAttribute(new double[] {0.0, 100.0}, 1.0, 25, -1));
+			
+		    put("http://registry.easytv.eu/context/location", 
+		    		new NominalAttribute(new String[] {"ca", "gr", "it", "es"}));
+		    
+		    put("http://registry.easytv.eu/context/time", 
+		    		new TimeAttribute());
+		    
+		    put("http://registry.easytv.eu/context/device/soundMeter", 
+		    		new NominalAttribute(new String[] { 
+		    			"Breathing", "Mosquito", "Whisper", "Park", "Quiet office", "Normal conversation", "Busy traffic", "Red level"
+		    		}));
+		    
+		    put("http://registry.easytv.eu/context/device/screenSize/width", 
+					IntegerAttribute
+					.Builder()
+					.setRange(new double[] {1.0, 5120.0})
+					.setDiscretes(SCREEN_WIDTH_HEIGHT_DISCRET)
+					.enableDiscretization(false)
+					.build());	
+		    
+		    put("http://registry.easytv.eu/context/device/screenSize/height", 
+					IntegerAttribute
+					.Builder()
+					.setRange(new double[] {1.0, 5120.0})
+					.setDiscretes(SCREEN_WIDTH_HEIGHT_DISCRET)
+					.enableDiscretization(false)
+					.build());	
+		    
+		    //The exact physical pixels per inch of the screen in the X dimension.
+		    put("http://registry.easytv.eu/context/device/screenSize/xdpi", 		
+		    		IntegerAttribute
+					.Builder()
+					.setRange(new double[] {150.0, 640.0})
+					.setDiscretes(DENSITY_DISCRET)
+					.enableDiscretization(false)
+					.setConverter(new IntegerConverter() {
+						@Override
+						public Integer valueOf(Object obj) {
+							return Number.class.cast(obj).intValue();
+						}
+						
+						@Override
+						public boolean isInstance(Object obj) {
+							return Number.class.isInstance(obj);
+						}
+					})
+					.build());			
+
+		   //The exact physical pixels per inch of the screen in the Y dimension.
+		    put("http://registry.easytv.eu/context/device/screenSize/ydpi", 		
+		    		IntegerAttribute
+					.Builder()
+					.setRange(new double[] {150.0, 640.0})
+					.setDiscretes(DENSITY_DISCRET)
+					.enableDiscretization(false)
+					.setConverter(new IntegerConverter() {
+						@Override
+						public Integer valueOf(Object obj) {
+							return Number.class.cast(obj).intValue();
+						}
+						
+						@Override
+						public boolean isInstance(Object obj) {
+							return Number.class.isInstance(obj);
+						}
+					})
+					.build());
+		    
+		    put("http://registry.easytv.eu/context/device/screenSize/diameter", 
+		    		new DoubleAttribute(new double[] {2.5, 31.0}, 0.5, -1));
+		    
+		    put("http://registry.easytv.eu/context/device/screenSize/densityValue", 
+		    		DoubleAttribute
+					.Builder()
+		    		.setRange(new double[] {0.75, 4.0})
+		    		.setStep(0.25)
+		    		.setMissingValue(0.0)
+		    		.build());
+		    
+		    put("http://registry.easytv.eu/context/device/screenSize/densityBucket", 
+		    		new NominalAttribute(new String[] { 
+		    			"ldpi", "mdpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+		    		}));
+		    
+			put("http://registry.easytv.eu/context/light", 
+					new OrdinalAttribute(new String[] {
+						"dark", "dark surroundings", "living room", "hallway", "overcast day",
+						"home", "class", "workplace", "sunrise", "grocery", "supermarket",
+						"theater", "detailed work", "visual task", "demanding visual task",
+						"full daylight", "direct sun"
+					}));
+	    }};
+		
+		
+	}
+
 	
 	public UserContext() {}
 	

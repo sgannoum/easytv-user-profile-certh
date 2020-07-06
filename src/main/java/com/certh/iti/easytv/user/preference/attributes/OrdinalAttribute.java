@@ -114,9 +114,16 @@ public class OrdinalAttribute extends NominalAttribute implements INumeric, INom
 			throw new IllegalStateException("Unknown state " + value);
 		
 		// Increase histogram counts
-		String key = (String) value;
-		Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
-		frequencyHistogram.put(key, tmp);
+		if(enableFrequencyHistogram) {
+			String key = (String) value;
+			Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
+			frequencyHistogram.put(key, tmp);
+			
+			if(tmp > mostFrequentCount) {
+				mostFrequentCount = tmp;
+				mostFrequentValue = value;
+			}
+		}
 
 		// set Min Max value
 		setMinMaxValue(state);

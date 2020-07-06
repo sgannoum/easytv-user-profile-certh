@@ -33,6 +33,13 @@ public class Profile implements Clusterable {
 	protected UserProfile userProfile = new UserProfile();
 	protected JSONObject jsonObj = null;
 	
+	
+	public static void init() {
+		Preference.init();
+		UserContext.init();
+		UserContent.init();
+	}
+	
 	public Profile() {		
 		num_profiles++;
 	}
@@ -231,5 +238,6 @@ public class Profile implements Clusterable {
 		
 		return output;
 	}
+
 
 }

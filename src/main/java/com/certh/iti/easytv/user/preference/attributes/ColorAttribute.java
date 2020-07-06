@@ -100,6 +100,11 @@ public class ColorAttribute extends IntegerAttribute {
 		if(enableFrequencyHistogram) {
 			Long tmp = (tmp = frequencyHistogram.get(numericValue)) == null ? 1L : (tmp + 1L);
 			frequencyHistogram.put(numericValue, tmp);
+			
+			if(tmp > mostFrequentCount) {
+				mostFrequentCount = tmp;
+				mostFrequentValue = value;
+			}
 		}
 		
 		//handle red dimension

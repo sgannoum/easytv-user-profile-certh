@@ -14,6 +14,9 @@ public abstract class Attribute {
 	protected boolean enableDiscretization = true;
 	protected boolean enableFrequencyHistogram = true;
 	
+	protected long mostFrequentCount = 0;
+	protected Object mostFrequentValue = null;
+	
 	protected Attribute() {
 	}
 	
@@ -104,4 +107,20 @@ public abstract class Attribute {
 		else return table.toString() + "\r\n" ;
 	}
 
+	/**
+	 * 
+	 * @return the number of occurrences of the most frequent item
+	 */
+	public long getMostFrequentValueCounts() {
+		return mostFrequentCount;
+
+	}
+
+	/**
+	 * 
+	 * @return the value of the most frequent item
+	 */
+	public Object getMostFrequentValue() {
+		return mostFrequentValue;
+	}
 }

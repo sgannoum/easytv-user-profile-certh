@@ -78,6 +78,11 @@ public abstract class BinaryAttribute extends Attribute {
 		if(enableFrequencyHistogram) {
 			Long tmp = (tmp = frequencyHistogram.get(literal)) == null ? 1L : (tmp + 1L);
 			frequencyHistogram.put(literal, tmp);
+			
+			if(tmp > mostFrequentCount) {
+				mostFrequentCount = tmp;
+				mostFrequentValue = value;
+			}
 		}
 			
 		//increase bin counter

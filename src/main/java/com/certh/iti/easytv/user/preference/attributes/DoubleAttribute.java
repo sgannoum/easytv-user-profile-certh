@@ -144,6 +144,10 @@ public class DoubleAttribute extends NumericAttribute {
 	public String getXMLDataTypeURI() {
 		return "http://www.w3.org/2001/XMLSchema#double";
 	}
+	
+	public TreeMap<Double, Long> getFrequencyHistogram() {
+		return frequencyHistogram;
+	}
 
 	@Override
 	public Object handle(Object value) {
@@ -169,6 +173,11 @@ public class DoubleAttribute extends NumericAttribute {
 			Double key = new Double(numericValue);
 			Long tmp = (tmp = frequencyHistogram.get(key)) == null ? 1L : (tmp + 1L);
 			frequencyHistogram.put(key, tmp);
+			
+			if(tmp > mostFrequentCount) {
+				mostFrequentCount = tmp;
+				mostFrequentValue = value;
+			}
 		}
 		
 		//Increment the number of occurrences 
