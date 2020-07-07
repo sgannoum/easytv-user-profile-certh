@@ -195,7 +195,7 @@ public class UserContext implements Clusterable{
 					.build());
 		    
 		    put("http://registry.easytv.eu/context/device/screenSize/diameter", 
-		    		new DoubleAttribute(new double[] {2.5, 31.0}, 0.5, -1));
+		    		new DoubleAttribute(new double[] {2.5, 31.0}, 0.1, -1));
 		    
 		    put("http://registry.easytv.eu/context/device/screenSize/densityValue", 
 		    		DoubleAttribute
