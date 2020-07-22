@@ -18,8 +18,8 @@ public class UserProfile implements Clusterable {
 	
 	public UserProfile() {		}
 	
-	public UserProfile(Random rand) {		
-		this.setUserPreferences(new UserPreferences(rand));
+	public UserProfile(Random rand, UserProfile initUserProfile) {		
+		this.setUserPreferences(new UserPreferences(rand, initUserProfile.getUserPreferences()));
 	}
 	
 	public UserProfile(UserProfile other) throws IOException, UserProfileParsingException {

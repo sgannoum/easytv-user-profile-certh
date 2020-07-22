@@ -20,8 +20,8 @@ public class UserPreferences implements Clusterable {
 	
 	public UserPreferences() {}
 	
-	public UserPreferences(Random rand) {
-		this.setDefaultPreferences(new Preference(rand));
+	public UserPreferences(Random rand, UserPreferences initUserPreferences) {
+		this.setDefaultPreferences(new Preference(rand, initUserPreferences.getDefaultPreference()));
 	}
 	
 	public UserPreferences(JSONObject json) throws UserProfileParsingException {

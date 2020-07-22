@@ -14,6 +14,7 @@ public class UserProfileGenerator {
 	
 	private int userId = 0;
 	private Random rand;
+	private Profile profile;
 	
 	public UserProfileGenerator() {
 		rand = new Random();
@@ -21,6 +22,12 @@ public class UserProfileGenerator {
 	
 	public UserProfileGenerator(long seed) {
 		rand = new Random(seed);
+		profile = new Profile();
+	}
+	
+	public UserProfileGenerator(long seed, Profile initProfile) {
+		rand = new Random(seed);
+		profile = initProfile;
 	}
 	
 	public void setSeed(long seed) {
@@ -28,7 +35,7 @@ public class UserProfileGenerator {
 	}
 	
 	public Profile getNextProfile() throws UserProfileParsingException, IOException{
-		return new Profile(userId++, rand);
+		return new Profile(userId++, rand, profile);
 	}
 	
 	/**

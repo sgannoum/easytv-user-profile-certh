@@ -44,11 +44,11 @@ public class Profile implements Clusterable {
 		num_profiles++;
 	}
 	
-	public Profile(int userId, Random rand) throws IOException, UserProfileParsingException {
+	public Profile(int userId, Random rand, Profile initProfile) throws IOException, UserProfileParsingException {
 		jsonObj = null;
 		
 		this.userId = userId;
-		this.userProfile = new UserProfile(rand);
+		this.userProfile = new UserProfile(rand, initProfile.getUserProfile());
 		this.userContext = new UserContext(rand);
 		this.userContent = new UserContent(rand);
 

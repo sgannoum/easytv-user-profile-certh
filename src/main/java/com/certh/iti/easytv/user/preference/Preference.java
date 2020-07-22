@@ -84,7 +84,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 		    //control
 		    put("http://registry.easytv.eu/application/control/voice", 										SymmetricBinaryAttribute.Builder().build());
 		    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlType", 				NominalAttribute.Builder().setState(new String[] {"none", "cursor_control", "gaze_control", "gesture_control", "mouse_control"}).build());
-		    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize",  	DoubleAttribute.Builder().setRange(new double[] {0.0, 3.0}).setStep(0.5).build());
+		    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiTextSize",  	DoubleAttribute.Builder().setRange(new double[] {1.0, 2.0}).setStep(0.5).build());
 		    put("http://registry.easytv.eu/application/control/csGazeAndGestureControlCursorGuiLanguage", 	LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
 		    
 		    //accessibility
@@ -112,10 +112,11 @@ public class Preference implements Clusterable, Comparable<Preference> {
 	
 	public Preference() {}
 	
-	public Preference(Random rand) {
+	public Preference(Random rand, Preference initPreference) {
 		this.name = "default";
 		
 		String avoid = " ";
+		preferences.putAll(initPreference.preferences);
 		for(final Entry<String, Attribute> e : Preference.getAttributes().entrySet()) {
 			String key = e.getKey();
 			Attribute oprand = e.getValue();
@@ -125,6 +126,9 @@ public class Preference implements Clusterable, Comparable<Preference> {
 				preferences.put(key+" to be omitted", null);
 				continue;
 			}
+			
+			if(preferences.containsKey(key))
+				continue;
 			
 			if(BinaryAttribute.class.isInstance(oprand)) {
 				//get random value
