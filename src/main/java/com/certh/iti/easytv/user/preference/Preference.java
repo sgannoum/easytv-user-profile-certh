@@ -58,7 +58,7 @@ public class Preference implements Clusterable, Comparable<Preference> {
 			put("http://registry.easytv.eu/application/tts/audio/quality", 					IntegerAttribute.Builder().setRange(new double[] {1.0, 8.0}).setMissingValue(-1).build()); 
 		    put("http://registry.easytv.eu/application/cs/cc/subtitles", 					SymmetricBinaryAttribute.Builder().build());
 		    put("http://registry.easytv.eu/application/cs/cc/subtitles/language", 			LanguageAttribute.Builder().enableDiscretization(false).enableFrequencyHistogram(false).build());
-		    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/size", 			IntegerAttribute.Builder().setRange(new double[] {0.0, 100.0}).setStep(1.0).build());
+		    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/size", 			IntegerAttribute.Builder().setRange(new double[] {0.0, 50.0}).setStep(1.0).build());
 		    put("http://registry.easytv.eu/application/cs/cc/subtitles/font/color", 		ColorAttribute.Builder().build());
 		    put("http://registry.easytv.eu/application/cs/cc/subtitles/background/color",	ColorAttribute.Builder().build());
 		    put("http://registry.easytv.eu/application/cs/cc/audio/subtitle",  				SymmetricBinaryAttribute.Builder().build());
